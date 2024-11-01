@@ -39,37 +39,8 @@ public class AutoRedLeft extends Auto {
 		waitForStart();
 
 		if (opModeIsActive()) { // <----------------------------------------------------------------
-			MotorSetup(); // arm between 0 and -2500
-
-			switch(position) {
-				case 0:
-					// Move to the left spike mark
-					driveMotors.Move(Direction.FORWARD, (int)(Config.TILE_LENGTH * .7));
-					driveMotors.Move(Direction.LEFT, (int)(Config.TILE_LENGTH * .6));
-					// Drop pixel
-					intake.OpenRight(0);
-					intake.MoveWrist(0, 350);
-					
-					break;
-				case 1:
-					// Move to the center spike mark
-					driveMotors.Move(Direction.LEFT, (int)(Config.TILE_LENGTH * .2));
-					driveMotors.Move(Direction.FORWARD, (int)(Config.TILE_LENGTH * 1.11));
-					// Drop pixel
-					intake.OpenRight(0);
-					intake.MoveWrist(0, 350);
-				
-					break;
-				case 2:
-					// Move to the right spike mark
-					driveMotors.Move(Direction.FORWARD, (int)(Config.TILE_LENGTH * 1));
-					driveMotors.Turn(45);
-					driveMotors.Move(Direction.FORWARD, (int)(Config.TILE_LENGTH * 0.2));
-					// Drop purple pixel
-					intake.OpenRight(0);
-					intake.MoveWrist(0, 350);
-					break;
-			}
+			sleep(20000);
+	  		driveMotors.Move(Direction.RIGHT, (int)(Config.TILE_LENGTH * 3));
 		}
 		saveHeading();
 	}
