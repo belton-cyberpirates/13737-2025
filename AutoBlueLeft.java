@@ -40,74 +40,8 @@ public class AutoBlueLeft extends Auto {
 	waitForStart();
 
 	if (opModeIsActive()) { // <----------------------------------------------------------------
-	  	MotorSetup(); // arm between 0 and -2500
-
-	  	switch(position) {
-			case 0:
-				// Move to the left spike mark
-				driveMotors.Move(Direction.FORWARD, (int)(Config.TILE_LENGTH * .7));
-				driveMotors.Move(Direction.LEFT, (int)(Config.TILE_LENGTH * .6));
-				// Drop pixel
-				intake.OpenRight(0);
-				intake.MoveWrist(0.5, 350);
-				// Move to a starting point for scoring / parking auto
-				driveMotors.Move(Direction.FORWARD, (int)(Config.TILE_LENGTH * .3));
-				driveMotors.Move(Direction.LEFT, (int)(Config.TILE_LENGTH * .4));
-				// Rotate towards board
-				driveMotors.Turn(-90);
-				break;
-			case 1:
-				// Move to the center spike mark
-				driveMotors.Move(Direction.LEFT, (int)(Config.TILE_LENGTH * .2));
-				driveMotors.Move(Direction.FORWARD, (int)(Config.TILE_LENGTH * 1.11));
-				// Drop pixel
-				intake.OpenRight(0);
-				intake.MoveWrist(0.5, 350);
-				// Move to a starting point for scoring / parking auto
-				driveMotors.Move(Direction.LEFT, (int)(Config.TILE_LENGTH * .65));
-				driveMotors.Move(Direction.BACKWARD, (int)(Config.TILE_LENGTH * .11));
-				// Rotate towards board
-				driveMotors.Turn(-90);
-				break;
-			case 2:
-				// Move to the right spike mark
-				driveMotors.Move(Direction.FORWARD, (int)(Config.TILE_LENGTH * 1));
-				driveMotors.Turn(45);
-				driveMotors.Move(Direction.FORWARD, (int)(Config.TILE_LENGTH * 0.2));
-				// Drop purple pixel
-				intake.OpenRight(0);
-				intake.MoveWrist(0.5, 350);
-				// Move to a starting point for scoring / parking auto
-				driveMotors.Move(Direction.BACKWARD, (int)(Config.TILE_LENGTH * 0.2));
-				driveMotors.Turn(-45);
-				driveMotors.Move(Direction.LEFT, (int)(Config.TILE_LENGTH * .8));
-				// Rotate towards board
-				driveMotors.Turn(-90);
-				break;
-		}
-	  
-	  
-		arm.MoveShoulder(-1250); 
-
-		switch(position) {
-			case 0:
-				driveMotors.Move(Direction.LEFT, (int)(Config.TILE_LENGTH * 0.3));
-				break;
-			case 1:
-				driveMotors.Move(Direction.RIGHT, (int)(Config.TILE_LENGTH * 0.25));
-				break;
-			case 2:
-				driveMotors.Move(Direction.RIGHT, (int)(Config.TILE_LENGTH * 0.6));
-				break;
-		}
-
-		driveMotors.Move(Direction.FORWARD, (int)(Config.TILE_LENGTH * 1));
-
-		arm.MoveSlide(-525, true);
-		intake.MoveWrist(0.5, 450);
-		intake.OpenLeft(350);
-		driveMotors.Move(Direction.BACKWARD, (int)(Config.TILE_LENGTH * .2));
-		driveMotors.Move(Direction.LEFT, (int)(Config.TILE_LENGTH * 1.5));
+		sleep(20000);
+	  	driveMotors.Move(Direction.RIGHT, (int)(Config.TILE_LENGTH * 3));
 	}
 	saveHeading();
   }
