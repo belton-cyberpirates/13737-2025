@@ -5,10 +5,10 @@ public class Config {
   /*****************************************************************************
   ** HARDWARE CONSTANTS
   *****************************************************************************/
-  public static final String FRONT_RIGHT_WHEEL_NAME = "m3";
-  public static final String FRONT_LEFT_WHEEL_NAME = "m2";
-  public static final String BACK_LEFT_WHEEL_NAME = "m1";
-  public static final String BACK_RIGHT_WHEEL_NAME = "m4";
+  public static final String FRONT_RIGHT_WHEEL_NAME = "front_right";
+  public static final String FRONT_LEFT_WHEEL_NAME = "front_left";
+  public static final String BACK_LEFT_WHEEL_NAME = "back_left";
+  public static final String BACK_RIGHT_WHEEL_NAME = "back_right";
   
   public static final String SHOULDER_NAME = "shoulder";
   public static final String SLIDE_NAME = "lift";
