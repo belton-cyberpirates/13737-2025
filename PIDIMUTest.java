@@ -77,7 +77,8 @@ public class PIDIMUTest extends LinearOpMode {
 				imu.resetYaw();
 			}
 
-            double power = pidController.PIDControlRadians(targetAngle, imu.getAngularOrientation().firstAngle);
+            double currentAngle = imu.getAngularOrientation().firstAngle;
+            double power = pidController.PIDControlRadians(targetAngle, currentAngle);
 
             BackLeft.setPower(power);
             FrontLeft.setPower(power);
@@ -98,6 +99,11 @@ public class PIDIMUTest extends LinearOpMode {
             else if (gamepad1.dpad_left) {
                 targetAngle = Math.PI * 1.5;
             }
+
+            telemetry.addData("Current angle", currentAngle);
+            telemetry.addData("Target angle", targetAngle);
+
+            telemetry.update();
 
         }
     }
