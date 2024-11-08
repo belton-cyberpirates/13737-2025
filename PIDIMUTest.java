@@ -13,6 +13,13 @@ import org.firstinspires.ftc.teamcode.PIDController;
 
 @TeleOp(name="IMU+PID Angle Adjustment Test")
 public class PIDIMUTest extends LinearOpMode {
+    // Constants
+    static final double JOYSTICK_ANGLE_MULT = .1;
+
+    // PID constants
+    double Kp = 0;
+    double Ki = 0;
+    double Kd = 0;
 
 	// Drive motors
 	private DcMotorEx BackLeft;
@@ -22,11 +29,6 @@ public class PIDIMUTest extends LinearOpMode {
     
     // Sensors
 	private IMU imu;
-
-    // PID constants
-    double Kp = 0;
-    double Ki = 0;
-    double Kd = 0;
 
     // PID controller
     PIDController pidController = new PIDController(Kp, Ki, Kd);
@@ -81,6 +83,21 @@ public class PIDIMUTest extends LinearOpMode {
             FrontLeft.setPower(power);
             FrontRight.setPower(power);
             BackRight.setPower(power);
+
+            targetAngle += gamepad1.right_stick_x * JOYSTICK_ANGLE_MULT;
+
+            if (gamepad1.dpad_up) {
+                targetAngle = 0;
+            }
+            else if (gamepad1.dpad_right) {
+                targetAngle = Math.PI * 0.5;
+            }
+            else if (gamepad1.dpad_down) {
+                targetAngle = Math.PI;
+            }
+            else if (gamepad1.dpad_left) {
+                targetAngle = Math.PI * 1.5;
+            }
 
         }
     }
