@@ -21,19 +21,22 @@ public class AutoRedLeft extends Auto {
 		waitForStart();
 
 		if (opModeIsActive()) { // <----------------------------------------------------------------
+			// strafe to avoid submersible
 	  		driveMotors.Move(Direction.LEFT, (int)(BotConfig.TILE_LENGTH * 1));
+			// score block 1
 	  		driveMotors.Move(Direction.FORWARD, (int)(BotConfig.TILE_LENGTH * 2.1));
-	  		//begin to push the blocks
 	  		driveMotors.Move(Direction.LEFT, (int)(BotConfig.TILE_LENGTH * .5));
 	  		driveMotors.Move(Direction.BACKWARD, (int)(BotConfig.TILE_LENGTH * 1.9));
+			// score block 2
 	  		driveMotors.Move(Direction.FORWARD, (int)(BotConfig.TILE_LENGTH * 1.9));
 	  		driveMotors.Move(Direction.LEFT, (int)(BotConfig.TILE_LENGTH * .5));
 	  		driveMotors.Move(Direction.BACKWARD, (int)(BotConfig.TILE_LENGTH * 1.9));
+			// score block 3
 	  		driveMotors.Move(Direction.FORWARD, (int)(BotConfig.TILE_LENGTH * 1.9));
 	  		driveMotors.Move(Direction.LEFT, (int)(BotConfig.TILE_LENGTH * .5));
 	  		driveMotors.Move(Direction.BACKWARD, (int)(BotConfig.TILE_LENGTH * 1.9));
+	  		// park/low ascent 
 	  		driveMotors.Move(Direction.FORWARD, (int)(BotConfig.TILE_LENGTH * 2));
-	  		//park/low ascent 
 	  		driveMotors.Turn(90);
 	  		driveMotors.Move(Direction.FORWARD, (int)(BotConfig.TILE_LENGTH * 1.7));
 		}
