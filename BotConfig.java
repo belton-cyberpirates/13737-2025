@@ -33,7 +33,6 @@ public class BotConfig {
   *****************************************************************************/
   public static final int CRUISE_SPEED = 2000;
   public static final int ARM_VELOCITY = 1250;
-  public static final int SLIDE_VELOCITY = 1200;
   // ---------------------------------------------------------------------------
 
 
@@ -51,10 +50,8 @@ public class BotConfig {
   /*****************************************************************************
   ** CLAW CALIBRATION CONSTANTS
   *****************************************************************************/
-  public static final double CLAW_LEFT_OPEN = .2; 
-  public static final double CLAW_LEFT_CLOSE = .62; 
-  public static final double CLAW_RIGHT_OPEN = .8;
-  public static final double CLAW_RIGHT_CLOSE = .38;
+  public static final double CLAW_OPEN = .9;
+  public static final double CLAW_CLOSE = .4;
   // ---------------------------------------------------------------------------
 
 
