@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 
-public class Config {
+public class BotConfig {
   /*****************************************************************************
   ** HARDWARE CONSTANTS
   *****************************************************************************/

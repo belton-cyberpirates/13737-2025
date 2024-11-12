@@ -11,7 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 
 import org.firstinspires.ftc.teamcode.Direction;
-import org.firstinspires.ftc.teamcode.Config;
+import org.firstinspires.ftc.teamcode.BotConfig;
 
 
 public class DriveMotors {
@@ -26,10 +26,10 @@ public class DriveMotors {
 
   public DriveMotors(LinearOpMode auto) {
     this.auto = auto;
-    this.frontRight = auto.hardwareMap.get(DcMotorEx.class, Config.FRONT_RIGHT_WHEEL_NAME);
-    this.frontLeft = auto.hardwareMap.get(DcMotorEx.class, Config.FRONT_LEFT_WHEEL_NAME);
-    this.backLeft = auto.hardwareMap.get(DcMotorEx.class, Config.BACK_LEFT_WHEEL_NAME);
-    this.backRight = auto.hardwareMap.get(DcMotorEx.class, Config.BACK_RIGHT_WHEEL_NAME);
+    this.frontRight = auto.hardwareMap.get(DcMotorEx.class, BotConfig.FRONT_RIGHT_WHEEL_NAME);
+    this.frontLeft = auto.hardwareMap.get(DcMotorEx.class, BotConfig.FRONT_LEFT_WHEEL_NAME);
+    this.backLeft = auto.hardwareMap.get(DcMotorEx.class, BotConfig.BACK_LEFT_WHEEL_NAME);
+    this.backRight = auto.hardwareMap.get(DcMotorEx.class, BotConfig.BACK_RIGHT_WHEEL_NAME);
   }
 
 
@@ -141,7 +141,7 @@ public class DriveMotors {
         break;
     }
     // while motors are running, wait
-    this.setVelocity((int)(Config.CRUISE_SPEED * mult));
+    this.setVelocity((int)(BotConfig.CRUISE_SPEED * mult));
     this.WaitForMotors();
   }
 
@@ -180,19 +180,20 @@ public class DriveMotors {
       case BACK_RIGHT:
         this.setVelocities(distance, 0, -distance, 0);
         break;
+    }
   }
 
 
   public void Stop() {
-    this.Motorinit()
+    this.Motorinit();
   }
   
   
   public void Turn(int angle) {
-    int distance = (int)((angle * Config.TICKS_PER_360_DEG) / 360);
+    int distance = (int)((angle * BotConfig.TICKS_PER_360_DEG) / 360);
     
     this.MotorInit();
-    this.setVelocity(Config.CRUISE_SPEED);
+    this.setVelocity(BotConfig.CRUISE_SPEED);
     this.SetTargetPositions(distance, distance, distance, distance);
     
     this.WaitForMotors();

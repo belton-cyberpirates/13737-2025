@@ -18,7 +18,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.JavaUtil;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Config;
+import org.firstinspires.ftc.teamcode.BotConfig;
 import java.util.List;
 
 
@@ -34,15 +34,15 @@ public class ObjectDetection {
 
 		// Create the TensorFlow processor by using a builder.
 		tfod = new TfodProcessor.Builder()
-			.setModelFileName(Config.TFOD_MODEL_FILE)
-			.setModelLabels(Config.LABELS)
+			.setModelFileName(BotConfig.TFOD_MODEL_FILE)
+			.setModelLabels(BotConfig.LABELS)
 			.build();
 
 		// Create the vision portal by using a builder.
 		VisionPortal.Builder builder = new VisionPortal.Builder();
 
 		// Set the camera (webcam vs. built-in RC phone camera).
-		builder.setCamera(auto.hardwareMap.get(CameraName.class, Config.CAMERA_NAME));
+		builder.setCamera(auto.hardwareMap.get(CameraName.class, BotConfig.CAMERA_NAME));
 
 		// Set and enable the processor.
 		builder.addProcessor(tfod);
@@ -58,7 +58,7 @@ public class ObjectDetection {
 		if (recognition != null) {
 			double propX = (recognition.getLeft() + recognition.getRight()) / 2 ;
 
-			if ((Config.CAMERA_RESO_X / 2) > propX) {
+			if ((BotConfig.CAMERA_RESO_X / 2) > propX) {
 				return 1;
 			}
 			return 2;

@@ -17,7 +17,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.JavaUtil;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Config;
+import org.firstinspires.ftc.teamcode.BotConfig;
 import java.util.List;
 
 public class Intake {
@@ -29,9 +29,9 @@ public class Intake {
 
     public Intake(LinearOpMode auto) {
         this.auto = auto;
-        this.wrist = auto.hardwareMap.get(Servo.class, Config.WRIST_NAME);
-        this.clawLeft = auto.hardwareMap.get(Servo.class, Config.CLAW_LEFT_NAME);
-        this.clawRight = auto.hardwareMap.get(Servo.class, Config.CLAW_RIGHT_NAME);
+        this.wrist = auto.hardwareMap.get(Servo.class, BotConfig.WRIST_NAME);
+        this.clawLeft = auto.hardwareMap.get(Servo.class, BotConfig.CLAW_LEFT_NAME);
+        this.clawRight = auto.hardwareMap.get(Servo.class, BotConfig.CLAW_RIGHT_NAME);
     }
 
 
@@ -77,15 +77,15 @@ public class Intake {
     
   
     private void OpenClaws(boolean openLeft, boolean openRight, int wait) {
-        if (openLeft) clawLeft.setPosition(Config.CLAW_LEFT_OPEN);
-        if (openRight) clawRight.setPosition(Config.CLAW_RIGHT_OPEN);
+        if (openLeft) clawLeft.setPosition(BotConfig.CLAW_LEFT_OPEN);
+        if (openRight) clawRight.setPosition(BotConfig.CLAW_RIGHT_OPEN);
         auto.sleep(wait);
     }
   
   
     private void CloseClaws(boolean closeLeft, boolean closeRight, int wait) {
-        if (closeLeft) clawLeft.setPosition(Config.CLAW_LEFT_CLOSE);
-        if (closeRight) clawRight.setPosition(Config.CLAW_RIGHT_CLOSE);
+        if (closeLeft) clawLeft.setPosition(BotConfig.CLAW_LEFT_CLOSE);
+        if (closeRight) clawRight.setPosition(BotConfig.CLAW_RIGHT_CLOSE);
         auto.sleep(wait);
     }
 }

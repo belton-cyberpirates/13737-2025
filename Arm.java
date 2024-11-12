@@ -18,8 +18,8 @@ public class Arm {
 
 	public Arm(LinearOpMode auto) {
 		this.auto = auto;
-		this.shoulder = auto.hardwareMap.get(DcMotorEx.class, Config.SHOULDER_NAME);
-		this.slide = auto.hardwareMap.get(DcMotorEx.class, Config.SLIDE_NAME);
+		this.shoulder = auto.hardwareMap.get(DcMotorEx.class, BotConfig.SHOULDER_NAME);
+		this.slide = auto.hardwareMap.get(DcMotorEx.class, BotConfig.SLIDE_NAME);
 
 		// create list of motors to make code cleaner
 		motors = new DcMotorEx[]{ this.shoulder, this.slide };
@@ -44,7 +44,7 @@ public class Arm {
 	}
   
 	public void MoveShoulder(int position) {
-		setVelocity(Config.ARM_VELOCITY, Config.SLIDE_VELOCITY);
+		setVelocity(BotConfig.ARM_VELOCITY, BotConfig.SLIDE_VELOCITY);
 		shoulder.setTargetPosition(position);
 	}
 
@@ -55,7 +55,7 @@ public class Arm {
 	}
 
 	public void MoveShoulder(int position, boolean waitForDone, int tempArmVelocity, int tempSlideVelocity) {
-		setVelocity(tempArmVelocity, Config.SLIDE_VELOCITY);
+		setVelocity(tempArmVelocity, BotConfig.SLIDE_VELOCITY);
 
 		shoulder.setTargetPosition(position);
 		
@@ -64,7 +64,7 @@ public class Arm {
 
 
 	public void MoveSlide(int position) {
-		setVelocity(Config.ARM_VELOCITY, Config.SLIDE_VELOCITY);
+		setVelocity(BotConfig.ARM_VELOCITY, BotConfig.SLIDE_VELOCITY);
 		slide.setTargetPosition(position);
 	}
 
@@ -75,7 +75,7 @@ public class Arm {
 	}
 
 	public void MoveSlide(int position, boolean waitForDone, int tempSlideVelocity) {
-		setVelocity(Config.ARM_VELOCITY, tempSlideVelocity);
+		setVelocity(BotConfig.ARM_VELOCITY, tempSlideVelocity);
 
 		slide.setTargetPosition(position);
 		
@@ -85,6 +85,6 @@ public class Arm {
 	private void WaitForMotors() {
 		while (shoulder.isBusy() || slide.isBusy()) {}
 		
-		setVelocity(Config.ARM_VELOCITY, Config.SLIDE_VELOCITY);
+		setVelocity(BotConfig.ARM_VELOCITY, BotConfig.SLIDE_VELOCITY);
 	}
 }

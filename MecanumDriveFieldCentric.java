@@ -12,13 +12,6 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.nio.file.StandardOpenOption;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import org.firstinspires.ftc.teamcode.Heading;
 
 @TeleOp(name = "FieldCentricDrive")

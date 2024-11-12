@@ -17,7 +17,7 @@ import org.firstinspires.ftc.robotcore.external.JavaUtil;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import org.firstinspires.ftc.teamcode.Arm;
-import org.firstinspires.ftc.teamcode.Config;
+import org.firstinspires.ftc.teamcode.BotConfig;
 import org.firstinspires.ftc.teamcode.DriveMotors;
 import org.firstinspires.ftc.teamcode.ObjectDetection;
 import org.firstinspires.ftc.teamcode.Heading;
