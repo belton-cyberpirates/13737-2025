@@ -10,8 +10,8 @@ public class BotConfig {
   public static final String BACK_LEFT_WHEEL_NAME = "back_left";
   public static final String BACK_RIGHT_WHEEL_NAME = "back_right";
   
-  public static final String SHOULDER_NAME = "shoulder";
-  public static final String SLIDE_NAME = "lift";
+  public static final String ARM_LEFT = "left_arm";
+  public static final String ARM_RIGHT = "right_arm";
   
   public static final String CLAW_NAME = "claw";
   public static final String WRIST_NAME = "wrist";
@@ -31,8 +31,9 @@ public class BotConfig {
   /*****************************************************************************
   ** DRIVE SPEED CONSTANTS
   *****************************************************************************/
-  public static final int CRUISE_SPEED = 1400;
+  public static final int CRUISE_SPEED = 2000;
   public static final int ARM_VELOCITY = 1250;
+  public static final int SLIDE_VELOCITY = 1200;
   // ---------------------------------------------------------------------------
 
 
@@ -50,8 +51,10 @@ public class BotConfig {
   /*****************************************************************************
   ** CLAW CALIBRATION CONSTANTS
   *****************************************************************************/
-  public static final double CLAW_OPEN = .9;
-  public static final double CLAW_CLOSE = .4;
+  public static final double CLAW_LEFT_OPEN = .2; 
+  public static final double CLAW_LEFT_CLOSE = .62; 
+  public static final double CLAW_RIGHT_OPEN = .8;
+  public static final double CLAW_RIGHT_CLOSE = .38;
   // ---------------------------------------------------------------------------
 
 

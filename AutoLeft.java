@@ -1,10 +1,17 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+import org.firstinspires.ftc.vision.VisionPortal;
+import java.util.List;
 
 import org.firstinspires.ftc.teamcode.DriveMotors;
 import org.firstinspires.ftc.teamcode.Arm;
@@ -18,41 +25,76 @@ public class AutoLeft extends Auto {
 	private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 	private AprilTagProcessor aprilTag;
 	private VisionPortal visionPortal;
+	private double savedHeading;
+	
+	private void getHeading() {
+		return (savedHeading + imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS));
+	}
 	
 	@Override
 	public void runOpMode() {
 		Initialize();
 		
-		initAprilTag();
+		//initAprilTag();
+		
+		imu.resetYaw();
 
 		waitForStart();
+		
+		savedHeading = getSavedHeading();
 
 		if (opModeIsActive()) { // <----------------------------------------------------------------
-				//sleep(20000);
+				MotorSetup();
+				
 	  		driveMotors.Move(Direction.LEFT, (int)(BotConfig.TILE_LENGTH * 1));
 	  		driveMotors.Move(Direction.FORWARD, (int)(BotConfig.TILE_LENGTH * 2.1));
 	  		//begin to push the blocks
+	  		// Push first block
 	  		driveMotors.Move(Direction.LEFT, (int)(BotConfig.TILE_LENGTH * .5));
 	  		driveMotors.Move(Direction.BACKWARD, (int)(BotConfig.TILE_LENGTH * 1.9));
 	  		driveMotors.Move(Direction.FORWARD, (int)(BotConfig.TILE_LENGTH * 1.9));
+	  		// Push second block
 	  		driveMotors.Move(Direction.LEFT, (int)(BotConfig.TILE_LENGTH * .5));
 	  		driveMotors.Move(Direction.BACKWARD, (int)(BotConfig.TILE_LENGTH * 1.9));
 	  		driveMotors.Move(Direction.FORWARD, (int)(BotConfig.TILE_LENGTH * 1.9));
+	  		// Push third block
 	  		driveMotors.Move(Direction.LEFT, (int)(BotConfig.TILE_LENGTH * .5));
 	  		driveMotors.Move(Direction.BACKWARD, (int)(BotConfig.TILE_LENGTH * 1.9));
-	  		driveMotors.Move(Direction.FORWARD, (int)(BotConfig.TILE_LENGTH * 2));
-	  		// Rotate towards apriltag
-	  		driveMotors.Turn(-90);
-	  		// move until apriltag detected
-	  		// List<AprilTagDetection> currentDetections = aprilTag.getDetections();
-	  		// while (currentDetections.size() <= 0) {
-	  		// 	driveMotors.SetVelocity(1);
-	  		// }
+	  		double botHeading = (savedHeading + imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS));
+	  		
+	  		// Fix rotation - Plan is to align the front of the robot to the tape and place thing in high box
+	  		driveMotors.Turn((int) Math.toDegrees(botHeading));
+	  		driveMotors.Move(Direction.FORWARD, (int)(BotConfig.TILE_LENGTH * 0.15));
+	  		driveMotors.Move(Direction.RIGHT, (int)(BotConfig.TILE_LENGTH * 0.4));
+	  		driveMotors.Turn(-135);
+	  		
+	  		// Move the arm up to the high basket & drop pixel into it
+	  		arm.Move(200);
+	  		
 	  		//park/low ascent 
 	  		//driveMotors.Turn(90);
 	  		//driveMotors.Move(Direction.FORWARD, (int)(BotConfig.TILE_LENGTH * 1.7));
 		}
 		saveHeading();
+	}
+	
+	double getSavedHeading() {
+		Heading heading = new Heading();
+		return heading.getHeading();
+		/*
+		try {
+			BufferedReader br = new BufferedReader(new FileReader("heading.txt"));
+			String line = br.readLine();
+
+			br.close();
+
+			telemetry.addData("Retrieved saved heading:", true);
+			
+			return Double.parseDouble(line);
+		} catch(Exception e) {
+			telemetry.addData("Retrieved saved heading:", false);
+			return 0d;
+		}*/
 	}
 	
 	private void initAprilTag() {
