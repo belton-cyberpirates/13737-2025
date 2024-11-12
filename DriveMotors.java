@@ -66,12 +66,12 @@ public class DriveMotors {
   }
 
 
-  private void MotorInitTurn() {
-    this.Reset();
-    this.frontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
-    this.frontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
-    this.backLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
-    this.backRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
+  private void MotorInitVelocity() {
+    this.SetZeroBehaviour();
+    this.frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODERS);
+    this.frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODERS);
+    this.backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODERS);
+    this.backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODERS);
   }
 
   
@@ -80,6 +80,14 @@ public class DriveMotors {
     this.frontRight.setVelocity(velocity);
     this.backLeft.setVelocity(velocity);
     this.backRight.setVelocity(velocity);
+  }
+
+  
+  private void setVelocities(int fr, int fl, int bl, int br) {
+    this.frontLeft.setVelocity(fr);
+    this.frontRight.setVelocity(fl);
+    this.backLeft.setVelocity(bl);
+    this.backRight.setVelocity(br);
   }
 
 
@@ -109,8 +117,8 @@ public class DriveMotors {
         break;
   
       case LEFT:
-      this.SetTargetPositions(-distance, -distance, distance, distance);
-      break;
+        this.SetTargetPositions(-distance, -distance, distance, distance);
+        break;
   
       case RIGHT:
         this.SetTargetPositions(distance, distance, -distance, -distance);
@@ -135,6 +143,48 @@ public class DriveMotors {
     // while motors are running, wait
     this.setVelocity((int)(Config.CRUISE_SPEED * mult));
     this.WaitForMotors();
+  }
+
+
+  public void RunWithVelocity(Direction direction, int velocity) {
+
+    switch(direction) {
+      case FORWARD:
+        this.setVelocities(-distance, distance, distance, -distance);
+        break;
+  
+      case BACKWARD:
+        this.setVelocities(distance, -distance, -distance, distance);
+        break;
+  
+      case LEFT:
+        this.setVelocities(-distance, -distance, distance, distance);
+        break;
+  
+      case RIGHT:
+        this.setVelocities(distance, distance, -distance, -distance);
+        break;
+        
+      case FRONT_RIGHT:
+        this.setVelocities(0, distance, 0, -distance);
+        break;
+        
+      case BACK_LEFT:
+        this.setVelocities(0, -distance, 0, distance);
+        break;
+        
+      case FRONT_LEFT:
+        this.setVelocities(-distance, 0, distance, 0);
+        break;
+        
+      case BACK_RIGHT:
+        this.setVelocities(distance, 0, -distance, 0);
+        break;
+  }
+
+
+  public void Stop() {
+    this.Motorinit()
   }
   
   
