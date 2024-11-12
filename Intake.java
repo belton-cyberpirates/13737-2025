@@ -22,8 +22,7 @@ public class Intake {
     public Intake(LinearOpMode auto) {
         this.auto = auto;
         this.wrist = auto.hardwareMap.get(Servo.class, BotConfig.WRIST_NAME);
-        this.clawLeft = auto.hardwareMap.get(Servo.class, BotConfig.CLAW_LEFT_NAME);
-        this.clawRight = auto.hardwareMap.get(Servo.class, BotConfig.CLAW_RIGHT_NAME);
+        this.claw = auto.hardwareMap.get(Servo.class, BotConfig.CLAW_NAME);
     }
 
 
@@ -37,47 +36,25 @@ public class Intake {
         auto.sleep(wait);
     }
     
-    
-    public void OpenClaws(int wait) {
-        OpenClaws(true, true, wait);
-    }
-
-
-    public void OpenLeft(int wait) {
-        OpenClaws(true, false, wait);
-    }
-
-
-    public void OpenRight(int wait) {
-        OpenClaws(false, true, wait);
-    }
-
-
-    public void CloseLeft(int wait) {
-        CloseClaws(true, false, wait);
-    }
-
-
-    public void CloseRight(int wait) {
-        CloseClaws(false, true, wait);
-    }
-    
-    
-    public void CloseClaws(int wait) {
-        CloseClaws(true, true, wait);
-    }
-    
   
-    private void OpenClaws(boolean openLeft, boolean openRight, int wait) {
-        if (openLeft) clawLeft.setPosition(BotConfig.CLAW_LEFT_OPEN);
-        if (openRight) clawRight.setPosition(BotConfig.CLAW_RIGHT_OPEN);
+    private void OpenClaw(int wait) {
+        claw.setPosition(BotConfig.CLAW_OPEN);
         auto.sleep(wait);
     }
   
   
-    private void CloseClaws(boolean closeLeft, boolean closeRight, int wait) {
-        if (closeLeft) clawLeft.setPosition(BotConfig.CLAW_LEFT_CLOSE);
-        if (closeRight) clawRight.setPosition(BotConfig.CLAW_RIGHT_CLOSE);
+    private void OpenClaw() {
+        OpenClaw(0);
+    }
+  
+  
+    private void CloseClaw(int wait) {
+        claw.setPosition(BotConfig.CLAW_CLOSE);
         auto.sleep(wait);
+    }
+  
+  
+    private void CloseClaw() {
+        CloseClaw(0);
     }
 }
