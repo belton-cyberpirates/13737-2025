@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
@@ -20,7 +22,7 @@ public class AutoLeft extends Auto {
 	private VisionPortal visionPortal;
 	private double savedHeading;
 	
-	private void getHeading() {
+	private double getHeading() {
 		return (savedHeading + imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS));
 	}
 	

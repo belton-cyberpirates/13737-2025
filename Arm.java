@@ -11,24 +11,25 @@ import org.firstinspires.ftc.teamcode.Direction;
 
 public class Arm {
 	private LinearOpMode auto;
-	private DcMotorEx shoulder;
-	private DcMotorEx slide;
+	private DcMotorEx leftArm;
+	private DcMotorEx rightArm;
 	private DcMotorEx[] motors;
 
 
 	public Arm(LinearOpMode auto) {
 		this.auto = auto;
-		this.shoulder = auto.hardwareMap.get(DcMotorEx.class, BotConfig.SHOULDER_NAME);
-		this.slide = auto.hardwareMap.get(DcMotorEx.class, BotConfig.SLIDE_NAME);
+		this.leftArm = auto.hardwareMap.get(DcMotorEx.class, BotConfig.ARM_LEFT_NAME);
+		this.rightArm = auto.hardwareMap.get(DcMotorEx.class, BotConfig.ARM_RIGHT_NAME);
 
 		// create list of motors to make code cleaner
-		motors = new DcMotorEx[]{ this.shoulder, this.slide };
+		motors = new DcMotorEx[]{ this.leftArm, this.rightArm };
   	}
 
   
 	public void DropArm() {
 		for(DcMotorEx motor : motors) motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-		shoulder.setPower(.3);
+		leftArm.setPower(-.3);
+		rightArm.setPower(.3);
 	}
 
   
@@ -38,53 +39,35 @@ public class Arm {
 		for(DcMotorEx motor : motors) motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 	}
   
-	private void setVelocity(int shoulderVelocity, int slideVelocity) {
-		shoulder.setVelocity(shoulderVelocity);
-		slide.setVelocity(slideVelocity);
+	private void setVelocity(int armVelocity) {
+		for(DcMotorEx motor : motors) motor.setVelocity(armVelocity);
 	}
   
-	public void MoveShoulder(int position) {
-		setVelocity(BotConfig.ARM_VELOCITY, BotConfig.SLIDE_VELOCITY);
-		shoulder.setTargetPosition(position);
+	public void Move(int position) {
+		setVelocity(BotConfig.ARM_VELOCITY);
+
+		leftArm.setTargetPosition(position);
+		rightArm.setTargetPosition(position);
 	}
 
-	public void MoveShoulder(int position, boolean waitForDone) {
-		MoveShoulder(position);
+	public void Move(int position, boolean waitForDone) {
+		Move(position);
 		
 		if (waitForDone) WaitForMotors();
 	}
 
-	public void MoveShoulder(int position, boolean waitForDone, int tempArmVelocity, int tempSlideVelocity) {
-		setVelocity(tempArmVelocity, BotConfig.SLIDE_VELOCITY);
+	public void Move(int position, boolean waitForDone, int tempArmVelocity) {
+		setVelocity(tempArmVelocity);
 
-		shoulder.setTargetPosition(position);
-		
-		if (waitForDone) WaitForMotors();
-	}
-
-
-	public void MoveSlide(int position) {
-		setVelocity(BotConfig.ARM_VELOCITY, BotConfig.SLIDE_VELOCITY);
-		slide.setTargetPosition(position);
-	}
-
-	public void MoveSlide(int position, boolean waitForDone) {
-		MoveSlide(position);
-		
-		if (waitForDone) WaitForMotors();
-	}
-
-	public void MoveSlide(int position, boolean waitForDone, int tempSlideVelocity) {
-		setVelocity(BotConfig.ARM_VELOCITY, tempSlideVelocity);
-
-		slide.setTargetPosition(position);
+		leftArm.setTargetPosition(position);
+		rightArm.setTargetPosition(position);
 		
 		if (waitForDone) WaitForMotors();
 	}
 	
 	private void WaitForMotors() {
-		while (shoulder.isBusy() || slide.isBusy()) {}
+		while (leftArm.isBusy() || rightArm.isBusy()) {}
 		
-		setVelocity(BotConfig.ARM_VELOCITY, BotConfig.SLIDE_VELOCITY);
+		setVelocity(BotConfig.ARM_VELOCITY);
 	}
 }
