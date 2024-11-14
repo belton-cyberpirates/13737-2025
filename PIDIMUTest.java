@@ -15,6 +15,12 @@ import java.time.Instant;
 
 import org.firstinspires.ftc.teamcode.PIDController;
 
+enum PIDEnum {
+	KP = 0,
+	KI = 1,
+	KD = 2
+}
+
 @TeleOp(name="PIDAngleTest")
 public class PIDIMUTest extends LinearOpMode {
 	// Constants
@@ -73,6 +79,9 @@ public class PIDIMUTest extends LinearOpMode {
 		waitForStart();
 
         ElapsedTime timer = new ElapsedTime();
+		PIDEnum targetConstant = PIDEnum.KP;
+
+		boolean prevPressed = false;
 
 		// Reset robot heading on startup (not initialization)
 		imu.resetYaw();
@@ -108,9 +117,74 @@ public class PIDIMUTest extends LinearOpMode {
 				targetAngle = Math.PI * 1.5;
 			}
 
+			if (gamepad2.dpad_up) {
+				double val = 1 - gamepad2.right_trigger;
+
+				switch (targetConstant) {
+					case PIDEnum.KP:
+						Kp += val;
+						break;
+					
+					case PIDEnum.KI:
+						Ki += val;
+						break;
+					
+					case PIDEnum.KD:
+						Kd += val;
+						break;
+				}
+			}
+			else if (gamepad2.dpad_down) {
+				double val = 1 - gamepad2.right_trigger;
+				
+				switch (targetConstant) {
+					case PIDEnum.KP:
+						Kp += val;
+						break;
+					
+					case PIDEnum.KI:
+						Ki += val;
+						break;
+					
+					case PIDEnum.KD:
+						Kd += val;
+						break;
+				}
+			}
+			
+			if (gamepad2.dpad_left && !prevPressed) {
+				int newTarget = (targetConstant - 1) % 3;
+				targetConstant = newTarget >= 0 ? newTarget : newTarget + 3;
+			}
+			else if (gamepad2.dpad_right && !prevPressed) {
+				targetConstant = (targetConstant + 1) % 3;
+			}
+
+			prevPressed = gamepad2.dpad_left || gamepad2.dpad_right;
+
 			telemetry.addData("Current angle", currentAngle);
 			telemetry.addData("Target angle", targetAngle);
 			telemetry.addData("Power", power);
+
+			String targ = "";
+			switch (targetConstant) {
+				case PIDEnum.KP:
+					targ = "Kp";
+					break;
+				
+				case PIDEnum.KI:
+					targ = "Ki";
+					break;
+				
+				case PIDEnum.KD:
+					targ = "Kd";
+					break;
+			}
+
+			telemetry.addData("Target Value", targ);
+			telemetry.addData("Kp", Kp);
+			telemetry.addData("Ki", Ki);
+			telemetry.addData("Kd", Kd);
 
 			telemetry.update();
         }
