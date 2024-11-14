@@ -10,9 +10,7 @@ public class PIDController {
     double lastError = 0;
 
     public PIDController(double Kp, double Ki, double Kd) {
-        this.Kp = Kp;
-        this.Ki = Ki;
-        this.Kd = Kd;
+        setConstants(Kp, Ki, Kd);
     }
 
     public double PIDControl(double reference, double state, double delta) {
@@ -45,5 +43,11 @@ public class PIDController {
         }
 
         return radians
+    }
+
+    public void setConstants(double Kp, double Ki, double Kd) {
+        this.Kp = Kp;
+        this.Ki = Ki;
+        this.Kd = Kd;
     }
 }
