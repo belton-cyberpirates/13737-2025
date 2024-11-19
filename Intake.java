@@ -12,13 +12,15 @@ import java.util.List;
 public class Intake {
 	private LinearOpMode auto;
 	private Servo wrist;
-	private Servo claw;
+	private Servo clawLeft;
+	private Servo clawRight;
 	
 
 	public Intake(LinearOpMode auto) {
 		this.auto = auto;
 		this.wrist = auto.hardwareMap.get(Servo.class, BotConfig.WRIST_NAME);
-		this.claw = auto.hardwareMap.get(Servo.class, BotConfig.CLAW_NAME);
+		this.clawLeft = auto.hardwareMap.get(Servo.class, BotConfig.CLAW_LEFT_NAME);
+		this.clawRight = auto.hardwareMap.get(Servo.class, BotConfig.CLAW_RIGHT_NAME);
 	}
 
 
@@ -34,7 +36,8 @@ public class Intake {
 	
   
 	public void OpenClaw(int wait) {
-		claw.setPosition(BotConfig.CLAW_OPEN);
+		clawLeft.setPosition(BotConfig.CLAW_LEFT_OPEN);
+		clawRight.setPosition(BotConfig.CLAW_RIGHT_OPEN);
 		auto.sleep(wait);
 	}
   
@@ -45,7 +48,8 @@ public class Intake {
   
   
 	public void CloseClaw(int wait) {
-		claw.setPosition(BotConfig.CLAW_CLOSE);
+		clawLeft.setPosition(BotConfig.CLAW_LEFT_OPEN);
+		clawRight.setPosition(BotConfig.CLAW_RIGHT_OPEN);
 		auto.sleep(wait);
 	}
   
