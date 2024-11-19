@@ -26,8 +26,10 @@ public class DriveCode extends LinearOpMode {
 	
 	// Claw constants
 	// these are switched for some reason. fix that please.
-	final double CLAW_OPEN_POS = 0.9;
-	final double CLAW_CLOSE_POS = 0.4;
+	final double CLAW_LEFT_OPEN_POS = 0.3;
+	final double CLAW_LEFT_CLOSE_POS = 0.1;
+	final double CLAW_RIGHT_OPEN_POS = 0.7;
+	final double CLAW_RIGHT_CLOSE_POS = 0.9;
 	
 
 	// Drive motors
@@ -42,7 +44,8 @@ public class DriveCode extends LinearOpMode {
 	private DcMotorEx Wrist;
 	
 	// Servos
-	private Servo Claw;
+	private Servo ClawLeft;
+	private Servo ClawRight;
 	
 	private IMU imu;
 	
@@ -63,7 +66,8 @@ public class DriveCode extends LinearOpMode {
 		Wrist = hardwareMap.get(DcMotorEx.class, "wrist");
 		
 		// Assign servos
-		Claw = hardwareMap.get(Servo.class, "claw");
+		ClawLeft = hardwareMap.get(Servo.class, "claw_left");
+		ClawRight = hardwareMap.get(Servo.class, "claw_right");
 		
 		imu = hardwareMap.get(IMU.class, "imu");
 		
@@ -151,9 +155,11 @@ public class DriveCode extends LinearOpMode {
 			Wrist.setPower(( wristPower * powerMult * buttonMult ) + holdPower);
 			
 			if (gamepad2.right_trigger > 0) {
-				Claw.setPosition(CLAW_OPEN_POS);
+				ClawLeft.setPosition(CLAW_LEFT_CLOSE_POS);
+				ClawRight.setPosition(CLAW_RIGHT_CLOSE_POS);
 			} else if (gamepad2.left_trigger > 0) {
-				Claw.setPosition(CLAW_CLOSE_POS);
+				ClawLeft.setPosition(CLAW_LEFT_OPEN_POS);
+				ClawRight.setPosition(CLAW_RIGHT_OPEN_POS);
 			}
 
 			// Telemetry
