@@ -48,8 +48,8 @@ public class Intake {
   
   
 	public void CloseClaw(int wait) {
-		clawLeft.setPosition(BotConfig.CLAW_LEFT_OPEN);
-		clawRight.setPosition(BotConfig.CLAW_RIGHT_OPEN);
+		clawLeft.setPosition(BotConfig.CLAW_LEFT_CLOSE);
+		clawRight.setPosition(BotConfig.CLAW_RIGHT_CLOSE);
 		auto.sleep(wait);
 	}
   
