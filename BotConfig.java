@@ -13,7 +13,8 @@ public class BotConfig {
   public static final String ARM_LEFT_NAME = "left_arm";
   public static final String ARM_RIGHT_NAME = "right_arm";
   
-  public static final String CLAW_NAME = "claw";
+  public static final String CLAW_LEFT_NAME = "claw_left";
+  public static final String CLAW_RIGHT_NAME = "claw_right";
   public static final String WRIST_NAME = "wrist";
   // ---------------------------------------------------------------------------
 
