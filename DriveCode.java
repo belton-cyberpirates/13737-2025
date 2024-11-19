@@ -25,7 +25,6 @@ public class DriveCode extends LinearOpMode {
 	final double WRIST_BUTTON_MULT = 1.75;
 	
 	// Claw constants
-	// these are switched for some reason. fix that please.
 	final double CLAW_LEFT_OPEN_POS = 0.3;
 	final double CLAW_LEFT_CLOSE_POS = 0.1;
 	final double CLAW_RIGHT_OPEN_POS = 0.7;
