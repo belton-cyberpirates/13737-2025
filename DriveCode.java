@@ -20,9 +20,10 @@ public class DriveCode extends LinearOpMode {
 
 	// Arm constants
 	final double ARM_VELOCITY = 1500;
-	final double WRIST_POWER = .5;
+	final double WRIST_VELOCITY = 1000;
 	final double WRIST_LOWER_MULT = .7;
 	final double WRIST_BUTTON_MULT = 1.75;
+	final int WRIST_GRAB_POS = 1030;
 	
 	// Claw constants
 	final double CLAW_LEFT_OPEN_POS = 0.3;
@@ -85,6 +86,10 @@ public class DriveCode extends LinearOpMode {
 		BackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 		BackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 		
+		ArmLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+		ArmRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+		Wrist.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+		
 		ArmLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 		ArmRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 		Wrist.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -95,6 +100,7 @@ public class DriveCode extends LinearOpMode {
 		// Reset robot heading on startup (not initialization)
 		imu.resetYaw();
 		double savedHeading = getSavedHeading();
+		boolean prevLeftBumper = false;
 
 		while (opModeIsActive()) {
 			// Reset yaw when start button is pressed so that a restart is not needed if the yaw should be reset again.
@@ -147,11 +153,12 @@ public class DriveCode extends LinearOpMode {
 			
 			SetArmVelocity(gamepad2.left_stick_y * ARM_VELOCITY);
 			
-			double wristPower = -gamepad2.right_stick_y * WRIST_POWER;
-			double powerMult = (gamepad2.right_stick_y > 0 ? 1 : WRIST_LOWER_MULT);
-			double buttonMult = gamepad2.right_bumper ? WRIST_BUTTON_MULT : 1;
-			double holdPower = gamepad2.left_bumper ? -0.025 : 0;
-			Wrist.setPower(( wristPower * powerMult * buttonMult ) + holdPower);
+			if (!prevLeftBumper) {
+				double wristPower = -gamepad2.right_stick_y * WRIST_VELOCITY;
+				double powerMult = (gamepad2.right_stick_y > 0 ? 1 : WRIST_LOWER_MULT);
+				double holdPower = gamepad2.left_bumper ? -0.025 : 0;
+				Wrist.setVelocity( wristPower * powerMult );
+			}
 			
 			if (gamepad2.right_trigger > 0) {
 				ClawLeft.setPosition(CLAW_LEFT_CLOSE_POS);
@@ -160,10 +167,23 @@ public class DriveCode extends LinearOpMode {
 				ClawLeft.setPosition(CLAW_LEFT_OPEN_POS);
 				ClawRight.setPosition(CLAW_RIGHT_OPEN_POS);
 			}
+			
+			if (gamepad2.left_bumper && !prevLeftBumper) {
+				Wrist.setTargetPosition(0);
+				Wrist.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+				Wrist.setTargetPosition(WRIST_GRAB_POS);
+				Wrist.setPower(1);
+			}
+			if (!gamepad2.left_bumper && prevLeftBumper) {
+				Wrist.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+			}
+			
+			prevLeftBumper = gamepad2.left_bumper;
 
 			// Telemetry
 			telemetry.addData("Left arm pos", ArmLeft.getCurrentPosition());
 			telemetry.addData("Right arm pos", ArmRight.getCurrentPosition());
+			telemetry.addData("Wrist pos", Wrist.getCurrentPosition());
 
 			telemetry.update();
 		}
@@ -182,25 +202,18 @@ public class DriveCode extends LinearOpMode {
 	double getSavedHeading() {
 		Heading heading = new Heading();
 		return heading.getHeading();
-		/*
-		try {
-			BufferedReader br = new BufferedReader(new FileReader("heading.txt"));
-			String line = br.readLine();
-
-			br.close();
-
-			telemetry.addData("Retrieved saved heading:", true);
-			
-			return Double.parseDouble(line);
-		} catch(Exception e) {
-			telemetry.addData("Retrieved saved heading:", false);
-			return 0d;
-		}*/
 	}
 	
 	void SetArmVelocity(double velocity) {
-		ArmLeft.setVelocity(velocity);
-		ArmRight.setVelocity(-velocity);
+		
+		if ((velocity > 0) || (ArmLeft.getCurrentPosition() > -1300)) {
+			ArmLeft.setVelocity(velocity);
+			ArmRight.setVelocity(-velocity);
+		}
+		else {
+			ArmLeft.setVelocity(0);
+			ArmRight.setVelocity(0);
+		}
 	}
 	
 }
