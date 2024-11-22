@@ -100,6 +100,7 @@ public class DriveCode extends LinearOpMode {
 		// Reset robot heading on startup (not initialization)
 		imu.resetYaw();
 		double savedHeading = getSavedHeading();
+		double botHeading = 0;
 		boolean prevLeftBumper = false;
 
 		while (opModeIsActive()) {
@@ -123,7 +124,10 @@ public class DriveCode extends LinearOpMode {
 			double maxSpeed = calcMaxSpeed(gamepad1.right_trigger - gamepad1.left_trigger, BASE_SPEED, MAX_BOOST);
 
 			// Get the heading of the bot (the angle it is facing) in radians
-			double botHeading = (savedHeading + imu .getRobotYawPitchRollAngles() .getYaw(AngleUnit.RADIANS));
+			double newHeading = (savedHeading + imu .getRobotYawPitchRollAngles() .getYaw(AngleUnit.RADIANS));
+			if (newHeading != 0) {
+				botHeading = newHeading;
+			}
 
 
 			// Virtually rotate the joystick by the negative angle of the robot
@@ -153,19 +157,19 @@ public class DriveCode extends LinearOpMode {
 			
 			SetArmVelocity(gamepad2.left_stick_y * ARM_VELOCITY);
 			
-			if (!prevLeftBumper) {
-				double wristPower = -gamepad2.right_stick_y * WRIST_VELOCITY;
-				double powerMult = (gamepad2.right_stick_y > 0 ? 1 : WRIST_LOWER_MULT);
-				double holdPower = gamepad2.left_bumper ? -0.025 : 0;
-				Wrist.setVelocity( wristPower * powerMult );
-			}
-			
 			if (gamepad2.right_trigger > 0) {
 				ClawLeft.setPosition(CLAW_LEFT_CLOSE_POS);
 				ClawRight.setPosition(CLAW_RIGHT_CLOSE_POS);
 			} else if (gamepad2.left_trigger > 0) {
 				ClawLeft.setPosition(CLAW_LEFT_OPEN_POS);
 				ClawRight.setPosition(CLAW_RIGHT_OPEN_POS);
+			}
+			
+			if (!prevLeftBumper) {
+				double wristPower = -gamepad2.right_stick_y * WRIST_VELOCITY;
+				double powerMult = (gamepad2.right_stick_y > 0 ? 1 : WRIST_LOWER_MULT);
+				double holdPower = gamepad2.left_bumper ? -0.025 : 0;
+				Wrist.setVelocity( wristPower * powerMult );
 			}
 			
 			if (gamepad2.left_bumper && !prevLeftBumper) {
@@ -181,6 +185,7 @@ public class DriveCode extends LinearOpMode {
 			prevLeftBumper = gamepad2.left_bumper;
 
 			// Telemetry
+			telemetry.addData("IMU Failure", newHeading == 0);
 			telemetry.addData("Left arm pos", ArmLeft.getCurrentPosition());
 			telemetry.addData("Right arm pos", ArmRight.getCurrentPosition());
 			telemetry.addData("Wrist pos", Wrist.getCurrentPosition());
