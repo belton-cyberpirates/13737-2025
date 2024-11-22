@@ -210,7 +210,6 @@ public class DriveCode extends LinearOpMode {
 	}
 	
 	void SetArmVelocity(double velocity) {
-		
 		if ((velocity > 0) || (ArmLeft.getCurrentPosition() > -1300)) {
 			ArmLeft.setVelocity(velocity);
 			ArmRight.setVelocity(-velocity);
