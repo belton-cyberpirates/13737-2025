@@ -31,7 +31,6 @@ public class DriveCode extends LinearOpMode {
 	final double CLAW_RIGHT_OPEN_POS = 0.7;
 	final double CLAW_RIGHT_CLOSE_POS = 0.9;
 	
-
 	// Drive motors
 	private DcMotorEx BackLeft;
 	private DcMotorEx FrontLeft;
@@ -47,10 +46,9 @@ public class DriveCode extends LinearOpMode {
 	private Servo ClawLeft;
 	private Servo ClawRight;
 	
+	// Additional Hardware
 	private IMU imu;
-	
-	// Other variables
-	private boolean slideFrozen;
+
 
 	@Override
 	public void runOpMode() throws InterruptedException {
@@ -71,6 +69,7 @@ public class DriveCode extends LinearOpMode {
 		
 		imu = hardwareMap.get(IMU.class, "imu");
 		
+
 		// Set zero power behaviours
 		BackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 		FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -93,6 +92,7 @@ public class DriveCode extends LinearOpMode {
 		ArmLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 		ArmRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 		Wrist.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
 
 		// Wait for the start button to be pressed
 		waitForStart();
@@ -139,7 +139,6 @@ public class DriveCode extends LinearOpMode {
 				leftStickYGP1 * Math.cos(botHeading);
 			rotatedX *= STRAFE_MULT; // strafing is slower than rolling, bump speed
 
-
 			// Set the power of the wheels based off the new joystick coordinates
 			// y+x+stick <- [-1,1]
 			BackLeft.setVelocity(
@@ -154,9 +153,11 @@ public class DriveCode extends LinearOpMode {
 			BackRight.setVelocity(
 				(rotatedY - rotatedX + rightStickXGP1) * maxSpeed
 			);
+
 			
 			SetArmVelocity(gamepad2.left_stick_y * ARM_VELOCITY);
 			
+
 			if (gamepad2.right_trigger > 0) {
 				ClawLeft.setPosition(CLAW_LEFT_CLOSE_POS);
 				ClawRight.setPosition(CLAW_RIGHT_CLOSE_POS);
@@ -165,6 +166,7 @@ public class DriveCode extends LinearOpMode {
 				ClawRight.setPosition(CLAW_RIGHT_OPEN_POS);
 			}
 			
+
 			if (!prevLeftBumper) {
 				double wristPower = -gamepad2.right_stick_y * WRIST_VELOCITY;
 				double powerMult = (gamepad2.right_stick_y > 0 ? 1 : WRIST_LOWER_MULT);
@@ -184,6 +186,7 @@ public class DriveCode extends LinearOpMode {
 			
 			prevLeftBumper = gamepad2.left_bumper;
 
+
 			// Telemetry
 			telemetry.addData("IMU Failure", newHeading == 0);
 			telemetry.addData("Left arm pos", ArmLeft.getCurrentPosition());
@@ -193,6 +196,7 @@ public class DriveCode extends LinearOpMode {
 			telemetry.update();
 		}
 	}
+
 
 	/**
 	 * if boost trigger unpressed, return base_speed,
@@ -204,10 +208,12 @@ public class DriveCode extends LinearOpMode {
 		return BASE_SPEED + boostSpeed;
 	}
 
+
 	double getSavedHeading() {
 		Heading heading = new Heading();
 		return heading.getHeading();
 	}
+
 	
 	void SetArmVelocity(double velocity) {
 		if ((velocity > 0) || (ArmLeft.getCurrentPosition() > -1300)) {
