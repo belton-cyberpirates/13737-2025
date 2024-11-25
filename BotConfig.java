@@ -14,7 +14,7 @@ public class BotConfig {
   public static final String ARM_RIGHT_NAME = "right_arm";
   
   public static final String CLAW_LEFT_NAME = "claw_left";
-   public static final String CLAW_RIGHT_NAME = "claw_right";
+  public static final String CLAW_RIGHT_NAME = "claw_right";
   public static final String WRIST_NAME = "wrist";
   // ---------------------------------------------------------------------------
 
@@ -61,6 +61,7 @@ public class BotConfig {
   /*****************************************************************************
   ** CAMERA CONSTANTS
   *****************************************************************************/
+  public static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
   public static final String CAMERA_NAME = "Webcam 1";
 	public static final int CAMERA_RESO_X = 640;
 	public static final String TFOD_MODEL_FILE = "/sdcard/FIRST/tflitemodels/teampiece.tflite";
