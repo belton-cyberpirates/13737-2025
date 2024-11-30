@@ -29,7 +29,8 @@ public class AutoLeft extends Auto {
 	@Override
 	public void runOpMode() {
 		Initialize();
-		
+		MotorSetup();
+
 		//initAprilTag();
 		
 		imu.resetYaw();
@@ -39,36 +40,12 @@ public class AutoLeft extends Auto {
 		savedHeading = getSavedHeading();
 
 		if (opModeIsActive()) { // <----------------------------------------------------------------
-				MotorSetup();
-				
-	  		driveMotors.Move(Direction.LEFT, (int)(BotConfig.TILE_LENGTH * 1));
-	  		driveMotors.Move(Direction.FORWARD, (int)(BotConfig.TILE_LENGTH * 2.1));
-	  		//begin to push the blocks
-	  		// Push first block
-	  		driveMotors.Move(Direction.LEFT, (int)(BotConfig.TILE_LENGTH * .5));
-	  		driveMotors.Move(Direction.BACKWARD, (int)(BotConfig.TILE_LENGTH * 1.9));
-	  		driveMotors.Move(Direction.FORWARD, (int)(BotConfig.TILE_LENGTH * 1.9));
-	  		// Push second block
-	  		driveMotors.Move(Direction.LEFT, (int)(BotConfig.TILE_LENGTH * .5));
-	  		driveMotors.Move(Direction.BACKWARD, (int)(BotConfig.TILE_LENGTH * 1.9));
-	  		driveMotors.Move(Direction.FORWARD, (int)(BotConfig.TILE_LENGTH * 1.9));
-	  		// Push third block
-	  		driveMotors.Move(Direction.LEFT, (int)(BotConfig.TILE_LENGTH * .5));
-	  		driveMotors.Move(Direction.BACKWARD, (int)(BotConfig.TILE_LENGTH * 1.9));
-	  		double botHeading = (savedHeading + imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS));
-	  		
-	  		// Fix rotation - Plan is to align the front of the robot to the tape and place thing in high box
-	  		driveMotors.Turn((int) Math.toDegrees(botHeading));
-	  		driveMotors.Move(Direction.FORWARD, (int)(BotConfig.TILE_LENGTH * 0.15));
-	  		driveMotors.Move(Direction.RIGHT, (int)(BotConfig.TILE_LENGTH * 0.4));
-	  		driveMotors.Turn(-135);
-	  		
-	  		// Move the arm up to the high basket & drop pixel into it
-	  		arm.Move(200);
-	  		
-	  		//park/low ascent 
-	  		//driveMotors.Turn(90);
-	  		//driveMotors.Move(Direction.FORWARD, (int)(BotConfig.TILE_LENGTH * 1.7));
+			driveMotors.Move(Direction.FORWARD, (int)( BotConfig.TILE_LENGTH * 1.22 ));
+			arm.Move(730, true);
+			intake.MoveWrist(570, true);
+			arm.Move(300, true);
+			intake.OpenClaw();
+			//sleep(50000);
 		}
 		saveHeading();
 	}
