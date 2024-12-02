@@ -142,7 +142,7 @@ public class DriveMotors {
 		break;
 	}
 	// while motors are running, wait
-	this.setVelocity((int)(BotConfig.CRUISE_SPEED * mult));
+	this.setVelocity((int)( BotConfig.CRUISE_SPEED * mult ));
 	this.WaitForMotors();
   }
 
@@ -191,7 +191,7 @@ public class DriveMotors {
   
   
   public void Turn(int angle) {
-	int distance = (int)((angle * BotConfig.TICKS_PER_360_DEG) / 360);
+	int distance = (int)(( angle * BotConfig.TICKS_PER_360_DEG ) / 360);
 	
 	this.MotorInit();
 	this.setVelocity(BotConfig.CRUISE_SPEED);
@@ -203,7 +203,6 @@ public class DriveMotors {
 
   /**
    * Wait until motion is complete
-   * @param distance target distance meant to be reached
    */
   private void WaitForMotors() {
 	while ((this.frontLeft.isBusy() ||
