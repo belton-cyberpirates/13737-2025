@@ -32,7 +32,7 @@ public class BotConfig {
   /*****************************************************************************
   ** DRIVE SPEED CONSTANTS
   *****************************************************************************/
-  public static final int CRUISE_SPEED = 1600;
+  public static final int CRUISE_SPEED = 1800;
   public static final int ARM_VELOCITY = 1250;
   // ---------------------------------------------------------------------------
 
