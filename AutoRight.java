@@ -26,31 +26,33 @@ public class AutoRight extends Auto {
 		waitForStart();
 
 		if (opModeIsActive()) { // <----------------------------------------------------------------
-			arm.Move(730, false);
-			intake.MoveWrist(570, false);
-			driveMotors.Move(Direction.FORWARD, (int)( BotConfig.TILE_LENGTH * 1.22 ));
-			arm.Move(300, true);
+			arm.Move(600, false);
+			intake.MoveWrist(630, false);
+			driveMotors.Move(Direction.FORWARD, (int)( BotConfig.TILE_LENGTH * 1.2 ));
+			arm.Move(0, true);
 			intake.OpenClaw(500);
 			driveMotors.Move(Direction.BACKWARD, (int)( BotConfig.TILE_LENGTH * .1 ));
+			intake.MoveWrist(0, false);
 			driveMotors.Move(Direction.RIGHT, (int)( BotConfig.TILE_LENGTH * 1.2 ));
 			driveMotors.Move(Direction.FORWARD, (int)( BotConfig.TILE_LENGTH * 1 ));
 			driveMotors.Move(Direction.RIGHT, (int)( BotConfig.TILE_LENGTH * 0.5 ));
-			driveMotors.Move(Direction.BACKWARD, (int)( BotConfig.TILE_LENGTH * 1.7 ));
+			driveMotors.Move(Direction.BACKWARD, (int)( BotConfig.TILE_LENGTH * 1.6 ));
 			driveMotors.Move(Direction.FORWARD, (int)( BotConfig.TILE_LENGTH * .2 ));
 			driveMotors.Turn((int)(180));
 			driveMotors.Move(Direction.FORWARD, (int)( BotConfig.TILE_LENGTH * .15 ));
-			intake.MoveWrist(1250, true);
+			intake.MoveWrist(1350, true);
 			intake.CloseClaw(500);
 			intake.MoveWrist(0, true);
 			driveMotors.Move(Direction.RIGHT, (int)( BotConfig.TILE_LENGTH * 2));
 			driveMotors.Turn((int)(180));
-			arm.Move(780, false);
-			intake.MoveWrist(570, false);
-			driveMotors.Move(Direction.FORWARD, (int)( BotConfig.TILE_LENGTH * .75 ));
-			arm.Move(300, true);
+			arm.Move(600, false);
+			intake.MoveWrist(600, false);
+			driveMotors.Move(Direction.FORWARD, (int)( BotConfig.TILE_LENGTH * .6 ));
+			arm.Move(100, true);
 			intake.OpenClaw(500);
 			
 		}
 		saveHeading();
 	}
 }
+
