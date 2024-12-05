@@ -26,8 +26,8 @@ public class AutoRight extends Auto {
 		waitForStart();
 
 		if (opModeIsActive()) { // <----------------------------------------------------------------
-			arm.Move(600, false);
-			intake.MoveWrist(630, false);
+			arm.Move(700, false);
+			intake.MoveWrist(650, false);
 			driveMotors.Move(Direction.FORWARD, (int)( BotConfig.TILE_LENGTH * 1.2 ));
 			arm.Move(0, true);
 			intake.OpenClaw(500);
@@ -40,15 +40,17 @@ public class AutoRight extends Auto {
 			driveMotors.Move(Direction.FORWARD, (int)( BotConfig.TILE_LENGTH * .2 ));
 			driveMotors.Turn((int)(180));
 			driveMotors.Move(Direction.FORWARD, (int)( BotConfig.TILE_LENGTH * .15 ));
-			intake.MoveWrist(1350, true);
+			intake.OpenClaw(500);
+			intake.MoveWrist(1400, true);
 			intake.CloseClaw(500);
-			intake.MoveWrist(0, true);
+			intake.MoveWrist(0, false);
 			driveMotors.Move(Direction.RIGHT, (int)( BotConfig.TILE_LENGTH * 2));
 			driveMotors.Turn((int)(180));
-			arm.Move(600, false);
-			intake.MoveWrist(600, false);
+			arm.Move(750, false);
+			intake.MoveWrist(670, false);
+			sleep(500);
 			driveMotors.Move(Direction.FORWARD, (int)( BotConfig.TILE_LENGTH * .6 ));
-			arm.Move(100, true);
+			arm.Move(0, true);
 			intake.OpenClaw(500);
 			
 		}
