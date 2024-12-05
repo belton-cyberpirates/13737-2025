@@ -40,11 +40,11 @@ public class AutoLeft extends Auto {
 		savedHeading = getSavedHeading();
 
 		if (opModeIsActive()) { // <----------------------------------------------------------------
-			driveMotors.Move(Direction.FORWARD, (int)( BotConfig.TILE_LENGTH * 1.22 ));
-			arm.Move(730, true);
-			intake.MoveWrist(570, true);
-			arm.Move(300, true);
-			intake.OpenClaw();
+			arm.Move(700, false);
+			intake.MoveWrist(650, false);
+			driveMotors.Move(Direction.FORWARD, (int)( BotConfig.TILE_LENGTH * 1.2 ));
+			arm.Move(0, true);
+			intake.OpenClaw(500);
 			//sleep(50000);
 		}
 		saveHeading();
