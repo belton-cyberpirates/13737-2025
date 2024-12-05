@@ -21,15 +21,19 @@ public class DriveCode extends LinearOpMode {
 	// Arm constants
 	final double ARM_VELOCITY = 1500;
 	final double WRIST_VELOCITY = 1000;
-	final double WRIST_LOWER_MULT = .7;
+	final double WRIST_LOWER_MULT = 1;
 	final double WRIST_BUTTON_MULT = 1.75;
-	final int WRIST_GRAB_POS = 1030;
+
+	final int WRIST_SPECIMEN_POS = 650;
+	final int ARM_SPECIMEN_POS = 700;
 	
 	// Claw constants
 	final double CLAW_LEFT_OPEN_POS = 0.3;
-	final double CLAW_LEFT_CLOSE_POS = 0.07;
+	final double CLAW_LEFT_CLOSE_POS = 0.08;
 	final double CLAW_RIGHT_OPEN_POS = 0.7;
-	final double CLAW_RIGHT_CLOSE_POS = 0.93;
+	final double CLAW_RIGHT_CLOSE_POS = 0.92;
+
+	final double CLAW_STEP = .02;
 	
 
 	// Drive motors
@@ -100,7 +104,11 @@ public class DriveCode extends LinearOpMode {
 		// Reset robot heading on startup (not initialization)
 		imu.resetYaw();
 		double savedHeading = getSavedHeading();
-		boolean prevLeftBumper = false;
+		double botHeading = 0;
+		boolean prevRightBumper = false;
+
+		double clawLeftPos = CLAW_LEFT_OPEN_POS;
+		double clawRightPos = CLAW_RIGHT_OPEN_POS;
 
 		while (opModeIsActive()) {
 			// Reset yaw when start button is pressed so that a restart is not needed if the yaw should be reset again.
@@ -123,7 +131,10 @@ public class DriveCode extends LinearOpMode {
 			double maxSpeed = calcMaxSpeed(gamepad1.right_trigger - gamepad1.left_trigger, BASE_SPEED, MAX_BOOST);
 
 			// Get the heading of the bot (the angle it is facing) in radians
-			double botHeading = (savedHeading + imu .getRobotYawPitchRollAngles() .getYaw(AngleUnit.RADIANS));
+			double newHeading = (savedHeading + imu .getRobotYawPitchRollAngles() .getYaw(AngleUnit.RADIANS));
+			if (newHeading != 0) {
+				botHeading = newHeading;
+			}
 
 
 			// Virtually rotate the joystick by the negative angle of the robot
@@ -153,32 +164,48 @@ public class DriveCode extends LinearOpMode {
 			
 			SetArmVelocity(gamepad2.left_stick_y * ARM_VELOCITY);
 			
-			if (!prevLeftBumper) {
+			if (!prevRightBumper) {
 				double wristPower = -gamepad2.right_stick_y * WRIST_VELOCITY;
 				double powerMult = (gamepad2.right_stick_y > 0 ? 1 : WRIST_LOWER_MULT);
 				double holdPower = gamepad2.left_bumper ? -0.025 : 0;
 				Wrist.setVelocity( wristPower * powerMult );
 			}
 			
-			if (gamepad2.right_trigger > 0) {
-				ClawLeft.setPosition(CLAW_LEFT_CLOSE_POS);
-				ClawRight.setPosition(CLAW_RIGHT_CLOSE_POS);
-			} else if (gamepad2.left_trigger > 0) {
-				ClawLeft.setPosition(CLAW_LEFT_OPEN_POS);
-				ClawRight.setPosition(CLAW_RIGHT_OPEN_POS);
-			}
-			
-			if (gamepad2.left_bumper && !prevLeftBumper) {
+			if (gamepad2.right_bumper && !prevRightBumper) {
 				Wrist.setTargetPosition(0);
 				Wrist.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-				Wrist.setTargetPosition(WRIST_GRAB_POS);
-				Wrist.setPower(1);
+				Wrist.setTargetPosition(WRIST_SPECIMEN_POS);
+				Wrist.setVelocity(1000);
+
+				Arm.setTargetPosition(0);
+				Arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+				Arm.setTargetPosition(ARM_SPECIMEN_POS);
+				Arm.setVelocity(1000);
 			}
-			if (!gamepad2.left_bumper && prevLeftBumper) {
+			if (!gamepad2.left_bumper && prevRightBumper) {
 				Wrist.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 			}
 			
-			prevLeftBumper = gamepad2.left_bumper;
+			if (gamepad2.right_trigger > 0) {
+				clawLeftPos = CLAW_LEFT_CLOSE_POS;
+				clawRightPos = CLAW_RIGHT_CLOSE_POS;
+			} else if (gamepad2.left_trigger > 0) {
+				clawLeftPos = CLAW_LEFT_OPEN_POS;
+				clawRightPos = CLAW_RIGHT_OPEN_POS;
+			}
+
+			if (gamepad2.dpad_up) {
+				clawLeftPos = Math.min( CLAW_LEFT_OPEN_POS, clawLeftPos + CLAW_STEP )
+				clawRightPos = Math.max( CLAW_RIGHT_OPEN_POS, clawRightPos - CLAW_STEP )
+			} else if (gamepad2.dpad_down) {
+				clawLeftPos = Math.max( CLAW_LEFT_CLOSE_POS, clawLeftPos - CLAW_STEP )
+				clawRightPos = Math.min( CLAW_RIGHT_CLOSE_POS, clawRightPos + CLAW_STEP )
+			}
+
+			ClawLeft.setPosition(clawLeftPos);
+			ClawLeft.setPosition(clawRightPos);
+			
+			prevRightBumper = gamepad2.right_bumper;
 
 			// Telemetry
 			telemetry.addData("Left arm pos", ArmLeft.getCurrentPosition());
@@ -206,7 +233,7 @@ public class DriveCode extends LinearOpMode {
 	
 	void SetArmVelocity(double velocity) {
 		
-		if ((velocity > 0) || (ArmLeft.getCurrentPosition() > -1300)) {
+		if ((velocity > 0) || (ArmLeft.getCurrentPosition() > -1400)) {
 			ArmLeft.setVelocity(velocity);
 			ArmRight.setVelocity(-velocity);
 		}
