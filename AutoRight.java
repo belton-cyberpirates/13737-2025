@@ -26,7 +26,7 @@ public class AutoRight extends Auto {
 		waitForStart();
 
 		if (opModeIsActive()) { // <----------------------------------------------------------------
-			arm.Move(700, false);
+			arm.Move(800, false);
 			intake.MoveWrist(650, false);
 			driveMotors.Move(Direction.FORWARD, (int)( BotConfig.TILE_LENGTH * 1.2 ));
 			arm.Move(0, true);
