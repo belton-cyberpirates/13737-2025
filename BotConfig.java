@@ -22,7 +22,7 @@ public class BotConfig {
   /*****************************************************************************
   ** DISTANCE CALIBRATION CONSTANTS
   *****************************************************************************/
-  public static final int TICKS_PER_360_DEG = 4475;
+  public static final int TICKS_PER_360_DEG = 4500;
   public static final int TILE_LENGTH = 1250;
 
   public static final int DEFAULT_SPIKE_MARK = 3;
@@ -32,7 +32,7 @@ public class BotConfig {
   /*****************************************************************************
   ** DRIVE SPEED CONSTANTS
   *****************************************************************************/
-  public static final int CRUISE_SPEED = 1800;
+  public static final int CRUISE_SPEED = 1600;
   public static final int ARM_VELOCITY = 1250;
   // ---------------------------------------------------------------------------
 
@@ -61,7 +61,6 @@ public class BotConfig {
   /*****************************************************************************
   ** CAMERA CONSTANTS
   *****************************************************************************/
-  public static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
   public static final String CAMERA_NAME = "Webcam 1";
 	public static final int CAMERA_RESO_X = 640;
 	public static final String TFOD_MODEL_FILE = "/sdcard/FIRST/tflitemodels/teampiece.tflite";
