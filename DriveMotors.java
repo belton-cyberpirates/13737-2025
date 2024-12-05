@@ -20,6 +20,7 @@ public class DriveMotors {
   private DcMotorEx frontRight;
   private DcMotorEx backLeft;
   private DcMotorEx backRight;
+
   static Orientation angles;
 
   private LinearOpMode auto;
@@ -39,7 +40,6 @@ public class DriveMotors {
 	this.frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 	this.backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 	this.backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-	
   }
 
 
@@ -48,6 +48,14 @@ public class DriveMotors {
 	this.frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 	this.backLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 	this.backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+  }
+
+
+  private void SetToRunWithEncoders() {
+	this.frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+	this.frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+	this.backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+	this.backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
   }
   
   
@@ -148,6 +156,7 @@ public class DriveMotors {
 
 
   public void RunWithVelocity(Direction direction, int velocity) {
+	SetToRunWithEncoders();
 
 	switch(direction) {
 	  case FORWARD:
