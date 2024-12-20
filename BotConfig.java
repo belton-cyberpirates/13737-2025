@@ -16,13 +16,16 @@ public class BotConfig {
   public static final String CLAW_LEFT_NAME = "claw_left";
   public static final String CLAW_RIGHT_NAME = "claw_right";
   public static final String WRIST_NAME = "wrist";
+  
+  public static final String LEFT_DISTANCE_SENSOR_NAME = "left_distance_sensor";
+  public static final String RIGHT_DISTANCE_SENSOR_NAME = "right_distance_sensor";
   // ---------------------------------------------------------------------------
 
 
   /*****************************************************************************
   ** DISTANCE CALIBRATION CONSTANTS
   *****************************************************************************/
-  public static final int TICKS_PER_360_DEG = 4500;
+  public static final int TICKS_PER_360_DEG = 4150;
   public static final int TILE_LENGTH = 1250;
 
   public static final int DEFAULT_SPIKE_MARK = 3;
@@ -32,19 +35,17 @@ public class BotConfig {
   /*****************************************************************************
   ** DRIVE SPEED CONSTANTS
   *****************************************************************************/
-  public static final int CRUISE_SPEED = 1600;
-  public static final int ARM_VELOCITY = 1250;
+  public static final int CRUISE_SPEED = 2000;
+  public static final double STRAFE_MULT = .5;
+  public static final int ARM_VELOCITY = 1000;
   // ---------------------------------------------------------------------------
 
 
   /*****************************************************************************
   ** ARM CALIBRATION CONSTANTS
   *****************************************************************************/
-  //public static final int BOARD_HEIGHT = 70;
-  
-  //public static final int BOTTOM = 0;
-  //public static final int CRUISING_HEIGHT = 30;
-  //public static final int TOP = 125;
+  public static final int BAR_HEIGHT = 480;
+  public static final int BASKET_HEIGHT = 950;
   // ---------------------------------------------------------------------------
   
   
