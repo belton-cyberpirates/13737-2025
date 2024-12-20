@@ -26,28 +26,34 @@ public class AutoRight extends Auto {
 		waitForStart();
 
 		if (opModeIsActive()) { // <----------------------------------------------------------------
-			arm.Move(800, false);
-			intake.MoveWrist(650, false);
+			// score first specimen
+			arm.Move(BotConfig.BAR_HEIGHT, false);
+			intake.MoveWrist(750, false);
 			driveMotors.Move(Direction.FORWARD, (int)( BotConfig.TILE_LENGTH * 1.2 ));
 			arm.Move(0, true);
 			intake.OpenClaw(500);
+			// back up and turn
 			driveMotors.Move(Direction.BACKWARD, (int)( BotConfig.TILE_LENGTH * .1 ));
 			intake.MoveWrist(0, false);
-			driveMotors.Move(Direction.RIGHT, (int)( BotConfig.TILE_LENGTH * 1.2 ));
-			driveMotors.Move(Direction.FORWARD, (int)( BotConfig.TILE_LENGTH * 1 ));
-			driveMotors.Move(Direction.RIGHT, (int)( BotConfig.TILE_LENGTH * 0.5 ));
-			driveMotors.Move(Direction.BACKWARD, (int)( BotConfig.TILE_LENGTH * 1.6 ));
+			driveMotors.Turn(90);
+			// move to get in front of first block
+			driveMotors.Move(Direction.FORWARD, (int)( BotConfig.TILE_LENGTH * 1.2 ));
+			driveMotors.Move(Direction.LEFT, (int)( BotConfig.TILE_LENGTH * 1.2 ));
+			driveMotors.Move(Direction.FORWARD, (int)( BotConfig.TILE_LENGTH * 0.5 ));
+			// get sample in observation zone
+			driveMotors.Turn(-90);
+			driveMotors.Move(Direction.BACKWARD, (int)( BotConfig.TILE_LENGTH * 1.5 ));
 			driveMotors.Move(Direction.FORWARD, (int)( BotConfig.TILE_LENGTH * .2 ));
 			driveMotors.Turn((int)(180));
-			driveMotors.Move(Direction.FORWARD, (int)( BotConfig.TILE_LENGTH * .15 ));
+			driveMotors.Move(Direction.FORWARD, (int)( BotConfig.TILE_LENGTH * .25 ));
 			intake.OpenClaw(500);
 			intake.MoveWrist(1400, true);
 			intake.CloseClaw(500);
 			intake.MoveWrist(0, false);
 			driveMotors.Move(Direction.RIGHT, (int)( BotConfig.TILE_LENGTH * 2));
 			driveMotors.Turn((int)(180));
-			arm.Move(750, false);
-			intake.MoveWrist(670, false);
+			arm.Move(BotConfig.BAR_HEIGHT, false);
+			intake.MoveWrist(700, false);
 			sleep(500);
 			driveMotors.Move(Direction.FORWARD, (int)( BotConfig.TILE_LENGTH * .6 ));
 			arm.Move(0, true);
