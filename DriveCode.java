@@ -19,11 +19,14 @@ public class DriveCode extends LinearOpMode {
 	final double STRAFE_MULT = 1.41;
 
 	// Arm constants
-	final double ARM_VELOCITY = 900;
-	final double WRIST_VELOCITY = 1000;
+	final double ARM_VELOCITY = 750;
+	final double WRIST_VELOCITY = 500;
 	final double WRIST_LOWER_MULT = .7;
 	final double WRIST_BUTTON_MULT = 1.75;
 	final int WRIST_GRAB_POS = 1030;
+	
+	// Winch Constants
+	final double WINCH_VELOCITY = 1;
 	
 	// Claw constants
 	final double CLAW_LEFT_OPEN_POS = 0.2;
@@ -47,6 +50,8 @@ public class DriveCode extends LinearOpMode {
 	private DcMotorEx ArmRight;
 	private DcMotorEx Wrist;
 	
+	private DcMotorEx Winch;
+	
 	// Servos
 	private Servo ClawLeft;
 	private Servo ClawRight;
@@ -69,6 +74,9 @@ public class DriveCode extends LinearOpMode {
 		ArmRight = hardwareMap.get(DcMotorEx.class, "right_arm");
 		Wrist = hardwareMap.get(DcMotorEx.class, "wrist");
 		
+		// Assign winch motor
+		Winch = hardwareMap.get(DcMotorEx.class, "winch");
+		
 		// Assign servos
 		ClawLeft = hardwareMap.get(Servo.class, "claw_left");
 		ClawRight = hardwareMap.get(Servo.class, "claw_right");
@@ -85,6 +93,8 @@ public class DriveCode extends LinearOpMode {
 		ArmRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 		Wrist.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 		
+		Winch.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+		
 		FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 		FrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 		BackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -94,9 +104,13 @@ public class DriveCode extends LinearOpMode {
 		ArmRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 		Wrist.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 		
+		Winch.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+		
 		ArmLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 		ArmRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 		Wrist.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+		
+		Winch.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 		// Wait for the start button to be pressed
 		waitForStart();
@@ -105,6 +119,9 @@ public class DriveCode extends LinearOpMode {
 		imu.resetYaw();
 		double savedHeading = getSavedHeading();
 		boolean prevLeftBumper = false;
+		boolean prevXButton = false;
+		
+		double botHeading = 0;
 
 		while (opModeIsActive()) {
 			// Reset yaw when start button is pressed so that a restart is not needed if the yaw should be reset again.
@@ -127,7 +144,10 @@ public class DriveCode extends LinearOpMode {
 			double maxSpeed = calcMaxSpeed(gamepad1.right_trigger - gamepad1.left_trigger, BASE_SPEED, MAX_BOOST);
 
 			// Get the heading of the bot (the angle it is facing) in radians
-			double botHeading = (savedHeading + imu .getRobotYawPitchRollAngles() .getYaw(AngleUnit.RADIANS));
+			double newHeading = (savedHeading + imu .getRobotYawPitchRollAngles() .getYaw(AngleUnit.RADIANS));
+			if (newHeading != 0) {
+				botHeading = newHeading;
+			}
 
 
 			// Virtually rotate the joystick by the negative angle of the robot
@@ -157,6 +177,18 @@ public class DriveCode extends LinearOpMode {
 			
 			SetArmVelocity(gamepad2.left_stick_y * ARM_VELOCITY);
 			
+			
+			if (gamepad1.dpad_up) {
+				Winch.setPower(WINCH_VELOCITY);
+			}
+			else if (gamepad1.dpad_down) {
+				Winch.setPower(-WINCH_VELOCITY);
+			}
+			else {
+				Winch.setPower(0);
+			}
+			
+			
 			if (gamepad2.dpad_up) {
 				ClawLeft.setPosition(CLAW_LEFT_FULL_OPEN_POS);
 				ClawRight.setPosition(CLAW_RIGHT_FULL_OPEN_POS);
@@ -178,7 +210,7 @@ public class DriveCode extends LinearOpMode {
 			}
 			
 			if (!prevLeftBumper) {
-				double wristPower = -gamepad2.right_stick_y * WRIST_VELOCITY;
+				double wristPower = gamepad2.right_stick_y * WRIST_VELOCITY;
 				double powerMult = (gamepad2.right_stick_y > 0 ? 1 : WRIST_LOWER_MULT);
 				double holdPower = gamepad2.left_bumper ? -0.025 : 0;
 				Wrist.setVelocity( wristPower * powerMult );
@@ -198,11 +230,37 @@ public class DriveCode extends LinearOpMode {
 				Wrist.setTargetPosition(WRIST_GRAB_POS);
 				Wrist.setPower(1);
 			}
+			
+			// Configured arm+wrist position "hotkeys"
+			if (gamepad2.x && !prevXButton) {
+				// Set motor modes to position
+				Wrist.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+				ArmLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+				ArmRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+				// Set motor target positions
+				ArmLeft.setTargetPosition(-800); // Move arm upwards
+				ArmLeft.setPower(1);
+				ArmRight.setTargetPosition(-800);
+				ArmRight.setPower(1);
+				Wrist.setTargetPosition(650); // Move wrist to face upwards
+				Wrist.setPower(1);
+			}
+			
 			if (!gamepad2.left_bumper && prevLeftBumper) {
 				Wrist.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 			}
+			// Reset arm and wrist modes if not pressed
+			if (!gamepad2.x && prevXButton) {
+				ArmLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+				ArmRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+				// Reset wrist mode if leftbumper is also not on
+				if (gamepad2.left_bumper && !prevLeftBumper) {
+					Wrist.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+				}
+			}
 			
 			prevLeftBumper = gamepad2.left_bumper;
+			prevXButton = gamepad2.x;
 
 			// Telemetry
 			telemetry.addData("Left arm pos", ArmLeft.getCurrentPosition());
@@ -232,7 +290,7 @@ public class DriveCode extends LinearOpMode {
 		
 		if ((velocity > 0) || (ArmLeft.getCurrentPosition() > -1600)) {
 			ArmLeft.setVelocity(velocity);
-			ArmRight.setVelocity(-velocity);
+			ArmRight.setVelocity(velocity);
 		}
 		else {
 			ArmLeft.setVelocity(0);

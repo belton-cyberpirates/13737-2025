@@ -40,10 +40,13 @@ public abstract class Auto extends LinearOpMode {
 	 */
 	protected void MotorSetup() {
 		intake.CloseClaw(0);
-		intake.MoveWrist(0);
+		intake.DropWrist();
 		arm.DropArm();
-		sleep(500);
+		sleep(5000);
 		arm.Initialize();
+		intake.InitializeWrist();
+		telemetry.addData("Initialized", true);
+		telemetry.update();
 	}
 
 	protected void saveHeading() {

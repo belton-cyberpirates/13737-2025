@@ -24,11 +24,28 @@ public class Intake {
 		this.claw_right = auto.hardwareMap.get(Servo.class, BotConfig.CLAW_RIGHT_NAME);
 		
 		wrist.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-		wrist.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+		wrist.setTargetPosition(0);
+		wrist.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+		wrist.setPower(1);
+	}
+	
+	
+	public void DropWrist() {
+		wrist.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+		wrist.setPower(.2);
+	}
+	
+	
+	public void InitializeWrist() {
+		wrist.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+		wrist.setTargetPosition(0);
+		wrist.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+		wrist.setPower(1);
 	}
 
 
 	public void MoveWrist(int position) {
+		wrist.setVelocity(4000);
 		MoveWrist(position, 0);
 	}
 	

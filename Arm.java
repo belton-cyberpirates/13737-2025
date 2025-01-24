@@ -28,8 +28,8 @@ public class Arm {
   
 	public void DropArm() {
 		for(DcMotorEx motor : motors) motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-		leftArm.setPower(.1);
-		rightArm.setPower(-.1);
+		leftArm.setPower(.2);
+		rightArm.setPower(-.2);
 	}
 
   
@@ -37,6 +37,8 @@ public class Arm {
 		for(DcMotorEx motor : motors) motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 		for(DcMotorEx motor : motors) motor.setTargetPosition(0);
 		for(DcMotorEx motor : motors) motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+		leftArm.setPower(1);
+		rightArm.setPower(1);
 	}
   
 	private void setVelocity(int armVelocity) {
@@ -65,7 +67,7 @@ public class Arm {
 		if (waitForDone) WaitForMotors();
 	}
 	
-	private void WaitForMotors() {
+	public void WaitForMotors() {
 		while (leftArm.isBusy() || rightArm.isBusy()) {}
 		
 		setVelocity(BotConfig.ARM_VELOCITY);

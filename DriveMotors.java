@@ -20,10 +20,10 @@ import org.firstinspires.ftc.teamcode.PIDController;
 
 
 public class DriveMotors {
-  private DcMotorEx frontLeft;
-  private DcMotorEx frontRight;
-  private DcMotorEx backLeft;
-  private DcMotorEx backRight;
+  public DcMotorEx frontLeft;
+  public DcMotorEx frontRight;
+  public DcMotorEx backLeft;
+  public DcMotorEx backRight;
 
   private DistanceSensor leftDistanceSensor;
   private DistanceSensor rightDistanceSensor;
@@ -165,7 +165,50 @@ public class DriveMotors {
 	}
 	// while motors are running, wait
 	this.setVelocity((int)(BotConfig.CRUISE_SPEED * mult * ( strafing ? BotConfig.STRAFE_MULT : 1 )));
+	
 	this.WaitForMotors();
+  }
+  
+  public void MoveWithoutWait(Direction direction, int distance) {
+	this.MotorInit();
+	
+	boolean strafing = (direction == Direction.LEFT) || (direction == Direction.RIGHT);
+
+	switch(direction) {
+	  case FORWARD:
+		this.SetTargetPositions(-distance, distance, distance, -distance);
+		break;
+  
+	  case BACKWARD:
+		this.SetTargetPositions(distance, -distance, -distance, distance);
+		break;
+  
+	  case LEFT:
+		this.SetTargetPositions(-distance, -distance, distance, distance);
+		break;
+  
+	  case RIGHT:
+		this.SetTargetPositions(distance, distance, -distance, -distance);
+		break;
+		
+	  case FRONT_RIGHT:
+		this.SetTargetPositions(0, distance, 0, -distance);
+		break;
+		
+	  case BACK_LEFT:
+		this.SetTargetPositions(0, -distance, 0, distance);
+		break;
+		
+	  case FRONT_LEFT:
+		this.SetTargetPositions(-distance, 0, distance, 0);
+		break;
+		
+	  case BACK_RIGHT:
+		this.SetTargetPositions(distance, 0, -distance, 0);
+		break;
+	}
+	// while motors are running, wait
+	this.setVelocity((int)(BotConfig.CRUISE_SPEED * ( strafing ? BotConfig.STRAFE_MULT : 1 )));
   }
 
 
@@ -235,6 +278,16 @@ public class DriveMotors {
 	
 	this.WaitForMotors();
   }
+  
+  
+  public boolean getMotorsBusy() {
+  	return (
+	  	this.frontLeft.isBusy() ||
+		this.frontRight.isBusy() ||
+		this.backLeft.isBusy() ||
+		this.backRight.isBusy()
+	);
+  }
 
 
   /**
@@ -242,9 +295,6 @@ public class DriveMotors {
    * @param distance target distance meant to be reached
    */
   private void WaitForMotors() {
-	while ((this.frontLeft.isBusy() ||
-			this.frontRight.isBusy() ||
-			this.backLeft.isBusy() ||
-			this.backRight.isBusy() )) {}
+	while (this.getMotorsBusy()) {}
   }
 }

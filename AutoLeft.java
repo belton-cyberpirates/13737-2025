@@ -40,12 +40,34 @@ public class AutoLeft extends Auto {
 		savedHeading = getSavedHeading();
 
 		if (opModeIsActive()) { // <----------------------------------------------------------------
-			arm.Move(700, false);
-			intake.MoveWrist(650, false);
+			// score first specimen
+			arm.Move(BotConfig.BAR_HEIGHT, false);
+			intake.MoveWrist(750, false);
 			driveMotors.Move(Direction.FORWARD, (int)( BotConfig.TILE_LENGTH * 1.2 ));
 			arm.Move(0, true);
 			intake.OpenClaw(500);
-			//sleep(50000);
+			// move to first block
+			driveMotors.Move(Direction.BACKWARD, (int)( BotConfig.TILE_LENGTH * .25 ));
+			driveMotors.Move(Direction.LEFT, (int)( BotConfig.TILE_LENGTH * 1.8 ));
+			// grab block
+			intake.MoveWrist(1550, true);
+			intake.CloseClaw(500);
+			intake.MoveWrist(0, false);
+			// score (maybe)
+			driveMotors.Move(Direction.BACKWARD, (int)( BotConfig.TILE_LENGTH * .475 ));
+			driveMotors.Turn(-125);
+			arm.Move(BotConfig.BASKET_HEIGHT, false);
+			driveMotors.Move(Direction.FORWARD, (int)( BotConfig.TILE_LENGTH * .3 ));
+			arm.WaitForMotors();
+			intake.MoveWrist(500, true);
+			intake.OpenClaw(500);
+			
+			arm.Move(0, false);
+			intake.MoveWrist(0, false);
+			driveMotors.Turn(135);
+			driveMotors.Move(Direction.LEFT, (int)( BotConfig.TILE_LENGTH * .2 ));
+			
+			sleep(50000);
 		}
 		saveHeading();
 	}
@@ -134,4 +156,3 @@ public class AutoLeft extends Auto {
 
 	}   // end method initAprilTag()
 }
-

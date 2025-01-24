@@ -39,25 +39,18 @@ public class AutoRight extends Auto {
 			// move to get in front of first block
 			driveMotors.Move(Direction.FORWARD, (int)( BotConfig.TILE_LENGTH * 1.2 ));
 			driveMotors.Move(Direction.LEFT, (int)( BotConfig.TILE_LENGTH * 1.2 ));
-			driveMotors.Move(Direction.FORWARD, (int)( BotConfig.TILE_LENGTH * 0.5 ));
+			driveMotors.Move(Direction.FORWARD, (int)( BotConfig.TILE_LENGTH * 0.4 ));
 			// get sample in observation zone
 			driveMotors.Turn(-90);
-			driveMotors.Move(Direction.BACKWARD, (int)( BotConfig.TILE_LENGTH * 1.5 ));
-			driveMotors.Move(Direction.FORWARD, (int)( BotConfig.TILE_LENGTH * .2 ));
-			driveMotors.Turn((int)(180));
-			driveMotors.Move(Direction.FORWARD, (int)( BotConfig.TILE_LENGTH * .25 ));
-			intake.OpenClaw(500);
-			intake.MoveWrist(1400, true);
-			intake.CloseClaw(500);
-			intake.MoveWrist(0, false);
-			driveMotors.Move(Direction.RIGHT, (int)( BotConfig.TILE_LENGTH * 2));
-			driveMotors.Turn((int)(180));
-			arm.Move(BotConfig.BAR_HEIGHT, false);
-			intake.MoveWrist(700, false);
-			sleep(500);
-			driveMotors.Move(Direction.FORWARD, (int)( BotConfig.TILE_LENGTH * .6 ));
-			arm.Move(0, true);
-			intake.OpenClaw(500);
+			driveMotors.Move(Direction.BACKWARD, (int)( BotConfig.TILE_LENGTH * 1.8 ));
+			// get 2nd sample in observation zone
+			driveMotors.Move(Direction.FORWARD, (int)( BotConfig.TILE_LENGTH * 1.8 ));
+			driveMotors.Move(Direction.RIGHT, (int)( BotConfig.TILE_LENGTH * .4 ));
+			driveMotors.Move(Direction.BACKWARD, (int)( BotConfig.TILE_LENGTH * 1.8 ));
+			// get 3rd sample in observation zone
+			driveMotors.Move(Direction.FORWARD, (int)( BotConfig.TILE_LENGTH * 1.8 ));
+			driveMotors.Move(Direction.RIGHT, (int)( BotConfig.TILE_LENGTH * .6 ));
+			driveMotors.Move(Direction.BACKWARD, (int)( BotConfig.TILE_LENGTH * 1.8 ));
 			
 		}
 		saveHeading();
