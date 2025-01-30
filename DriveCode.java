@@ -121,6 +121,8 @@ public class DriveCode extends LinearOpMode {
 		boolean prevLeftBumper = false;
 		boolean prevXButton = false;
 		
+		boolean hanging = false;
+		
 		double botHeading = 0;
 
 		while (opModeIsActive()) {
@@ -175,17 +177,29 @@ public class DriveCode extends LinearOpMode {
 				(rotatedY - rotatedX + rightStickXGP1) * maxSpeed
 			);
 			
-			SetArmVelocity(gamepad2.left_stick_y * ARM_VELOCITY);
+			if (!gamepad2.x) {
+				SetArmVelocity(gamepad2.left_stick_y * ARM_VELOCITY);
+			}
 			
 			
 			if (gamepad1.dpad_up) {
-				Winch.setPower(WINCH_VELOCITY);
+				hanging = true;
 			}
-			else if (gamepad1.dpad_down) {
+			
+			if (gamepad1.dpad_down) {
 				Winch.setPower(-WINCH_VELOCITY);
+				hanging = false;
+			}
+			else if (hanging) {
+				Winch.setPower(WINCH_VELOCITY);
+				ArmLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+				ArmRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+				ArmLeft.setPower(1);
+				ArmRight.setPower(1);
 			}
 			else {
 				Winch.setPower(0);
+				
 			}
 			
 			
@@ -210,7 +224,7 @@ public class DriveCode extends LinearOpMode {
 			}
 			
 			if (!prevLeftBumper) {
-				double wristPower = gamepad2.right_stick_y * WRIST_VELOCITY;
+				double wristPower = -gamepad2.right_stick_y * WRIST_VELOCITY;
 				double powerMult = (gamepad2.right_stick_y > 0 ? 1 : WRIST_LOWER_MULT);
 				double holdPower = gamepad2.left_bumper ? -0.025 : 0;
 				Wrist.setVelocity( wristPower * powerMult );
@@ -234,16 +248,19 @@ public class DriveCode extends LinearOpMode {
 			// Configured arm+wrist position "hotkeys"
 			if (gamepad2.x && !prevXButton) {
 				// Set motor modes to position
-				Wrist.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 				ArmLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 				ArmRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+				//Wrist.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+				
 				// Set motor target positions
-				ArmLeft.setTargetPosition(-800); // Move arm upwards
 				ArmLeft.setPower(1);
-				ArmRight.setTargetPosition(-800);
+				ArmLeft.setVelocity(750);
+				ArmLeft.setTargetPosition(-200); // Move arm upwards
 				ArmRight.setPower(1);
-				Wrist.setTargetPosition(650); // Move wrist to face upwards
-				Wrist.setPower(1);
+				ArmRight.setVelocity(750);
+				ArmRight.setTargetPosition(-200);
+				//Wrist.setTargetPosition(-650); // Move wrist to face upwards
+				//Wrist.setPower(1);
 			}
 			
 			if (!gamepad2.left_bumper && prevLeftBumper) {
@@ -254,7 +271,7 @@ public class DriveCode extends LinearOpMode {
 				ArmLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 				ArmRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 				// Reset wrist mode if leftbumper is also not on
-				if (gamepad2.left_bumper && !prevLeftBumper) {
+				if (!gamepad2.left_bumper && !prevLeftBumper) {
 					Wrist.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 				}
 			}
@@ -263,9 +280,11 @@ public class DriveCode extends LinearOpMode {
 			prevXButton = gamepad2.x;
 
 			// Telemetry
+			telemetry.addData("Specimen Hotkey", prevXButton);
 			telemetry.addData("Left arm pos", ArmLeft.getCurrentPosition());
 			telemetry.addData("Right arm pos", ArmRight.getCurrentPosition());
 			telemetry.addData("Wrist pos", Wrist.getCurrentPosition());
+			telemetry.addData("IMU", botHeading);
 
 			telemetry.update();
 		}
