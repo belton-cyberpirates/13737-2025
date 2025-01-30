@@ -13,8 +13,8 @@ import org.firstinspires.ftc.teamcode.BotConfig;
 import org.firstinspires.ftc.teamcode.DriveMotors;
 import org.firstinspires.ftc.teamcode.Heading;
 
-
 import java.util.List;
+
 
 public abstract class Auto extends LinearOpMode {
 	protected DriveMotors driveMotors;
@@ -52,15 +52,5 @@ public abstract class Auto extends LinearOpMode {
 	protected void saveHeading() {
 		double _heading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 		this.heading.setHeading(_heading);
-		/*
-		String strHeading = Double.toString(heading);
-
-		File file = new File("heading");
-		FileWriter fw = new FileWriter(file, false);
-		fw.flush();
-
-		fw.write(strHeading);
-
-		writer.close();*/
 	}
 }
