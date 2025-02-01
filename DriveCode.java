@@ -202,22 +202,22 @@ public class DriveCode extends LinearOpMode {
 				
 			}
 			
-			
+			// Open claw wide
 			if (gamepad2.dpad_up) {
 				ClawLeft.setPosition(CLAW_LEFT_FULL_OPEN_POS);
 				ClawRight.setPosition(CLAW_RIGHT_FULL_OPEN_POS);
 			}
-			
+			// Open claw half
 			if (gamepad2.dpad_down) {
 				ClawLeft.setPosition(CLAW_LEFT_HALF_CLOSE_POS);
 				ClawRight.setPosition(CLAW_RIGHT_HALF_CLOSE_POS);
 			}
-			
+			// Open right, close left
 			if (gamepad2.dpad_right) {
 				ClawLeft.setPosition(CLAW_LEFT_HALF_CLOSE_POS);
 				ClawRight.setPosition(CLAW_RIGHT_FULL_OPEN_POS);
 			}
-			
+			// Open left, close right
 			if (gamepad2.dpad_left) {
 				ClawLeft.setPosition(CLAW_LEFT_FULL_OPEN_POS);
 				ClawRight.setPosition(CLAW_RIGHT_HALF_CLOSE_POS);
