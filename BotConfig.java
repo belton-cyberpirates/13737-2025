@@ -17,8 +17,8 @@ public class BotConfig {
   public static final String CLAW_RIGHT_NAME = "claw_right";
   public static final String WRIST_NAME = "wrist";
   
-  public static final String LEFT_DISTANCE_SENSOR_NAME = "left_distance_sensor";
-  public static final String RIGHT_DISTANCE_SENSOR_NAME = "right_distance_sensor";
+  //public static final String LEFT_DISTANCE_SENSOR_NAME = "left_distance_sensor";
+  //public static final String RIGHT_DISTANCE_SENSOR_NAME = "right_distance_sensor";
   // ---------------------------------------------------------------------------
 
 
@@ -44,8 +44,9 @@ public class BotConfig {
   /*****************************************************************************
   ** ARM CALIBRATION CONSTANTS
   *****************************************************************************/
-  public static final int BAR_HEIGHT = 480;
+  public static final int BAR_HEIGHT = -450;
   public static final int BASKET_HEIGHT = 950;
+  public static final int SPECIMEN_HEIGHT = 1490;
   // ---------------------------------------------------------------------------
   
   
