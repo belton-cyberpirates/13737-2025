@@ -22,7 +22,6 @@ public class AutoRight1 extends Auto {
 
 		if (opModeIsActive()) {
 			// Raise the arm to the high bar height
-			
 			arm.Move(BotConfig.BAR_HEIGHT, false);
 			// Move the wrist to place the specimen
 			intake.MoveWrist(900, false);
@@ -30,7 +29,6 @@ public class AutoRight1 extends Auto {
 			driveMotors.Move(Direction.FORWARD, (int)( BotConfig.TILE_LENGTH * 0.9 ));
 			// Wait half a second before moving arm downwards
 			arm.Move(0, false);
-			
 			
 			// Wait 2 seconds so the arm can go all the way down
 			sleep(1000);
