@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -16,9 +17,9 @@ import java.time.Instant;
 import org.firstinspires.ftc.teamcode.PIDController;
 
 enum PIDEnum {
-	KP = 0,
-	KI = 1,
-	KD = 2
+	KP,
+	KI,
+	KD
 }
 
 @TeleOp(name="PIDAngleTest")
@@ -78,7 +79,7 @@ public class PIDIMUTest extends LinearOpMode {
 		// Wait for the start button to be pressed
 		waitForStart();
 
-        ElapsedTime timer = new ElapsedTime();
+		ElapsedTime timer = new ElapsedTime();
 		PIDEnum targetConstant = PIDEnum.KP;
 
 		boolean prevPressed = false;
@@ -95,69 +96,20 @@ public class PIDIMUTest extends LinearOpMode {
 
 			double currentAngle = imu.getRobotYawPitchRollAngles().getYaw();
 			double power = pidController.PIDControlRadians(targetAngle, currentAngle, timer.seconds());
-            timer.reset();
+			timer.reset();
 
 			BackLeft.setPower(power);
 			FrontLeft.setPower(power);
 			FrontRight.setPower(power);
 			BackRight.setPower(power);
 
-			targetAngle += gamepad1.right_stick_x * JOYSTICK_ANGLE_MULT;
+			targetAngle += gamepad2.right_stick_x * JOYSTICK_ANGLE_MULT;
 
-			if (gamepad1.dpad_up) {
-				targetAngle = 0;
-			}
-			else if (gamepad1.dpad_right) {
+			if (gamepad1.dpad_right) {
 				targetAngle = Math.PI * 0.5;
 			}
-			else if (gamepad1.dpad_down) {
-				targetAngle = Math.PI;
-			}
-			else if (gamepad1.dpad_left) {
+			if (gamepad1.dpad_left) {
 				targetAngle = Math.PI * 1.5;
-			}
-
-			if (gamepad2.dpad_up) {
-				double val = 1 - gamepad2.right_trigger;
-
-				switch (targetConstant) {
-					case PIDEnum.KP:
-						Kp += val;
-						break;
-					
-					case PIDEnum.KI:
-						Ki += val;
-						break;
-					
-					case PIDEnum.KD:
-						Kd += val;
-						break;
-				}
-			}
-			else if (gamepad2.dpad_down) {
-				double val = 1 - gamepad2.right_trigger;
-				
-				switch (targetConstant) {
-					case PIDEnum.KP:
-						Kp += val;
-						break;
-					
-					case PIDEnum.KI:
-						Ki += val;
-						break;
-					
-					case PIDEnum.KD:
-						Kd += val;
-						break;
-				}
-			}
-			
-			if (gamepad2.dpad_left && !prevPressed) {
-				int newTarget = (targetConstant - 1) % 3;
-				targetConstant = newTarget >= 0 ? newTarget : newTarget + 3;
-			}
-			else if (gamepad2.dpad_right && !prevPressed) {
-				targetConstant = (targetConstant + 1) % 3;
 			}
 
 			prevPressed = gamepad2.dpad_left || gamepad2.dpad_right;
@@ -168,15 +120,15 @@ public class PIDIMUTest extends LinearOpMode {
 
 			String targ = "";
 			switch (targetConstant) {
-				case PIDEnum.KP:
+				case KP:
 					targ = "Kp";
 					break;
 				
-				case PIDEnum.KI:
+				case KI:
 					targ = "Ki";
 					break;
 				
-				case PIDEnum.KD:
+				case KD:
 					targ = "Kd";
 					break;
 			}
@@ -187,6 +139,6 @@ public class PIDIMUTest extends LinearOpMode {
 			telemetry.addData("Kd", Kd);
 
 			telemetry.update();
-        }
+		}
 	}
 }
