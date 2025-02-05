@@ -32,7 +32,7 @@ public class Intake {
 	
 	public void DropWrist() {
 		wrist.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-		wrist.setPower(.2);
+		wrist.setPower(-.2);
 	}
 	
 	
