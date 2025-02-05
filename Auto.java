@@ -13,8 +13,8 @@ import org.firstinspires.ftc.teamcode.BotConfig;
 import org.firstinspires.ftc.teamcode.DriveMotors;
 import org.firstinspires.ftc.teamcode.Heading;
 
-import java.util.List;
 
+import java.util.List;
 
 public abstract class Auto extends LinearOpMode {
 	protected DriveMotors driveMotors;
@@ -33,6 +33,8 @@ public abstract class Auto extends LinearOpMode {
 
 		imu = hardwareMap.get(IMU.class, "imu");
 		imu.resetYaw();
+		telemetry.addData("Beginning Initialization...", false);
+		telemetry.update();
 	}
 
 	/**
@@ -45,8 +47,13 @@ public abstract class Auto extends LinearOpMode {
 		sleep(5000);
 		arm.Initialize();
 		intake.InitializeWrist();
-		telemetry.addData("Initialized", true);
+		telemetry.addData("Fully Initialized", true);
 		telemetry.update();
+	}
+	
+	protected void rotateTo(double deg) {
+		double _heading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
+		driveMotors.Turn((int)(_heading-deg));
 	}
 
 	protected void saveHeading() {
