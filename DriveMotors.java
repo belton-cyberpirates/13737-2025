@@ -25,14 +25,13 @@ public class DriveMotors {
   public DcMotorEx backLeft;
   public DcMotorEx backRight;
 
-  private DistanceSensor leftDistanceSensor;
-  private DistanceSensor rightDistanceSensor;
+  private DistanceSensor distSensor;
 
   static Orientation angles;
 
   private LinearOpMode auto;
 
-  private PIDController distanceSensorPidController = new PIDController(1, 2, 3);
+  private PIDController distanceSensorPidController = new PIDController(0.007, 0.0005, 0.00018);
 
 
   public DriveMotors(LinearOpMode auto) {
@@ -42,8 +41,7 @@ public class DriveMotors {
 		this.backLeft = auto.hardwareMap.get(DcMotorEx.class, BotConfig.BACK_LEFT_WHEEL_NAME);
 		this.backRight = auto.hardwareMap.get(DcMotorEx.class, BotConfig.BACK_RIGHT_WHEEL_NAME);
 	
-		this.leftDistanceSensor = auto.hardwareMap.get(DistanceSensor.class, BotConfig.LEFT_DISTANCE_SENSOR_NAME);
-		this.rightDistanceSensor = auto.hardwareMap.get(DistanceSensor.class, BotConfig.RIGHT_DISTANCE_SENSOR_NAME);
+		this.distSensor = auto.hardwareMap.get(DistanceSensor.class, BotConfig.DISTANCE_SENSOR_NAME);
   }
 
 
@@ -63,7 +61,20 @@ public class DriveMotors {
   }
 
 
+  private void SetToRunWithPower() {
+		this.frontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+		this.frontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+		this.backLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+		this.backRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+  }
+
+
   private void SetToRunWithEncoders() {
+  	this.frontLeft.setTargetPosition(0);
+  	this.frontRight.setTargetPosition(0);
+  	this.backLeft.setTargetPosition(0);
+  	this.backRight.setTargetPosition(0);
+  	
 		this.frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 		this.frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 		this.backLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -256,17 +267,31 @@ public class DriveMotors {
   }
 
 
- // public void MoveToDistance(int targetDistance) {
-	// SetToRunWithEncoders();
-
-	// double leftDistance = distanceSensor.getDistance(DistanceUnit.CM);
-	// double rightDistance = distanceSensor.getDistance(DistanceUnit.CM);
+  public void MoveToDistance(int targetDistance) {
+		SetToRunWithPower();
+		
+		ElapsedTime timer = new ElapsedTime();
+		
+		double error = 10;
+		
+		while (auto.opModeIsActive() /*&& Math.abs(error) > 5*/) {
+			double dist = distSensor.getDistance(DistanceUnit.MM);
+			error = targetDistance - dist;
+			
+			double power = distanceSensorPidController.PIDControl(error, timer.seconds());
+			timer.reset();
+			frontLeft.setPower(-power);
+			frontRight.setPower(power);
+			backLeft.setPower(-power);
+			backRight.setPower(power);
+			
+			auto.telemetry.addData("dist", dist);
+			auto.telemetry.addData("error", error);
+			auto.telemetry.addData("power", power);
+			auto.telemetry.update();
+		}
 	
-	// while (difference > 5 && d) {
-		  
-	// }
-	
- // }
+  }
   
   
   public void Turn(int angle) {
