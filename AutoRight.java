@@ -28,14 +28,14 @@ public class AutoRight extends Auto {
 		if (opModeIsActive()) { // <----------------------------------------------------------------
 			// score first specimen
 			arm.Move(BotConfig.BAR_HEIGHT, false);
-			intake.MoveWrist(750, false);
+			intake.MoveWrist(-750, false);
 			driveMotors.Move(Direction.FORWARD, (int)( BotConfig.TILE_LENGTH * 1.2 ));
 			arm.Move(0, true);
-			intake.OpenClaw(500);
+			intake.OpenClaw(-500);
 			// back up and turn
 			driveMotors.Move(Direction.BACKWARD, (int)( BotConfig.TILE_LENGTH * .1 ));
 			intake.MoveWrist(0, false);
-			driveMotors.Turn(90);
+			driveMotors.Turn(-90);
 			// move to get in front of first block
 			driveMotors.Move(Direction.FORWARD, (int)( BotConfig.TILE_LENGTH * 1.2 ));
 			driveMotors.Move(Direction.LEFT, (int)( BotConfig.TILE_LENGTH * 1.2 ));
