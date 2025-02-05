@@ -17,8 +17,7 @@ public class BotConfig {
   public static final String CLAW_RIGHT_NAME = "claw_right";
   public static final String WRIST_NAME = "wrist";
   
-  //public static final String LEFT_DISTANCE_SENSOR_NAME = "left_distance_sensor";
-  //public static final String RIGHT_DISTANCE_SENSOR_NAME = "right_distance_sensor";
+  public static final String DISTANCE_SENSOR_NAME = "dist_sensor";
   // ---------------------------------------------------------------------------
 
 
