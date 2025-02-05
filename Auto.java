@@ -17,11 +17,11 @@ import org.firstinspires.ftc.teamcode.Heading;
 import java.util.List;
 
 public abstract class Auto extends LinearOpMode {
-	protected DriveMotors driveMotors;
-	protected Arm arm;
-	protected Intake intake;
-	protected IMU imu;
-	protected Heading heading;
+	public protected DriveMotors driveMotors;
+	public protected Arm arm;
+	public protected Intake intake;
+	public protected IMU imu;
+	public protected Heading heading;
 	
 	/**
 	 * Initialize classes used by autos

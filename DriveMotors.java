@@ -267,19 +267,20 @@ public class DriveMotors {
   }
 
 
-  public void MoveToDistance(int targetDistance) {
+  public void MoveToDistance(int targetDistance, int time) {
 		SetToRunWithPower();
 		
+		ElapsedTime deltaTimer = new ElapsedTime();
 		ElapsedTime timer = new ElapsedTime();
 		
 		double error = 10;
 		
-		while (auto.opModeIsActive() /*&& Math.abs(error) > 5*/) {
+		while (auto.opModeIsActive() && ( timer.milliseconds() < time || Math.abs(error) > 5 )) {
 			double dist = distSensor.getDistance(DistanceUnit.MM);
 			error = targetDistance - dist;
 			
-			double power = distanceSensorPidController.PIDControl(error, timer.seconds());
-			timer.reset();
+			double power = distanceSensorPidController.PIDControl(error, deltaTimer.seconds());
+			deltaTimer.reset();
 			frontLeft.setPower(-power);
 			frontRight.setPower(power);
 			backLeft.setPower(-power);
