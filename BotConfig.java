@@ -18,6 +18,10 @@ public class BotConfig {
   public static final String WRIST_NAME = "wrist";
   
   public static final String DISTANCE_SENSOR_NAME = "dist_sensor";
+
+  public static final String LEFT_ENCODER_NAME = "left_encoder";
+  public static final String RIGHT_ENCODER_NAME = "right_encoder";
+  public static final String HORIZONTAL_ENCODER_NAME = "horizontal_encoder";
   // ---------------------------------------------------------------------------
 
 
@@ -26,8 +30,6 @@ public class BotConfig {
   *****************************************************************************/
   public static final int TICKS_PER_360_DEG = 4150;
   public static final int TILE_LENGTH = 1250;
-
-  public static final int DEFAULT_SPIKE_MARK = 3;
   // ---------------------------------------------------------------------------
 
 
@@ -56,6 +58,14 @@ public class BotConfig {
 	public static final double CLAW_LEFT_CLOSE_POS = 0.07;
 	public static final double CLAW_RIGHT_OPEN_POS = 0.7;
 	public static final double CLAW_RIGHT_CLOSE_POS = 0.93;
+  // ---------------------------------------------------------------------------
+
+
+  /*****************************************************************************
+  ** ODOMETRY CALIBRATION CONSTANTS
+  *****************************************************************************/
+  public static final double FORWARD_OFFSET = 0; //TODO
+  public static final double TRACK_WIDTH = 0; //TODO
   // ---------------------------------------------------------------------------
 
 
