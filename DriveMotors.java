@@ -34,6 +34,7 @@ public class DriveMotors {
   private LinearOpMode auto;
 
   private PIDController distanceSensorPidController = new PIDController(0.007, 0.0005, 0.00018);
+  private PIDController imuPidController = new PIDController(0.01, 0, 0);
 
 
   public DriveMotors(LinearOpMode auto) {
@@ -296,7 +297,34 @@ public class DriveMotors {
 			auto.telemetry.addData("power", power);
 			auto.telemetry.update();
 		}
-	
+  }
+
+
+  public void TurnToAngle(double targetAngle, int time) {
+		SetToRunWithPower();
+		
+		ElapsedTime deltaTimer = new ElapsedTime();
+		ElapsedTime timer = new ElapsedTime();
+		
+		double error = 10000;
+		
+		while (auto.opModeIsActive() /*&& ( timer.milliseconds() < time || Math.abs(error) > 5 )*/) {
+			double heading = auto.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
+			error = targetAngle - heading;
+			
+			double power = imuPidController.PIDControl(error, deltaTimer.seconds());
+			deltaTimer.reset();
+			frontLeft.setPower(power);
+			frontRight.setPower(power);
+			backLeft.setPower(power);
+			backRight.setPower(power);
+			
+			auto.telemetry.addData("heading", heading);
+			auto.telemetry.addData("target", targetAngle)
+			auto.telemetry.addData("error", error);
+			auto.telemetry.addData("power", power);
+			auto.telemetry.update();
+		}
   }
   
   
