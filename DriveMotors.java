@@ -300,19 +300,20 @@ public class DriveMotors {
   }
 
 
-  public void TurnToAngle(double targetAngle, int time) {
+  public void TurnToAngle(double targetAngleDegrees int time) {
 		SetToRunWithPower();
+
+		double targetAngle = targetAngleDegrees / 2 * Math.PI;
 		
 		ElapsedTime deltaTimer = new ElapsedTime();
 		ElapsedTime timer = new ElapsedTime();
 		
-		double error = 10000;
+		double error = 50000;
 		
 		while (auto.opModeIsActive() /*&& ( timer.milliseconds() < time || Math.abs(error) > 5 )*/) {
 			double heading = auto.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
-			error = targetAngle - heading;
 			
-			double power = imuPidController.PIDControl(error, deltaTimer.seconds());
+			double power = imuPidController.PIDControlRadians(targetAngle, heading, deltaTimer.seconds());
 			deltaTimer.reset();
 			frontLeft.setPower(power);
 			frontRight.setPower(power);
