@@ -40,7 +40,6 @@ public class DriveCode extends LinearOpMode {
 	final double CLAW_LEFT_FULL_OPEN_POS = 0.4;
 	final double CLAW_RIGHT_FULL_OPEN_POS = 0.6;
 	
-
 	// Drive motors
 	private DcMotorEx BackLeft;
 	private DcMotorEx FrontLeft;
@@ -58,10 +57,12 @@ public class DriveCode extends LinearOpMode {
 	private Servo ClawLeft;
 	private Servo ClawRight;
 	
-	private IMU imu;
-	
 	// Sensors
+	private IMU imu;
 	private DistanceSensor DistSensor;
+
+	// Other Classes
+	private Odometry odometry;
 	
 	// Other variables
 	private boolean slideFrozen;
@@ -89,6 +90,9 @@ public class DriveCode extends LinearOpMode {
 		imu = hardwareMap.get(IMU.class, "imu");
 		
 		DistSensor = hardwareMap.get(DistanceSensor.class, "dist_sensor");
+
+		odometry = new Odometry(this);
+
 		
 		// Set zero power behaviours
 		BackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -289,13 +293,25 @@ public class DriveCode extends LinearOpMode {
 			prevSpecHotkey = gamepad2.left_bumper;
 
 			// Telemetry
-			telemetry.addData("Bar Hotkey", prevBarHotkey);
-			telemetry.addData("Specimen Hotkey", prevSpecHotkey);
+			// Odometry values
+			telemetry.addData("Odometry:", true);
+			telemetry.addData("X pos", odometry.getX());
+			telemetry.addData("Y pos", odometry.getY());
+			telemetry.addData("Heading", odometry.getY());
+			telemetry.addLine();
+
+			// Arm values
+			telemetry.addData("Arm:", true);
 			telemetry.addData("Left arm pos", ArmLeft.getCurrentPosition());
 			telemetry.addData("Right arm pos", ArmRight.getCurrentPosition());
 			telemetry.addData("Wrist pos", Wrist.getCurrentPosition());
-			telemetry.addData("IMU", botHeading);
+			telemetry.addLine();
+
+			// Sensor values
+			telemetry.addData("Sensors:", true);
+			telemetry.addData("IMU heading", botHeading);
 			telemetry.addData("Distance Sensor", DistSensor.getDistance(DistanceUnit.MM));
+			telemetry.addLine();
 
 			telemetry.update();
 		}
@@ -317,7 +333,6 @@ public class DriveCode extends LinearOpMode {
 	}
 	
 	void SetArmVelocity(double velocity) {
-		
 		if ((velocity > 0) || (ArmLeft.getCurrentPosition() > -1600)) {
 			ArmLeft.setVelocity(velocity);
 			ArmRight.setVelocity(velocity);
