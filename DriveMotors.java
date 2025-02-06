@@ -25,9 +25,11 @@ public class DriveMotors {
   public DcMotorEx backLeft;
   public DcMotorEx backRight;
 
-  private DistanceSensor distSensor;
+  public Odometry odometry;
 
   static Orientation angles;
+
+  private DistanceSensor distSensor;
 
   private LinearOpMode auto;
 
@@ -36,12 +38,15 @@ public class DriveMotors {
 
   public DriveMotors(LinearOpMode auto) {
 		this.auto = auto;
+
 		this.frontRight = auto.hardwareMap.get(DcMotorEx.class, BotConfig.FRONT_RIGHT_WHEEL_NAME);
 		this.frontLeft = auto.hardwareMap.get(DcMotorEx.class, BotConfig.FRONT_LEFT_WHEEL_NAME);
 		this.backLeft = auto.hardwareMap.get(DcMotorEx.class, BotConfig.BACK_LEFT_WHEEL_NAME);
 		this.backRight = auto.hardwareMap.get(DcMotorEx.class, BotConfig.BACK_RIGHT_WHEEL_NAME);
 	
 		this.distSensor = auto.hardwareMap.get(DistanceSensor.class, BotConfig.DISTANCE_SENSOR_NAME);
+
+		this.odometry = new Odometry(auto);
   }
 
 
