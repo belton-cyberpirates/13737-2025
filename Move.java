@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 
-public class ActionMove extends Action {
+public class Move extends Action {
 	Auto auto;
 	double xPos;
 	double yPos;

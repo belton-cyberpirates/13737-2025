@@ -12,7 +12,7 @@ public class AutoOdometry extends Auto {
 
 	public Action[] getActions() {
 		Action[] actions = {
-			new ActionMove(this, 100, 0, 0)
+			new Move(this, 100, 0, 0)
 			
 		};
 		
