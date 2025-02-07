@@ -20,9 +20,9 @@ public class BotConfig {
   public static final String DISTANCE_SENSOR_NAME = "dist_sensor";
   public static final String IMU_NAME = "imu";
 
-  public static final String LEFT_ENCODER_NAME = "left_encoder";
-  public static final String RIGHT_ENCODER_NAME = "right_encoder";
-  public static final String HORIZONTAL_ENCODER_NAME = "horizontal_encoder";
+  public static final String LEFT_ENCODER_NAME = "back_right";
+  public static final String RIGHT_ENCODER_NAME = "back_left";
+  public static final String HORIZONTAL_ENCODER_NAME = "front_right";
   // ---------------------------------------------------------------------------
 
 
@@ -66,7 +66,7 @@ public class BotConfig {
   ** ODOMETRY CALIBRATION CONSTANTS
   *****************************************************************************/
   public static final double FORWARD_OFFSET = 0; //TODO
-  public static final double TRACK_WIDTH = 0; //TODO
+  public static final double TRACK_WIDTH = 37; //TODO
   // ---------------------------------------------------------------------------
 
 
