@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import java.util.Collections;
+import java.util.Arrays;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -41,7 +43,7 @@ public class DriveMotors {
 
 	public Odometry odometry;
 
-	private LinearOpMode auto;
+	private Auto auto;
 
 	private DistanceSensor distSensor;
 
@@ -56,7 +58,7 @@ public class DriveMotors {
 	int targetDistance;
 
 
-	public DriveMotors(LinearOpMode auto) {
+	public DriveMotors(Auto auto) {
 		this.auto = auto;
 
 		this.frontRight = auto.hardwareMap.get(DcMotorEx.class, BotConfig.FRONT_RIGHT_WHEEL_NAME);
@@ -73,16 +75,16 @@ public class DriveMotors {
 	}
 
 
-	public process() {
+	public void process() {
 		double deltaTime = deltaTimer.seconds();
 
-		switch this.state {
+		switch (this.state) {
 			case ODOMETRY:
-				driveWithOdometry();
+				driveWithOdometry(deltaTime);
 				break;
 			
 			case DISTANCE:
-				driveWithDistanceSensor();
+				driveWithDistanceSensor(deltaTime);
 				break;
 		}
 		
@@ -91,21 +93,21 @@ public class DriveMotors {
 	}
 
 
-	private void driveWithOdometry() {
+	private void driveWithOdometry(double delta) {
 
 		double heading = auto.getHeading();
 
-		double xDir = xPosPidController.PIDControl(targetX, odometry.getX(), deltaTime);
-		double yDir = yPosPidController.PIDControl(targetY, odometry.getY(), deltaTime);
-		double anglePower = imuPidController.PIDControlRadians(targetAngle, heading, deltaTimer.seconds());
+		double xDir = xPosPidController.PIDControl(targetX, odometry.getX(), delta);
+		double yDir = yPosPidController.PIDControl(targetY, odometry.getY(), delta);
+		double anglePower = imuPidController.PIDControlRadians(targetHeading, heading, delta);
 
 		// Rotate the movement vector to cancel out the angle of the robot
 		double rotatedX =
-			xDir * Math.cos(botHeading) -
-			yDir * Math.sin(botHeading);
+			xDir * Math.cos(heading) -
+			yDir * Math.sin(heading);
 		double rotatedY =
-			xDir * Math.sin(botHeading) +
-			yDir * Math.cos(botHeading);
+			xDir * Math.sin(heading) +
+			yDir * Math.cos(heading);
 
 		// Strafing is slower than rolling, bump speed
 		rotatedX *= BotConfig.STRAFE_MULT;
@@ -134,11 +136,11 @@ public class DriveMotors {
 	}
 
 
-	public void driveWithDistanceSensor() {
+	public void driveWithDistanceSensor(double delta) {
 		double dist = distSensor.getDistance(DistanceUnit.MM);
 		double error = targetDistance - dist;
 		
-		double power = distanceSensorPidController.PIDControl(error, deltaTime);
+		double power = distanceSensorPidController.PIDControl(error, delta);
 
 		frontLeft.setPower(-power);
 		frontRight.setPower(power);
@@ -200,15 +202,17 @@ public class DriveMotors {
 
 
 	public boolean isDone() {
-		switch this.state {
+		switch (this.state) {
 			case ODOMETRY:
-				return (Math.abs(xPosPidController.error) < 5) && (Math.abs(yPosPidController.error) < 5) && (Math.abs(imuPidController.error) < .1);
-				break;
+				return (Math.abs(xPosPidController.lastError) < 5) && 
+					   (Math.abs(yPosPidController.lastError) < 5) && 
+					   (Math.abs(imuPidController.lastError) < .1);
 			
 			case DISTANCE:
-				return (Math.abs(distanceSensorPidController.error) < 5);
-				break;
+				return (Math.abs(distanceSensorPidController.lastError) < 5);
 		}
+		
+		return true;
 	}
 
 
