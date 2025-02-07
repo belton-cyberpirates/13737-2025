@@ -7,7 +7,7 @@ public class Move extends Action {
 	double yPos;
 	double heading;
 
-	public ActionMove(Auto auto, double xPos, double yPos, double heading) {
+	public Move(Auto auto, double xPos, double yPos, double heading) {
 		this.auto = auto;
 		
 		this.xPos = xPos;
