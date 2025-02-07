@@ -40,6 +40,7 @@ public class BotConfig {
   public static final int CRUISE_SPEED = 2000;
   public static final double STRAFE_MULT = 1.1;
   public static final int ARM_VELOCITY = 1000;
+  public static final int WRIST_VELOCITY = 4000;
   // ---------------------------------------------------------------------------
 
 
