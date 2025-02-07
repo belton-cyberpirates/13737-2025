@@ -35,7 +35,7 @@ public class Arm {
   
 	public void Initialize() {
 		for(DcMotorEx motor : motors) motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-		for(DcMotorEx motor : motors) motor.setTargetPosition(0);
+		for(DcMotorEx motor : motors) motor.setTargetPosition(10);
 		for(DcMotorEx motor : motors) motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 		leftArm.setPower(1);
 		rightArm.setPower(1);
@@ -46,30 +46,13 @@ public class Arm {
 	}
   
 	public void Move(int position) {
-		setVelocity(500);
+		setVelocity(BotConfig.armVelocity);
 
 		leftArm.setTargetPosition(-position);
 		rightArm.setTargetPosition(-position);
-	}
-
-	public void Move(int position, boolean waitForDone) {
-		Move(position);
-		
-		if (waitForDone) WaitForMotors();
-	}
-
-	public void Move(int position, boolean waitForDone, int tempArmVelocity) {
-		setVelocity(tempArmVelocity);
-
-		leftArm.setTargetPosition(-position);
-		rightArm.setTargetPosition(-position);
-		
-		if (waitForDone) WaitForMotors();
 	}
 	
-	public void WaitForMotors() {
-		while (leftArm.isBusy() || rightArm.isBusy()) {}
-		
-		setVelocity(BotConfig.ARM_VELOCITY);
+	public boolean isBusy() {
+		return leftArm.isBusy() || rightArm.isBusy()
 	}
 }
