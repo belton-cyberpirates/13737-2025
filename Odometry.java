@@ -1,57 +1,72 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotor;
+
 
 public class Odometry {
-    private LinearOpMode auto;
+	private LinearOpMode auto;
 
-    private Encoder encoderLeft;
-    private Encoder encoderRight;
-    private Encoder encoderHorizontal;
+	private DcMotorEx encoderLeft;
+	private DcMotorEx encoderRight;
+	private DcMotorEx encoderHorizontal;
 
-    double xPos = 0;
-    double yPos = 0;
-    double heading = 0;
+	double xPos = 0;
+	double yPos = 0;
+	double heading = 0;
+
+    double prevLeftPos = 0;
+    double prevRightPos = 0;
+    double prevHorizontalPos = 0;
 
 
-    public Odometry(LinearOpMode auto) {
-        this.auto = auto;
+	public Odometry(LinearOpMode auto) {
+		this.auto = auto;
 
-        this.encoderLeft = auto.hardwareMap.get(Encoder.class, BotConfig.LEFT_ENCODER_NAME);
-        this.encoderRight = auto.hardwareMap.get(Encoder.class, BotConfig.RIGHT_ENCODER_NAME);
-        this.encoderHorizontal = auto.hardwareMap.get(Encoder.class, BotConfig.HORIZONTAL_ENCODER_NAME);
+		this.encoderLeft = auto.hardwareMap.get(DcMotorEx.class, BotConfig.LEFT_ENCODER_NAME);
+		this.encoderRight = auto.hardwareMap.get(DcMotorEx.class, BotConfig.RIGHT_ENCODER_NAME);
+		this.encoderHorizontal = auto.hardwareMap.get(DcMotorEx.class, BotConfig.HORIZONTAL_ENCODER_NAME);
+	}
 
-        new Thread(this::updateLoop).start();
+
+    public void process() {
+        double leftPos = this.encoderLeft.getCurrentPosition();
+        double rightPos = this.encoderRight.getCurrentPosition();
+        double horizontalPos = this.encoderHorizontal.getCurrentPosition();
+
+        double deltaLeft = leftPos - prevLeftPos;
+        double deltaRight = rightPos - prevRightPos;
+        double deltaHorizontal = horizontalPos - prevHorizontalPos;
+
+        updatePosition(deltaLeft, deltaRight, deltaHorizontal);
     }
 
 
-    void updatePosition(double deltaLeft, double deltaRight, double deltaHorizontal) {
-        deltaHeading = (deltaLeft - deltaRight) / BotConfig.TRACK_WIDTH;
+	void updatePosition(double deltaLeft, double deltaRight, double deltaHorizontal) {
+        double deltaHeading = (deltaLeft - deltaRight) / BotConfig.TRACK_WIDTH;
 
-        double centerDisplacement = (deltaLeft + deltaRight) / 2
-        double horizontalDisplacement = deltaHorizontal - (BotConfig.FORWARD_OFFSET * deltaHeading)
-    }
+        double centerDisplacement = (deltaLeft + deltaRight) / 2;
+        double horizontalDisplacement = deltaHorizontal - (BotConfig.FORWARD_OFFSET * deltaHeading);
 
+        double deltaX = ( centerDisplacement * ( Math.sin(heading + deltaHeading) - Math.sin(heading) ) + horizontalDisplacement * ( Math.cos(heading + deltaHeading) - Math.cos(heading) ) ) / deltaHeading;
+        double deltaY = ( horizontalDisplacement * ( Math.sin(heading + deltaHeading) - Math.sin(heading) ) - centerDisplacement * ( Math.cos(heading + deltaHeading) + Math.cos(heading) ) ) / deltaHeading;
 
-    void updateLoop() {
-        while (auto.opModeIsActive()) {
-            double deltaLeft = this.encoderLeft.getPosition();
-            double deltaRight = this.encoderRight.getPosition();
-            double deltaHorizontal = this.encoderHorizontal.getPosition();
-
-            updatePosition(deltaLeft, deltaRight, deltaHorizontal)
-        }
-    }
+        xPos += deltaX;
+        yPos += deltaY;
+        heading += deltaHeading;
+	}
 
 
-    public double getX() {
-        return xPos;
-    }
+	public double getX() {
+		return xPos;
+	}
 
-    public double getY() {
-        return yPos;
-    }
+	public double getY() {
+		return yPos;
+	}
 
-    public double getHeading() {
-        return heading;
-    }
+	public double getHeading() {
+		return heading;
+	}
 }
