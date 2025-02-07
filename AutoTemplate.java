@@ -21,7 +21,7 @@ public class AutoTemplate extends Auto {
 
 			// Wave arm
 			new MoveArm(this, 500, true),
-			new MoveArm(this, 50, false),
+			new MoveArm(this, 50, true),
 
 			// Move back
 			new Move(this, 0, 0, 0),
