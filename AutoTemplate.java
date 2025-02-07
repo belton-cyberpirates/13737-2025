@@ -8,7 +8,8 @@ import org.firstinspires.ftc.teamcode.Auto;
 
 
 @Autonomous(name = "Name Here"/*, preselectTeleOp="Field Centric (main)"*/)
-public class AutoOdometry extends Auto {
+@Disabled
+public class AutoTemplate extends Auto {
 
 	public Action[] getActions() {
 		Action[] actions = {
