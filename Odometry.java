@@ -31,9 +31,9 @@ public class Odometry {
 
 
     public void process() {
-        double leftPos = this.encoderLeft.getCurrentPosition();
-        double rightPos = this.encoderRight.getCurrentPosition();
-        double horizontalPos = this.encoderHorizontal.getCurrentPosition();
+        double leftPos = this.encoderLeft.getCurrentPosition() / BotConfig.TICKS_PER_MM;
+        double rightPos = this.encoderRight.getCurrentPosition() / BotConfig.TICKS_PER_MM;
+        double horizontalPos = this.encoderHorizontal.getCurrentPosition() / BotConfig.TICKS_PER_MM;
 
         double deltaLeft = leftPos - prevLeftPos;
         double deltaRight = rightPos - prevRightPos;
