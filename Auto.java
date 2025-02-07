@@ -72,6 +72,9 @@ public abstract class Auto extends LinearOpMode {
 				actions = Arrays.copyOfRange(actions, 1, actions.length);
 				actions[0].onStart();
 			}
+
+			odometry.process();
+			driveMotors.process();
 		}
 
 		saveHeading();
