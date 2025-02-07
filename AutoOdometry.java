@@ -7,13 +7,16 @@ import org.firstinspires.ftc.teamcode.BotConfig;
 import org.firstinspires.ftc.teamcode.Auto;
 
 
-@Autonomous(name = "Odometry", preselectTeleOp="Field Centric (main)")
+@Autonomous(name = "Odometry Test"/*, preselectTeleOp="Field Centric (main)"*/)
 public class AutoOdometry extends Auto {
 
 	public Action[] getActions() {
 		Action[] actions = {
-			new Move(this, 100, 0, 0)
+			// ======================= AUTO START ======================= //
+
+			new Move(this, 100, 0, 0),
 			
+			// ======================== AUTO END ======================== //
 		};
 		
 		return actions;
