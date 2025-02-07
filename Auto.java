@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import java.util.Arrays;
 import com.qualcomm.robotcore.hardware.IMU;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -17,11 +18,11 @@ import org.firstinspires.ftc.teamcode.Heading;
 public abstract class Auto extends LinearOpMode {
 	abstract Action[] getActions();
 
-	public protected DriveMotors driveMotors;
-	public protected Arm arm;
-	public protected Intake intake;
-	public protected IMU imu;
-	public protected Heading heading;
+	public DriveMotors driveMotors;
+	public Arm arm;
+	public Intake intake;
+	public IMU imu;
+	public Heading heading;
 	
 	/**
 	 * Initialize classes used by autos
@@ -51,11 +52,6 @@ public abstract class Auto extends LinearOpMode {
 		telemetry.addData("Fully Initialized", true);
 		telemetry.update();
 	}
-	
-	protected void rotateTo(double deg) {
-		double _heading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
-		driveMotors.Turn((int)(_heading-deg));
-	}
 
 	protected void saveHeading() {
 		double _heading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
@@ -69,14 +65,12 @@ public abstract class Auto extends LinearOpMode {
 
 		waitForStart();
 
-		Action[] actions = getActions()
+		Action[] actions = getActions();
 
-		while (opModeIsActive() && ( actions.length() > 0 )) { // <----------------------------------------------------------------
-			Action currentAction = actions[0];
-			currentAction.process();
-
-			if ( currentAction.isDone() ) {
+		while (opModeIsActive() && ( actions.length > 0 )) { // <----------------------------------------------------------------
+			if ( actions[0].isDone() ) {
 				actions = Arrays.copyOfRange(actions, 1, actions.length);
+				actions[0].onStart();
 			}
 		}
 
