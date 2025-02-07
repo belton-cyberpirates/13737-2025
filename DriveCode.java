@@ -323,7 +323,7 @@ public class DriveCode extends LinearOpMode {
 	 * if boost trigger unpressed, return base_speed,
 	 * else return base_speed + boost amount
 	 */
-	double calcMaxSpeed(double triggerVal, int BASE_SPEED, double MAX_BOOST) {
+	double calcMaxSpeed(double triggerVal, double BASE_SPEED, double MAX_BOOST) {
 		double boostRatio = triggerVal * MAX_BOOST;
 		double boostSpeed = boostRatio * BASE_SPEED;
 		return BASE_SPEED + boostSpeed;
