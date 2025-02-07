@@ -19,14 +19,13 @@ import org.firstinspires.ftc.teamcode.BotConfig;
 import org.firstinspires.ftc.teamcode.PIDController;
 
 
-enum states {
-	ODOMETRY,
-	DISTANCE,
-	IDLE
-}
-
-
 public class DriveMotors {
+
+	enum states {
+		ODOMETRY,
+		DISTANCE,
+		IDLE
+	}
 
 	static PIDController distanceSensorPidController = new PIDController(0.007, 0.0005, 0.00018);
 	static PIDController xPosPidController = new PIDController(0, 0, 0);
@@ -209,6 +208,7 @@ public class DriveMotors {
 			case DISTANCE:
 				return (Math.abs(distanceSensorPidController.error) < 5);
 				break;
+		}
 	}
 
 
