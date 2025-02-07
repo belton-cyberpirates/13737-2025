@@ -10,10 +10,13 @@ import org.firstinspires.ftc.teamcode.Auto;
 @Autonomous(name = "Odometry", preselectTeleOp="Field Centric (main)")
 public class AutoOdometry extends Auto {
 
-	Action[] getActions() {
-		return {
-
-		}
+	public Action[] getActions() {
+		Action[] actions = {
+			new ActionMove(this, 100, 0, 0)
+			
+		};
+		
+		return actions;
 	}
 }
 
