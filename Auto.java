@@ -14,9 +14,9 @@ import org.firstinspires.ftc.teamcode.DriveMotors;
 import org.firstinspires.ftc.teamcode.Heading;
 
 
-import java.util.List;
-
 public abstract class Auto extends LinearOpMode {
+	abstract Action[] getActions();
+
 	public protected DriveMotors driveMotors;
 	public protected Arm arm;
 	public protected Intake intake;
@@ -27,11 +27,12 @@ public abstract class Auto extends LinearOpMode {
 	 * Initialize classes used by autos
 	 */
 	protected void Initialize() {
+		imu = hardwareMap.get(IMU.class, BotConfig.IMU_NAME);
+
 		driveMotors = new DriveMotors(this);
 		arm = new Arm(this);
 		intake = new Intake(this);
 
-		imu = hardwareMap.get(IMU.class, "imu");
 		imu.resetYaw();
 		telemetry.addData("Beginning Initialization...", false);
 		telemetry.update();
@@ -44,7 +45,7 @@ public abstract class Auto extends LinearOpMode {
 		intake.CloseClaw(0);
 		intake.DropWrist();
 		arm.DropArm();
-		sleep(5000);
+		sleep(3000);
 		arm.Initialize();
 		intake.InitializeWrist();
 		telemetry.addData("Fully Initialized", true);
@@ -59,5 +60,31 @@ public abstract class Auto extends LinearOpMode {
 	protected void saveHeading() {
 		double _heading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 		this.heading.setHeading(_heading);
+	}
+
+	@Override
+	public void runOpMode() {
+		Initialize();
+		MotorSetup();
+
+		waitForStart();
+
+		Action[] actions = getActions()
+
+		while (opModeIsActive() && ( actions.length() > 0 )) { // <----------------------------------------------------------------
+			Action currentAction = actions[0];
+			currentAction.process();
+
+			if ( currentAction.isDone() ) {
+				actions = Arrays.copyOfRange(actions, 1, actions.length);
+			}
+		}
+
+		saveHeading();
+	}
+
+
+	public double getHeading() {
+		return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 	}
 }

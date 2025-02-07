@@ -16,9 +16,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 public class DriveCode extends LinearOpMode {
 	
 	// Drive constants
-	final int BASE_SPEED = 1500;
+	final double BASE_SPEED = .5;
 	final double MAX_BOOST = 0.6; // boost maxes out at an additional 60% of the base speed
-	final double STRAFE_MULT = 1.41;
+	final double STRAFE_MULT = 1.2;
 
 	// Arm constants
 	final double ARM_VELOCITY = 750;
@@ -28,7 +28,7 @@ public class DriveCode extends LinearOpMode {
 	final int WRIST_GRAB_POS = 1030;
 	
 	// Winch Constants
-	final double WINCH_VELOCITY = 1;
+	final double WINCH_POWER = 1;
 	
 	// Claw constants
 	final double CLAW_LEFT_OPEN_POS = 0.2;
@@ -170,21 +170,23 @@ public class DriveCode extends LinearOpMode {
 			double rotatedY =
 				leftStickXGP1 * Math.sin(botHeading) +
 				leftStickYGP1 * Math.cos(botHeading);
-			rotatedX *= STRAFE_MULT; // strafing is slower than rolling, bump speed
+			
+			// strafing is slower than rolling, bump speed
+			rotatedX *= STRAFE_MULT;
 
 
 			// Set the power of the wheels based off the new joystick coordinates
 			// y+x+stick <- [-1,1]
-			BackLeft.setVelocity(
+			BackLeft.setPower(
 				(-rotatedY - rotatedX + rightStickXGP1) * maxSpeed
 			);
-			FrontLeft.setVelocity(
+			FrontLeft.setPower(
 				(-rotatedY + rotatedX + rightStickXGP1) * maxSpeed
 			);
-			FrontRight.setVelocity(
+			FrontRight.setPower(
 				(rotatedY + rotatedX + rightStickXGP1) * maxSpeed
 			);
-			BackRight.setVelocity(
+			BackRight.setPower(
 				(rotatedY - rotatedX + rightStickXGP1) * maxSpeed
 			);
 			
@@ -198,11 +200,11 @@ public class DriveCode extends LinearOpMode {
 			}
 			
 			if (gamepad1.dpad_down) {
-				Winch.setPower(-WINCH_VELOCITY);
+				Winch.setPower(-WINCH_POWER);
 				hanging = false;
 			}
 			else if (hanging) {
-				Winch.setPower(WINCH_VELOCITY);
+				Winch.setPower(WINCH_POWER);
 				ArmLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 				ArmRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 				ArmLeft.setPower(1);

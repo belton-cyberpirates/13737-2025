@@ -18,6 +18,7 @@ public class BotConfig {
   public static final String WRIST_NAME = "wrist";
   
   public static final String DISTANCE_SENSOR_NAME = "dist_sensor";
+  public static final String IMU_NAME = "imu";
 
   public static final String LEFT_ENCODER_NAME = "left_encoder";
   public static final String RIGHT_ENCODER_NAME = "right_encoder";
@@ -37,7 +38,7 @@ public class BotConfig {
   ** DRIVE SPEED CONSTANTS
   *****************************************************************************/
   public static final int CRUISE_SPEED = 2000;
-  public static final double STRAFE_MULT = .5;
+  public static final double STRAFE_MULT = 1.1;
   public static final int ARM_VELOCITY = 1000;
   // ---------------------------------------------------------------------------
 

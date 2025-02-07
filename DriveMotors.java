@@ -19,25 +19,45 @@ import org.firstinspires.ftc.teamcode.BotConfig;
 import org.firstinspires.ftc.teamcode.PIDController;
 
 
+enum states {
+	ODOMETRY,
+	DISTANCE,
+	IDLE
+}
+
+
 public class DriveMotors {
-  public DcMotorEx frontLeft;
-  public DcMotorEx frontRight;
-  public DcMotorEx backLeft;
-  public DcMotorEx backRight;
 
-  public Odometry odometry;
+	static PIDController distanceSensorPidController = new PIDController(0.007, 0.0005, 0.00018);
+	static PIDController xPosPidController = new PIDController(0, 0, 0);
+	static PIDController yPosPidController = new PIDController(0, 0, 0);
+	static PIDController imuPidController = new PIDController(0.01, 0, 0);
 
-  static Orientation angles;
+	static Orientation angles;
 
-  private DistanceSensor distSensor;
+	public DcMotorEx frontLeft;
+	public DcMotorEx frontRight;
+	public DcMotorEx backLeft;
+	public DcMotorEx backRight;
 
-  private LinearOpMode auto;
+	public Odometry odometry;
 
-  private PIDController distanceSensorPidController = new PIDController(0.007, 0.0005, 0.00018);
-  private PIDController imuPidController = new PIDController(0.01, 0, 0);
+	private LinearOpMode auto;
+
+	private DistanceSensor distSensor;
+
+	ElapsedTime deltaTimer = new ElapsedTime();
+
+	states state = states.IDLE;
+
+	double targetX;
+	double targetY;
+	double targetHeading;
+
+	int targetDistance;
 
 
-  public DriveMotors(LinearOpMode auto) {
+	public DriveMotors(LinearOpMode auto) {
 		this.auto = auto;
 
 		this.frontRight = auto.hardwareMap.get(DcMotorEx.class, BotConfig.FRONT_RIGHT_WHEEL_NAME);
@@ -48,269 +68,120 @@ public class DriveMotors {
 		this.distSensor = auto.hardwareMap.get(DistanceSensor.class, BotConfig.DISTANCE_SENSOR_NAME);
 
 		this.odometry = new Odometry(auto);
-  }
 
-
-  private void Reset() {
-		this.frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-		this.frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-		this.backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-		this.backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-  }
-
-
-  private void SetToRunPosition() {
-		this.frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-		this.frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-		this.backLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-		this.backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-  }
-
-
-  private void SetToRunWithPower() {
-		this.frontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-		this.frontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-		this.backLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-		this.backRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-  }
-
-
-  private void SetToRunWithEncoders() {
-  	this.frontLeft.setTargetPosition(0);
-  	this.frontRight.setTargetPosition(0);
-  	this.backLeft.setTargetPosition(0);
-  	this.backRight.setTargetPosition(0);
-  	
-		this.frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-		this.frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-		this.backLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-		this.backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-  }
-  
-  
-  private void SetZeroBehaviour() {
-		this.frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-		this.frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-		this.backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-		this.backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-  }
-
-
-  private void MotorInit() {
-	this.Reset();
-	this.SetZeroBehaviour();
-	this.SetTargetPositions(0, 0, 0, 0);
-	this.SetToRunPosition();
-  }
-
-
-  private void MotorInitVelocity() {
-	this.SetZeroBehaviour();
-	this.frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODERS);
-	this.frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODERS);
-	this.backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODERS);
-	this.backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODERS);
-  }
-
-  
-  private void setVelocity(int velocity) {
-	this.frontLeft.setVelocity(velocity);
-	this.frontRight.setVelocity(velocity);
-	this.backLeft.setVelocity(velocity);
-	this.backRight.setVelocity(velocity);
-  }
-
-  
-  private void setVelocities(int fr, int fl, int bl, int br) {
-	this.frontLeft.setVelocity(fr);
-	this.frontRight.setVelocity(fl);
-	this.backLeft.setVelocity(bl);
-	this.backRight.setVelocity(br);
-  }
-
-
-  private void SetTargetPositions(int fr, int fl, int bl, int br) {
-	this.frontRight.setTargetPosition(fr);
-	this.frontLeft.setTargetPosition(fl);
-	this.backLeft.setTargetPosition(bl);
-	this.backRight.setTargetPosition(br);
-  }
-  
-  
-  public void Move(Direction dir, int dist) {
-	Move(dir, dist, 1);
-  }
-  
-
-  public void Move(Direction direction, int distance, double mult) {
-	this.MotorInit();
-	
-	boolean strafing = (direction == Direction.LEFT) || (direction == Direction.RIGHT);
-
-	switch(direction) {
-	  case FORWARD:
-		this.SetTargetPositions(-distance, distance, distance, -distance);
-		break;
-  
-	  case BACKWARD:
-		this.SetTargetPositions(distance, -distance, -distance, distance);
-		break;
-  
-	  case LEFT:
-		this.SetTargetPositions(-distance, -distance, distance, distance);
-		break;
-  
-	  case RIGHT:
-		this.SetTargetPositions(distance, distance, -distance, -distance);
-		break;
-		
-	  case FRONT_RIGHT:
-		this.SetTargetPositions(0, distance, 0, -distance);
-		break;
-		
-	  case BACK_LEFT:
-		this.SetTargetPositions(0, -distance, 0, distance);
-		break;
-		
-	  case FRONT_LEFT:
-		this.SetTargetPositions(-distance, 0, distance, 0);
-		break;
-		
-	  case BACK_RIGHT:
-		this.SetTargetPositions(distance, 0, -distance, 0);
-		break;
-	}
-	// while motors are running, wait
-	this.setVelocity((int)(BotConfig.CRUISE_SPEED * mult * ( strafing ? BotConfig.STRAFE_MULT : 1 )));
-	
-	this.WaitForMotors();
-  }
-  
-  public void MoveWithoutWait(Direction direction, int distance) {
-	this.MotorInit();
-	
-	boolean strafing = (direction == Direction.LEFT) || (direction == Direction.RIGHT);
-
-	switch(direction) {
-	  case FORWARD:
-		this.SetTargetPositions(-distance, distance, distance, -distance);
-		break;
-  
-	  case BACKWARD:
-		this.SetTargetPositions(distance, -distance, -distance, distance);
-		break;
-  
-	  case LEFT:
-		this.SetTargetPositions(-distance, -distance, distance, distance);
-		break;
-  
-	  case RIGHT:
-		this.SetTargetPositions(distance, distance, -distance, -distance);
-		break;
-		
-	  case FRONT_RIGHT:
-		this.SetTargetPositions(0, distance, 0, -distance);
-		break;
-		
-	  case BACK_LEFT:
-		this.SetTargetPositions(0, -distance, 0, distance);
-		break;
-		
-	  case FRONT_LEFT:
-		this.SetTargetPositions(-distance, 0, distance, 0);
-		break;
-		
-	  case BACK_RIGHT:
-		this.SetTargetPositions(distance, 0, -distance, 0);
-		break;
-	}
-	// while motors are running, wait
-	this.setVelocity((int)(BotConfig.CRUISE_SPEED * ( strafing ? BotConfig.STRAFE_MULT : 1 )));
-  }
-
-
-  public void RunWithVelocity(Direction direction, int velocity) {
-	SetToRunWithEncoders();
-
-	switch(direction) {
-	  case FORWARD:
-		this.setVelocities(-velocity, velocity, velocity, -velocity);
-		break;
-  
-	  case BACKWARD:
-		this.setVelocities(velocity, -velocity, -velocity, velocity);
-		break;
-  
-	  case LEFT:
-		this.setVelocities(-velocity, -velocity, velocity, velocity);
-		break;
-  
-	  case RIGHT:
-		this.setVelocities(velocity, velocity, -velocity, -velocity);
-		break;
-		
-	  case FRONT_RIGHT:
-		this.setVelocities(0, velocity, 0, -velocity);
-		break;
-		
-	  case BACK_LEFT:
-		this.setVelocities(0, -velocity, 0, velocity);
-		break;
-		
-	  case FRONT_LEFT:
-		this.setVelocities(-velocity, 0, velocity, 0);
-		break;
-		
-	  case BACK_RIGHT:
-		this.setVelocities(velocity, 0, -velocity, 0);
-		break;
-	}
-  }
-
-
-  public void Stop() {
-	this.MotorInit();
-  }
-
-
-  public void MoveToDistance(int targetDistance, int time) {
 		SetToRunWithPower();
-		
-		ElapsedTime deltaTimer = new ElapsedTime();
-		ElapsedTime timer = new ElapsedTime();
-		
-		double error = 10;
-		
-		while (auto.opModeIsActive() && ( timer.milliseconds() < time || Math.abs(error) > 5 )) {
-			double dist = distSensor.getDistance(DistanceUnit.MM);
-			error = targetDistance - dist;
+		SetZeroBehaviour();
+	}
+
+
+	public process() {
+		double deltaTime = deltaTimer.seconds();
+
+		switch this.state {
+			case ODOMETRY:
+				driveWithOdometry();
+				break;
 			
-			double power = distanceSensorPidController.PIDControl(error, deltaTimer.seconds());
-			deltaTimer.reset();
-			frontLeft.setPower(-power);
-			frontRight.setPower(power);
-			backLeft.setPower(-power);
-			backRight.setPower(power);
-			
-			auto.telemetry.addData("dist", dist);
-			auto.telemetry.addData("error", error);
-			auto.telemetry.addData("power", power);
-			auto.telemetry.update();
+			case DISTANCE:
+				driveWithDistanceSensor();
+				break;
 		}
-  }
+		
+		auto.telemetry.update();
+		deltaTimer.reset();
+	}
 
 
-  public void TurnToAngle(double targetAngleDegrees int time) {
+	private void driveWithOdometry() {
+
+		double heading = auto.getHeading();
+
+		double xDir = xPosPidController.PIDControl(targetX, odometry.getX(), deltaTime);
+		double yDir = yPosPidController.PIDControl(targetY, odometry.getY(), deltaTime);
+		double anglePower = imuPidController.PIDControlRadians(targetAngle, heading, deltaTimer.seconds());
+
+		// Rotate the movement vector to cancel out the angle of the robot
+		double rotatedX =
+			xDir * Math.cos(botHeading) -
+			yDir * Math.sin(botHeading);
+		double rotatedY =
+			xDir * Math.sin(botHeading) +
+			yDir * Math.cos(botHeading);
+
+		// Strafing is slower than rolling, bump speed
+		rotatedX *= BotConfig.STRAFE_MULT;
+
+		// Set the power of the wheels based off the new movement vector
+		double backLeftPower   = (-rotatedY - rotatedX + anglePower);
+		double frontLeftPower  = (-rotatedY + rotatedX + anglePower);
+		double frontRightPower = ( rotatedY + rotatedX + anglePower);
+		double backRightPower  = ( rotatedY - rotatedX + anglePower);
+
+		// Find highest motor power value
+		double highestPower =  Collections.max(Arrays.asList( backLeftPower, frontLeftPower, frontRightPower, backRightPower ));
+
+		// Scale power values if trying to run motors faster than possible
+		if (highestPower > 1) {
+			backLeftPower /= highestPower;
+			frontLeftPower /= highestPower;
+			frontRightPower /= highestPower;
+			backRightPower /= highestPower;
+		}
+
+		backLeft.setPower(backLeftPower);
+		frontLeft.setPower(frontLeftPower);
+		frontRight.setPower(frontRightPower);
+		backRight.setPower(backRightPower);
+	}
+
+
+	public void driveWithDistanceSensor() {
+		double dist = distSensor.getDistance(DistanceUnit.MM);
+		double error = targetDistance - dist;
+		
+		double power = distanceSensorPidController.PIDControl(error, deltaTime);
+
+		frontLeft.setPower(-power);
+		frontRight.setPower(power);
+		backLeft.setPower(-power);
+		backRight.setPower(power);
+		
+		auto.telemetry.addData("dist", dist);
+		auto.telemetry.addData("error", error);
+		auto.telemetry.addData("power", power);
+	}
+
+
+	public void Move(double xPos, double yPos, double heading) {
+		this.targetX = xPos;
+		this.targetY = yPos;
+		this.targetHeading = heading;
+
+		this.state = states.ODOMETRY;
+	}
+
+
+	public void MoveToDistance(int distance) {
+		this.targetDistance = distance;
+
+		this.state = states.DISTANCE;
+	}
+
+
+	public void Stop() {
+		this.state = states.IDLE;
+	}
+
+
+  	/*public void TurnToAngle(double targetAngleDegrees int time) {
 		SetToRunWithPower();
-
-		double targetAngle = targetAngleDegrees / 2 * Math.PI;
 		
 		ElapsedTime deltaTimer = new ElapsedTime();
 		ElapsedTime timer = new ElapsedTime();
 		
-		double error = 50000;
+		double error = Double.POSITIVE_INFINITY;
 		
-		while (auto.opModeIsActive() /*&& ( timer.milliseconds() < time || Math.abs(error) > 5 )*/) {
+		while (auto.opModeIsActive()) {
 			double heading = auto.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
 			
 			double power = imuPidController.PIDControlRadians(targetAngle, heading, deltaTimer.seconds());
@@ -326,34 +197,33 @@ public class DriveMotors {
 			auto.telemetry.addData("power", power);
 			auto.telemetry.update();
 		}
-  }
-  
-  
-  public void Turn(int angle) {
-	int distance = (int)(( angle * BotConfig.TICKS_PER_360_DEG ) / 360);
-	
-	this.MotorInit();
-	this.setVelocity(BotConfig.CRUISE_SPEED);
-	this.SetTargetPositions(distance, distance, distance, distance);
-	
-	this.WaitForMotors();
-  }
-  
-  
-  public boolean getMotorsBusy() {
-  	return (
-	  	this.frontLeft.isBusy() ||
-		this.frontRight.isBusy() ||
-		this.backLeft.isBusy() ||
-		this.backRight.isBusy()
-	);
-  }
+	}*/
 
 
-  /**
-   * Wait until motion is complete
-   */
-  private void WaitForMotors() {
-	while (this.getMotorsBusy()) {}
-  }
+	public boolean isDone() {
+		switch this.state {
+			case ODOMETRY:
+				return (Math.abs(xPosPidController.error) < 5) && (Math.abs(yPosPidController.error) < 5) && (Math.abs(imuPidController.error) < .1);
+				break;
+			
+			case DISTANCE:
+				return (Math.abs(distanceSensorPidController.error) < 5);
+				break;
+	}
+
+
+	private void SetToRunWithPower() {
+		this.frontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+		this.frontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+		this.backLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+		this.backRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+	}
+  
+  
+	private void SetZeroBehaviour() {
+		this.frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+		this.frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+		this.backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+		this.backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+	}
 }
