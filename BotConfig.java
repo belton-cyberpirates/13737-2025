@@ -69,7 +69,7 @@ public class BotConfig {
   public static final double TRACK_WIDTH = 37; //TODO
   public static final double WHEEL_DIAMETER = 38;
   public static final double TICKS_PER_REVOLUTION = 2048;
-  public static final double TICKS_PER_MM = (int) ( TICKS_PER_REVOLUTION / ( Math.PI * WHEEL_DIAMETER ) );
+  public static final double TICKS_PER_MM = (int)( TICKS_PER_REVOLUTION / ( Math.PI * WHEEL_DIAMETER ) );
   // ---------------------------------------------------------------------------
 
 
