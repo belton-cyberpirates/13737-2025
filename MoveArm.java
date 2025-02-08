@@ -9,15 +9,15 @@ public class MoveArm extends Action {
 
     public MoveArm(Auto auto, int targetPosition, boolean wait) {
         this.auto = auto;
-        this.targetPosition = position;
+        this.targetPosition = targetPosition;
         this.wait = wait;
     }
 
-    public onStart() {
+    public void onStart() {
         this.auto.arm.Move(this.targetPosition);
     }
 
-    public isDone() {
+    public boolean isDone() {
         return !(this.wait && this.auto.arm.isBusy());
     }
 }

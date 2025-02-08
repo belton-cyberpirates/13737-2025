@@ -7,17 +7,17 @@ public class MoveWrist extends Action {
     boolean wait;
 
 
-    public MoveArm(Auto auto, int targetPosition, boolean wait) {
+    public MoveWrist(Auto auto, int targetPosition, boolean wait) {
         this.auto = auto;
-        this.targetPosition = position;
+        this.targetPosition = targetPosition;
         this.wait = wait;
     }
 
-    public onStart() {
+    public void onStart() {
         this.auto.intake.MoveWrist(this.targetPosition);
     }
 
-    public isDone() {
+    public boolean isDone() {
         return !(this.wait && this.auto.intake.isWristBusy());
     }
 }
