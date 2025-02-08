@@ -43,7 +43,7 @@ public abstract class Auto extends LinearOpMode {
 	 * Set reliable initial configuration for robot motors
 	 */
 	protected void MotorSetup() {
-		intake.CloseClaw(0);
+		intake.CloseClaw();
 		intake.DropWrist();
 		arm.DropArm();
 		sleep(3000);
@@ -73,7 +73,7 @@ public abstract class Auto extends LinearOpMode {
 				actions[0].onStart();
 			}
 
-			odometry.process();
+			driveMotors.odometry.process();
 			driveMotors.process();
 		}
 
