@@ -46,13 +46,13 @@ public class Arm {
 	}
   
 	public void Move(int position) {
-		setVelocity(BotConfig.armVelocity);
+		setVelocity(BotConfig.ARM_VELOCITY);
 
 		leftArm.setTargetPosition(-position);
 		rightArm.setTargetPosition(-position);
 	}
 	
 	public boolean isBusy() {
-		return leftArm.isBusy() || rightArm.isBusy()
+		return leftArm.isBusy() || rightArm.isBusy();
 	}
 }
