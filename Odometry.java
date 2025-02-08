@@ -16,9 +16,9 @@ public class Odometry {
 	double yPos = 0;
 	double heading = 0;
 
-    double prevLeftPos = 0;
-    double prevRightPos = 0;
-    double prevHorizontalPos = 0;
+	double prevLeftPos = 0;
+	double prevRightPos = 0;
+	double prevHorizontalPos = 0;
 
 
 	public Odometry(LinearOpMode auto) {
@@ -30,31 +30,31 @@ public class Odometry {
 	}
 
 
-    public void process() {
-        double leftPos = this.encoderLeft.getCurrentPosition() / BotConfig.TICKS_PER_MM;
-        double rightPos = this.encoderRight.getCurrentPosition() / BotConfig.TICKS_PER_MM;
-        double horizontalPos = this.encoderHorizontal.getCurrentPosition() / BotConfig.TICKS_PER_MM;
+	public void process() {
+		double leftPos = this.encoderLeft.getCurrentPosition() / BotConfig.TICKS_PER_MM;
+		double rightPos = this.encoderRight.getCurrentPosition() / BotConfig.TICKS_PER_MM;
+		double horizontalPos = this.encoderHorizontal.getCurrentPosition() / BotConfig.TICKS_PER_MM;
 
-        double deltaLeft = leftPos - prevLeftPos;
-        double deltaRight = rightPos - prevRightPos;
-        double deltaHorizontal = horizontalPos - prevHorizontalPos;
+		double deltaLeft = leftPos - prevLeftPos;
+		double deltaRight = rightPos - prevRightPos;
+		double deltaHorizontal = horizontalPos - prevHorizontalPos;
 
-        updatePosition(deltaLeft, deltaRight, deltaHorizontal);
-    }
+		updatePosition(deltaLeft, deltaRight, deltaHorizontal);
+	}
 
 
 	void updatePosition(double deltaLeft, double deltaRight, double deltaHorizontal) {
-        double deltaHeading = (deltaLeft - deltaRight) / BotConfig.TRACK_WIDTH;
+		double deltaHeading = (deltaLeft - deltaRight) / BotConfig.TRACK_WIDTH;
 
-        double centerDisplacement = (deltaLeft + deltaRight) / 2;
-        double horizontalDisplacement = deltaHorizontal - (BotConfig.FORWARD_OFFSET * deltaHeading);
+		double centerDisplacement = (deltaLeft + deltaRight) / 2;
+		double horizontalDisplacement = deltaHorizontal - (BotConfig.FORWARD_OFFSET * deltaHeading);
 
-        double deltaX = ( centerDisplacement * ( Math.sin(heading + deltaHeading) - Math.sin(heading) ) + horizontalDisplacement * ( Math.cos(heading + deltaHeading) - Math.cos(heading) ) ) / deltaHeading;
-        double deltaY = ( horizontalDisplacement * ( Math.sin(heading + deltaHeading) - Math.sin(heading) ) - centerDisplacement * ( Math.cos(heading + deltaHeading) + Math.cos(heading) ) ) / deltaHeading;
+		double deltaX = ( centerDisplacement * ( Math.sin(heading + deltaHeading) - Math.sin(heading) ) + horizontalDisplacement * ( Math.cos(heading + deltaHeading) - Math.cos(heading) ) ) / deltaHeading;
+		double deltaY = ( horizontalDisplacement * ( Math.sin(heading + deltaHeading) - Math.sin(heading) ) - centerDisplacement * ( Math.cos(heading + deltaHeading) + Math.cos(heading) ) ) / deltaHeading;
 
-        xPos += deltaX;
-        yPos += deltaY;
-        heading += deltaHeading;
+		xPos += deltaX;
+		yPos += deltaY;
+		heading += deltaHeading;
 	}
 
 
