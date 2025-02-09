@@ -53,14 +53,14 @@ public class Odometry {
 		double centerDisplacement = (deltaLeft + deltaRight) / 2;
 		double horizontalDisplacement = deltaHorizontal - (BotConfig.FORWARD_OFFSET * deltaHeading);
 
+		double deltaY = (
+											centerDisplacement * ( Math.sin(heading + deltaHeading) - Math.sin(heading) ) + 
+											horizontalDisplacement * ( Math.cos(heading + deltaHeading) - Math.cos(heading) ) 
+										) / deltaHeading;
 		double deltaX = ( 
-							centerDisplacement * ( Math.sin(heading + deltaHeading) - Math.sin(heading) ) + 
-							horizontalDisplacement * ( Math.cos(heading + deltaHeading) - Math.cos(heading) ) 
-						) / deltaHeading;
-		double deltaY = ( 
-							horizontalDisplacement * ( Math.sin(heading + deltaHeading) - Math.sin(heading) ) - 
-							centerDisplacement * ( Math.cos(heading + deltaHeading) + Math.cos(heading) ) 
-						) / deltaHeading;
+											horizontalDisplacement * ( Math.sin(heading + deltaHeading) - Math.sin(heading) ) - 
+											centerDisplacement * ( Math.cos(heading + deltaHeading) - Math.cos(heading) ) 
+										) / deltaHeading;
 		
 		if (!( Double.isNaN(deltaX) || Double.isNaN(deltaY) )) {
 			xPos += deltaX;
@@ -78,8 +78,8 @@ public class Odometry {
 		auto.telemetry.addData("odometry deltaX", deltaX);
 		auto.telemetry.addData("odometry deltaY", deltaY);
 		auto.telemetry.addLine();
-		auto.telemetry.addData("odometry xPos", xPos);
-		auto.telemetry.addData("odometry yPos", yPos);
+		auto.telemetry.addData("odometry pos", xPos + ", " + yPos);
+		auto.telemetry.addData("odometry heading", heading);
 		auto.telemetry.addLine();
 	}
 
