@@ -18,13 +18,13 @@ public class AutoTemplate extends Auto {
 
 			// Actions Here:
 			// Move forward
-			new Move(this, 100, 0, 0),
+			new Move(this, 0, 100, 0),
 
 			// Wave arm
 			new MoveArm(this, 500, true),
 			new MoveArm(this, 50, true),
 
-			// Move back
+			// Move back to 0, 0
 			new Move(this, 0, 0, 0),
 			
 			// ======================== AUTO END ======================== //
