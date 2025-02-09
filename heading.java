@@ -1,13 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
 public class Heading {
-    private static double heading;
+	private static double heading;
 
-    public void setHeading(double newHeading) {
-        heading = newHeading;
-    }
+	public static void setHeading(double newHeading) {
+		heading = newHeading;
+	}
 
-    public double getHeading() {
-        return heading;
-    }
+	public static double getHeading() {
+		return heading;
+	}
 }
