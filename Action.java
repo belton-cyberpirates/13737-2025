@@ -7,4 +7,6 @@ public abstract class Action {
 
     public abstract boolean isDone();
 
+    public void process() {};
+
 }

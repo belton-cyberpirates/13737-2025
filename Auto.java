@@ -73,6 +73,9 @@ public abstract class Auto extends LinearOpMode {
 				currentAction = actions[0];
 				currentAction.onStart();
 			}
+			else {
+				currentAction.process();
+			}
 			
 			if ( actions[0].isDone() ) {
 				currentAction = null;
