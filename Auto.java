@@ -61,20 +61,31 @@ public abstract class Auto extends LinearOpMode {
 	@Override
 	public void runOpMode() {
 		Initialize();
-		MotorSetup();
+		//MotorSetup();
 
 		waitForStart();
 
 		Action[] actions = getActions();
+		Action currentAction = null;
 
 		while (opModeIsActive() && ( actions.length > 0 )) { // <----------------------------------------------------------------
+			if (currentAction == null) {
+				currentAction = actions[0];
+				currentAction.onStart();
+			}
+			
 			if ( actions[0].isDone() ) {
+				currentAction = null;
 				actions = Arrays.copyOfRange(actions, 1, actions.length);
-				actions[0].onStart();
 			}
 
 			driveMotors.odometry.process();
 			driveMotors.process();
+			
+			telemetry.addData("drivemotors state", driveMotors.state);
+			telemetry.addData("drivemotors targetX", driveMotors.targetX);
+			telemetry.addData("drivemotors targetY", driveMotors.targetY);
+			telemetry.addData("drivemotors targetHeading", driveMotors.targetHeading);
 		}
 
 		saveHeading();
@@ -82,6 +93,6 @@ public abstract class Auto extends LinearOpMode {
 
 
 	public double getHeading() {
-		return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+		return -imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 	}
 }
