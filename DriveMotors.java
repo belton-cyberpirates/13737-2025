@@ -30,9 +30,9 @@ public class DriveMotors {
 	}
 
 	static PIDController distanceSensorPidController = new PIDController(0.007, 0.0005, 0.00018);
-	static PIDController xPosPidController = new PIDController(0, 0, 0);
+	static PIDController xPosPidController = new PIDController(0.01, 0.0001, 0.00035);
 	static PIDController yPosPidController = new PIDController(0, 0, 0);
-	static PIDController imuPidController = new PIDController(0.01, 0, 0);
+	static PIDController imuPidController = new PIDController(.9, 0, 0);
 
 	static Orientation angles;
 
@@ -49,13 +49,13 @@ public class DriveMotors {
 
 	ElapsedTime deltaTimer = new ElapsedTime();
 
-	states state = states.IDLE;
+	public states state = states.IDLE;
 
-	double targetX;
-	double targetY;
-	double targetHeading;
+	public double targetX;
+	public double targetY;
+	public double targetHeading;
 
-	int targetDistance;
+	public int targetDistance;
 
 
 	public DriveMotors(Auto auto) {
@@ -70,6 +70,7 @@ public class DriveMotors {
 
 		this.odometry = new Odometry(auto);
 
+		ResetEncoders();
 		SetToRunWithPower();
 		SetZeroBehaviour();
 	}
@@ -119,7 +120,7 @@ public class DriveMotors {
 		double backRightPower  = ( rotatedY - rotatedX + anglePower);
 
 		// Find highest motor power value
-		double highestPower =  Collections.max(Arrays.asList( backLeftPower, frontLeftPower, frontRightPower, backRightPower ));
+		double highestPower = Collections.max(Arrays.asList( backLeftPower, frontLeftPower, frontRightPower, backRightPower ));
 
 		// Scale power values if trying to run motors faster than possible
 		if (highestPower > 1) {
@@ -133,6 +134,9 @@ public class DriveMotors {
 		frontLeft.setPower(frontLeftPower);
 		frontRight.setPower(frontRightPower);
 		backRight.setPower(backRightPower);
+		
+		auto.telemetry.addData("drivemotors heading", heading);
+		auto.telemetry.addData("drivemotors anglePower", anglePower);
 	}
 
 
@@ -156,7 +160,7 @@ public class DriveMotors {
 	public void Move(double xPos, double yPos, double heading) {
 		this.targetX = xPos;
 		this.targetY = yPos;
-		this.targetHeading = heading;
+		this.targetHeading = (heading * ( Math.PI / 180 ));
 
 		this.state = states.ODOMETRY;
 	}
@@ -229,5 +233,13 @@ public class DriveMotors {
 		this.frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 		this.backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 		this.backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+	}
+	
+	
+	private void ResetEncoders() {
+		this.frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+		this.frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+		this.backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+		this.backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 	}
 }
