@@ -38,6 +38,10 @@ public class Odometry {
 		double deltaLeft = leftPos - prevLeftPos;
 		double deltaRight = rightPos - prevRightPos;
 		double deltaHorizontal = horizontalPos - prevHorizontalPos;
+		
+		double prevLeftPos = leftPos;
+		double prevRightPos = rightPos;
+		double prevHorizontalPos = horizontalPos;
 
 		updatePosition(deltaLeft, deltaRight, deltaHorizontal);
 	}
@@ -49,12 +53,34 @@ public class Odometry {
 		double centerDisplacement = (deltaLeft + deltaRight) / 2;
 		double horizontalDisplacement = deltaHorizontal - (BotConfig.FORWARD_OFFSET * deltaHeading);
 
-		double deltaX = ( centerDisplacement * ( Math.sin(heading + deltaHeading) - Math.sin(heading) ) + horizontalDisplacement * ( Math.cos(heading + deltaHeading) - Math.cos(heading) ) ) / deltaHeading;
-		double deltaY = ( horizontalDisplacement * ( Math.sin(heading + deltaHeading) - Math.sin(heading) ) - centerDisplacement * ( Math.cos(heading + deltaHeading) + Math.cos(heading) ) ) / deltaHeading;
-
-		xPos += deltaX;
-		yPos += deltaY;
-		heading += deltaHeading;
+		double deltaX = ( 
+							centerDisplacement * ( Math.sin(heading + deltaHeading) - Math.sin(heading) ) + 
+							horizontalDisplacement * ( Math.cos(heading + deltaHeading) - Math.cos(heading) ) 
+						) / deltaHeading;
+		double deltaY = ( 
+							horizontalDisplacement * ( Math.sin(heading + deltaHeading) - Math.sin(heading) ) - 
+							centerDisplacement * ( Math.cos(heading + deltaHeading) + Math.cos(heading) ) 
+						) / deltaHeading;
+		
+		if (!( Double.isNaN(deltaX) || Double.isNaN(deltaY) )) {
+			xPos += deltaX;
+			yPos += deltaY;
+			heading += deltaHeading;
+		}
+		
+		auto.telemetry.addData("odometry deltaLeft", deltaLeft);
+		auto.telemetry.addData("odometry deltaRight", deltaRight);
+		auto.telemetry.addData("odometry deltaHorizontal", deltaHorizontal);
+		auto.telemetry.addLine();
+		auto.telemetry.addData("odometry deltaHeading", deltaHeading);
+		auto.telemetry.addData("odometry centerDisplacement", centerDisplacement);
+		auto.telemetry.addData("odometry horizontalDisplacement", horizontalDisplacement);
+		auto.telemetry.addData("odometry deltaX", deltaX);
+		auto.telemetry.addData("odometry deltaY", deltaY);
+		auto.telemetry.addLine();
+		auto.telemetry.addData("odometry xPos", xPos);
+		auto.telemetry.addData("odometry yPos", yPos);
+		auto.telemetry.addLine();
 	}
 
 
