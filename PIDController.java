@@ -7,7 +7,7 @@ public class PIDController {
 	double Kd;
 
 	double integralSum = 0;
-	double lastError = 0;
+	double lastError = 100;
 
 	public PIDController(double Kp, double Ki, double Kd) {
 		this.Kp = Kp;
