@@ -35,7 +35,7 @@ public class Arm {
   
 	public void Initialize() {
 		for(DcMotorEx motor : motors) motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-		for(DcMotorEx motor : motors) motor.setTargetPosition(10);
+		for(DcMotorEx motor : motors) motor.setTargetPosition(50);
 		for(DcMotorEx motor : motors) motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 		leftArm.setPower(1);
 		rightArm.setPower(1);
