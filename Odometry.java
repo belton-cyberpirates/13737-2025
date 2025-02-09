@@ -54,9 +54,9 @@ public class Odometry {
 		double horizontalDisplacement = deltaHorizontal - (BotConfig.FORWARD_OFFSET * deltaHeading);
 
 		double deltaY = (
-											centerDisplacement * ( Math.sin(heading + deltaHeading) - Math.sin(heading) ) + 
-											horizontalDisplacement * ( Math.cos(heading + deltaHeading) - Math.cos(heading) ) 
-										) / deltaHeading;
+							centerDisplacement * ( Math.sin(heading + deltaHeading) - Math.sin(heading) ) + 
+							horizontalDisplacement * ( Math.cos(heading + deltaHeading) - Math.cos(heading) ) 
+						) / deltaHeading;
 		double deltaX = ( 
 											horizontalDisplacement * ( Math.sin(heading + deltaHeading) - Math.sin(heading) ) - 
 											centerDisplacement * ( Math.cos(heading + deltaHeading) - Math.cos(heading) ) 
