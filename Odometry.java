@@ -58,9 +58,9 @@ public class Odometry {
 							horizontalDisplacement * ( Math.cos(heading + deltaHeading) - Math.cos(heading) ) 
 						) / deltaHeading;
 		double deltaX = ( 
-											horizontalDisplacement * ( Math.sin(heading + deltaHeading) - Math.sin(heading) ) - 
-											centerDisplacement * ( Math.cos(heading + deltaHeading) - Math.cos(heading) ) 
-										) / deltaHeading;
+							horizontalDisplacement * ( Math.sin(heading + deltaHeading) - Math.sin(heading) ) - 
+							centerDisplacement * ( Math.cos(heading + deltaHeading) - Math.cos(heading) ) 
+						) / deltaHeading;
 		
 		if (!( Double.isNaN(deltaX) || Double.isNaN(deltaY) )) {
 			xPos += deltaX;
