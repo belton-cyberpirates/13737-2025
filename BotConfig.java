@@ -29,16 +29,16 @@ public class BotConfig {
   /*****************************************************************************
   ** DISTANCE CALIBRATION CONSTANTS
   *****************************************************************************/
-  public static final int TICKS_PER_360_DEG = 4150;
-  public static final int TILE_LENGTH = 1250;
+  //public static final int TICKS_PER_360_DEG = 4150;
+  public static final int TILE_LENGTH = 595; // MM
   // ---------------------------------------------------------------------------
 
 
   /*****************************************************************************
   ** DRIVE SPEED CONSTANTS
   *****************************************************************************/
-  public static final int CRUISE_SPEED = 2000;
-  public static final double STRAFE_MULT = 1.1;
+  //public static final int CRUISE_SPEED = 2000;
+  public static final double STRAFE_MULT = 1.41;
   public static final int ARM_VELOCITY = 1000;
   public static final int WRIST_VELOCITY = 4000;
   // ---------------------------------------------------------------------------
@@ -47,9 +47,16 @@ public class BotConfig {
   /*****************************************************************************
   ** ARM CALIBRATION CONSTANTS
   *****************************************************************************/
-  public static final int BAR_HEIGHT = -450;
+  public static final int BAR_HEIGHT = 500;
   public static final int BASKET_HEIGHT = 950;
-  public static final int SPECIMEN_HEIGHT = 1490;
+  // ---------------------------------------------------------------------------
+  
+  
+  /*****************************************************************************
+  ** WRIST CALIBRATION CONSTANTS
+  *****************************************************************************/
+  public static final int WRIST_SPECIMEN_HEIGHT = 1490;
+  public static final int WRIST_BAR_HEIGHT = 600;
   // ---------------------------------------------------------------------------
   
   
