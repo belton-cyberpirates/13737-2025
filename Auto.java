@@ -61,7 +61,7 @@ public abstract class Auto extends LinearOpMode {
 	@Override
 	public void runOpMode() {
 		Initialize();
-		//MotorSetup();
+		MotorSetup();
 
 		waitForStart();
 
