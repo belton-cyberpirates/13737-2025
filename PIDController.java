@@ -8,6 +8,8 @@ public class PIDController {
 
 	double integralSum = 0;
 	double lastError = 100;
+	
+	double lastOutput = 10000;
 
 	public PIDController(double Kp, double Ki, double Kd) {
 		this.Kp = Kp;
@@ -34,6 +36,8 @@ public class PIDController {
 		this.lastError = error;
 
 		double output = (error * this.Kp) + (derivative * this.Kd) + (this.integralSum * this.Ki);
+		
+		lastOutput = output;
 		return output;
 	}
 	
