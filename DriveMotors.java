@@ -97,7 +97,6 @@ public class DriveMotors {
 
 
 	private void driveWithOdometry(double delta) {
-		odometryTimer.reset();
 
 		double heading = auto.getHeading();
 
@@ -168,6 +167,8 @@ public class DriveMotors {
 		this.targetX = xPos;
 		this.targetY = yPos;
 		this.targetHeading = (heading * ( Math.PI / 180 ));
+
+		this.odometryTimer.reset();
 
 		this.state = states.ODOMETRY;
 	}
