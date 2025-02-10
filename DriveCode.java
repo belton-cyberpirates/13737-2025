@@ -277,7 +277,7 @@ public class DriveCode extends LinearOpMode {
 				// Set motor target positions
 				Wrist.setPower(1);
 				Wrist.setVelocity(750);
-				Wrist.setTargetPosition(BotConfig.SPECIMEN_HEIGHT); // Move wrist to specimen level
+				Wrist.setTargetPosition(BotConfig.WRIST_SPECIMEN_HEIGHT); // Move wrist to specimen level
 			}
 			
 			// Reset arm and wrist modes if not pressed
