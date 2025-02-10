@@ -30,8 +30,8 @@ public class DriveMotors {
 	}
 
 	static PIDController distanceSensorPidController = new PIDController(0.007, 0.0005, 0.00018);
-	static PIDController xPosPidController = new PIDController(0.01, 0.0001, 0.00035);
-	static PIDController yPosPidController = new PIDController(0.01, 0.0001, 0.00035);
+	static PIDController xPosPidController = new PIDController(0.015, 0.00002, 0.0005);
+	static PIDController yPosPidController = new PIDController(0.015, 0.00002, 0.0005);
 	static PIDController imuPidController = new PIDController(1.8, 0, 0.033);
 
 	static Orientation angles;
@@ -56,6 +56,8 @@ public class DriveMotors {
 	public double targetHeading;
 
 	public int targetDistance;
+	
+	ElapsedTime odometryTimer = new ElapsedTime();
 
 
 	public DriveMotors(Auto auto) {
@@ -95,6 +97,7 @@ public class DriveMotors {
 
 
 	private void driveWithOdometry(double delta) {
+		odometryTimer.reset();
 
 		double heading = auto.getHeading();
 
@@ -120,7 +123,7 @@ public class DriveMotors {
 		double backRightPower  = (-rotatedY - rotatedX + anglePower);
 
 		// Find highest motor power value
-		double highestPower = Collections.max(Arrays.asList( backLeftPower, frontLeftPower, frontRightPower, backRightPower ));
+		double highestPower = Collections.max(Arrays.asList( Math.abs(backLeftPower), Math.abs(frontLeftPower), Math.abs(frontRightPower), Math.abs(backRightPower) ));
 
 		// Scale power values if trying to run motors faster than possible
 		if (highestPower > 1) {
@@ -136,6 +139,10 @@ public class DriveMotors {
 		backRight.setPower(backRightPower);
 		
 		auto.telemetry.addData("drivemotors heading", heading);
+		auto.telemetry.addData("drivemotors anglePower", anglePower);
+		
+		auto.telemetry.addData("drivemotors xDir", xDir);
+		auto.telemetry.addData("drivemotors yDir", yDir);
 		auto.telemetry.addData("drivemotors anglePower", anglePower);
 	}
 
@@ -208,9 +215,10 @@ public class DriveMotors {
 	public boolean isDone() {
 		switch (this.state) {
 			case ODOMETRY:
-				return (Math.abs(xPosPidController.lastError) < 5) && 
-					   (Math.abs(yPosPidController.lastError) < 5) && 
-					   (Math.abs(imuPidController.lastError) < .1);
+				return odometryTimer.milliseconds() > 1000 &&
+					(Math.abs(xPosPidController.lastOutput) < .05) && 
+			  	(Math.abs(yPosPidController.lastOutput) < .05) && 
+			  	(Math.abs(imuPidController.lastOutput) < .05);
 			
 			case DISTANCE:
 				return (Math.abs(distanceSensorPidController.lastError) < 5);
