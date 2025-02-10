@@ -166,7 +166,7 @@ public class DriveMotors {
 	public void Move(double xPos, double yPos, double heading) {
 		this.targetX = xPos;
 		this.targetY = yPos;
-		this.targetHeading = (heading * ( Math.PI / 180 ));
+		this.targetHeading = ( heading * ( Math.PI / 180 ) );
 
 		this.odometryTimer.reset();
 
