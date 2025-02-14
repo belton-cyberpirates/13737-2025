@@ -18,36 +18,46 @@ public class BotConfig {
   public static final String WRIST_NAME = "wrist";
   
   public static final String DISTANCE_SENSOR_NAME = "dist_sensor";
+  public static final String IMU_NAME = "imu";
 
-  public static final String LEFT_ENCODER_NAME = "left_encoder";
-  public static final String RIGHT_ENCODER_NAME = "right_encoder";
-  public static final String HORIZONTAL_ENCODER_NAME = "horizontal_encoder";
+  public static final String LEFT_ENCODER_NAME = "back_right";
+  public static final String RIGHT_ENCODER_NAME = "back_left";
+  public static final String HORIZONTAL_ENCODER_NAME = "front_right";
   // ---------------------------------------------------------------------------
 
 
   /*****************************************************************************
   ** DISTANCE CALIBRATION CONSTANTS
   *****************************************************************************/
-  public static final int TICKS_PER_360_DEG = 4150;
-  public static final int TILE_LENGTH = 1250;
+  //public static final int TICKS_PER_360_DEG = 4150;
+  public static final int TILE_LENGTH = 595; // MM
   // ---------------------------------------------------------------------------
 
 
   /*****************************************************************************
   ** DRIVE SPEED CONSTANTS
   *****************************************************************************/
-  public static final int CRUISE_SPEED = 2000;
-  public static final double STRAFE_MULT = .5;
-  public static final int ARM_VELOCITY = 1000;
+  public static final double STRAFE_MULT = 1.41;
+  public static final int ARM_VELOCITY = 5000;
+  public static final int WRIST_VELOCITY = 3500;
   // ---------------------------------------------------------------------------
 
 
   /*****************************************************************************
   ** ARM CALIBRATION CONSTANTS
   *****************************************************************************/
-  public static final int BAR_HEIGHT = -450;
-  public static final int BASKET_HEIGHT = 950;
-  public static final int SPECIMEN_HEIGHT = 1490;
+  public static final double BAR_HEIGHT = 2.15; //490;
+  public static final double BASKET_HEIGHT = 950;
+  // ---------------------------------------------------------------------------
+  
+  
+  /*****************************************************************************
+  ** WRIST CALIBRATION CONSTANTS
+  *****************************************************************************/
+  public static final int WRIST_SPECIMEN_HEIGHT = 1440;
+  public static final int WRIST_SAMPLE_HEIGHT = 1580;
+  public static final int WRIST_BAR_READY_HEIGHT = 600;
+  public static final int WRIST_BAR_HEIGHT = 900;
   // ---------------------------------------------------------------------------
   
   
@@ -64,8 +74,11 @@ public class BotConfig {
   /*****************************************************************************
   ** ODOMETRY CALIBRATION CONSTANTS
   *****************************************************************************/
-  public static final double FORWARD_OFFSET = 0; //TODO
-  public static final double TRACK_WIDTH = 0; //TODO
+  public static final double FORWARD_OFFSET = 16.25;
+  public static final double TRACK_WIDTH = 367;
+  public static final double WHEEL_DIAMETER = 38;
+  public static final double TICKS_PER_REVOLUTION = 2048;
+  public static final double TICKS_PER_MM = (int)( TICKS_PER_REVOLUTION / ( Math.PI * WHEEL_DIAMETER ) );
   // ---------------------------------------------------------------------------
 
 

@@ -45,45 +45,24 @@ public class Intake {
 
 
 	public void MoveWrist(int position) {
-		wrist.setVelocity(4000);
-		MoveWrist(position, 0);
-	}
-	
-
-	public void MoveWrist(int position, int wait) {
+		wrist.setVelocity(BotConfig.WRIST_VELOCITY);
 		wrist.setTargetPosition(position);
-		auto.sleep(wait);
-	}
-	
-
-	public void MoveWrist(int position, boolean wait) {
-		wrist.setTargetPosition(position);
-		if (wait) {
-			while (wrist.isBusy()) {}
-		}
-	}
-	
-  
-	public void OpenClaw(int wait) {
-		claw_left.setPosition(BotConfig.CLAW_LEFT_OPEN_POS);
-		claw_right.setPosition(BotConfig.CLAW_RIGHT_OPEN_POS);
-		auto.sleep(wait);
 	}
   
   
 	public void OpenClaw() {
-		OpenClaw(0);
-	}
-  
-  
-	public void CloseClaw(int wait) {
-		claw_left.setPosition(BotConfig.CLAW_LEFT_CLOSE_POS);
-		claw_right.setPosition(BotConfig.CLAW_RIGHT_CLOSE_POS);
-		auto.sleep(wait);
+		claw_left.setPosition(BotConfig.CLAW_LEFT_OPEN_POS);
+		claw_right.setPosition(BotConfig.CLAW_RIGHT_OPEN_POS);
 	}
   
   
 	public void CloseClaw() {
-		CloseClaw(0);
+		claw_left.setPosition(BotConfig.CLAW_LEFT_CLOSE_POS);
+		claw_right.setPosition(BotConfig.CLAW_RIGHT_CLOSE_POS);
+	}
+
+
+	public boolean isWristBusy() {
+		return wrist.isBusy();
 	}
 }
