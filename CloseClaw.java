@@ -2,17 +2,17 @@ package org.firstinspires.ftc.teamcode;
 
 
 public class CloseClaw extends Action {
-    Auto auto;
+	Auto auto;
 
-    public CloseClaw(Auto auto) {
-        this.auto = auto;
-    }
+	public CloseClaw(Auto auto) {
+		this.auto = auto;
+	}
 
-    public void onStart() {
-        this.auto.intake.CloseClaw();
-    }
+	public void onStart() {
+		this.auto.intake.CloseClaw();
+	}
 
-    public boolean isDone() {
-        return true;
-    }
+	public boolean isDone() {
+		return true;
+	}
 }

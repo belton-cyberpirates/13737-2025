@@ -60,6 +60,7 @@ public class DriveCode extends LinearOpMode {
 	// Sensors
 	private IMU imu;
 	private DistanceSensor DistSensor;
+	private AnalogInput ArmPot;
 
 	// Other Classes
 	private Odometry odometry;
@@ -90,8 +91,9 @@ public class DriveCode extends LinearOpMode {
 		imu = hardwareMap.get(IMU.class, "imu");
 		
 		DistSensor = hardwareMap.get(DistanceSensor.class, "dist_sensor");
+		ArmPot = hardwareMap.get(AnalogInput.class, "arm_pot");
 
-		odometry = new Odometry(this);
+		odometry = new Odometry(this, imu);
 
 		
 		// Set zero power behaviours
@@ -106,10 +108,10 @@ public class DriveCode extends LinearOpMode {
 		
 		Winch.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 		
-		FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-		FrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-		BackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-		BackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+		FrontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+		FrontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+		BackLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+		BackRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 		
 		/*ArmLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 		ArmRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -261,10 +263,10 @@ public class DriveCode extends LinearOpMode {
 				// Set motor target positions
 				ArmLeft.setPower(1);
 				ArmLeft.setVelocity(750);
-				ArmLeft.setTargetPosition(BotConfig.BAR_HEIGHT); // Move arm upwards
+				//ArmLeft.setTargetPosition(BotConfig.BAR_HEIGHT); // Move arm upwards
 				ArmRight.setPower(1);
 				ArmRight.setVelocity(750);
-				ArmRight.setTargetPosition(BotConfig.BAR_HEIGHT);
+				//ArmRight.setTargetPosition(BotConfig.BAR_HEIGHT);
 				//Wrist.setTargetPosition(-650); // Move wrist to face upwards
 				//Wrist.setPower(1);
 			}
@@ -293,6 +295,8 @@ public class DriveCode extends LinearOpMode {
 			
 			prevBarHotkey = gamepad2.right_bumper;
 			prevSpecHotkey = gamepad2.left_bumper;
+			
+			odometry.process();
 
 			// Telemetry
 			// Odometry values
@@ -313,6 +317,7 @@ public class DriveCode extends LinearOpMode {
 			telemetry.addData("Sensors:", true);
 			telemetry.addData("IMU heading", botHeading);
 			telemetry.addData("Distance Sensor", DistSensor.getDistance(DistanceUnit.MM));
+			telemetry.addData("Arm Pot", ArmPot.getVoltage());
 			telemetry.addLine();
 
 			telemetry.update();

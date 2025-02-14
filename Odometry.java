@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -19,10 +21,13 @@ public class Odometry {
 	double prevLeftPos = 0;
 	double prevRightPos = 0;
 	double prevHorizontalPos = 0;
+	
+	IMU imu;
 
 
-	public Odometry(LinearOpMode auto) {
+	public Odometry(LinearOpMode auto, IMU imu) {
 		this.auto = auto;
+		this.imu = imu;
 
 		this.encoderLeft = auto.hardwareMap.get(DcMotorEx.class, BotConfig.LEFT_ENCODER_NAME);
 		this.encoderRight = auto.hardwareMap.get(DcMotorEx.class, BotConfig.RIGHT_ENCODER_NAME);
@@ -48,7 +53,8 @@ public class Odometry {
 
 
 	void updatePosition(double deltaLeft, double deltaRight, double deltaHorizontal) {
-		double deltaHeading = (deltaLeft - deltaRight) / BotConfig.TRACK_WIDTH;
+		double newHeading = -this.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+		double deltaHeading = newHeading - this.heading;
 
 		double centerDisplacement = (deltaLeft + deltaRight) / 2;
 		double horizontalDisplacement = deltaHorizontal - (BotConfig.FORWARD_OFFSET * deltaHeading);
@@ -65,7 +71,7 @@ public class Odometry {
 		if (!( Double.isNaN(deltaX) || Double.isNaN(deltaY) )) {
 			xPos += deltaX;
 			yPos += deltaY;
-			heading += deltaHeading;
+			heading = newHeading;
 		}
 		
 		auto.telemetry.addData("odometry deltaLeft", deltaLeft);

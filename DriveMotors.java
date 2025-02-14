@@ -70,7 +70,7 @@ public class DriveMotors {
 	
 		this.distSensor = auto.hardwareMap.get(DistanceSensor.class, BotConfig.DISTANCE_SENSOR_NAME);
 
-		this.odometry = new Odometry(auto);
+		this.odometry = new Odometry(auto, auto.imu);
 
 		ResetEncoders();
 		SetToRunWithPower();
@@ -92,7 +92,6 @@ public class DriveMotors {
 		}
 		
 		auto.telemetry.update();
-		deltaTimer.reset();
 	}
 
 
@@ -130,6 +129,12 @@ public class DriveMotors {
 			frontLeftPower /= highestPower;
 			frontRightPower /= highestPower;
 			backRightPower /= highestPower;
+		}
+		if (highestPower > .9) {
+			backLeftPower *= .9;
+			frontLeftPower *= .9;
+			frontRightPower *= .9;
+			backRightPower *= .9;
 		}
 
 		backLeft.setPower(backLeftPower);
@@ -217,7 +222,7 @@ public class DriveMotors {
 		switch (this.state) {
 			case ODOMETRY:
 				return odometryTimer.milliseconds() > 1000 &&
-					(Math.abs(xPosPidController.lastOutput) < .05) && 
+					(Math.abs(xPosPidController.lastOutput) < .1) && 
 			  	(Math.abs(yPosPidController.lastOutput) < .05) && 
 			  	(Math.abs(imuPidController.lastOutput) < .05);
 			

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.AnalogInput;
 import java.util.Arrays;
 import com.qualcomm.robotcore.hardware.IMU;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -33,6 +34,7 @@ public abstract class Auto extends LinearOpMode {
 		driveMotors = new DriveMotors(this);
 		arm = new Arm(this);
 		intake = new Intake(this);
+		
 
 		imu.resetYaw();
 		telemetry.addData("Beginning Initialization...", false);
@@ -45,7 +47,6 @@ public abstract class Auto extends LinearOpMode {
 	protected void MotorSetup() {
 		intake.CloseClaw();
 		intake.DropWrist();
-		arm.DropArm();
 		sleep(3000);
 		arm.Initialize();
 		intake.InitializeWrist();
@@ -84,11 +85,14 @@ public abstract class Auto extends LinearOpMode {
 
 			driveMotors.odometry.process();
 			driveMotors.process();
+			arm.process();
 			
+			//telemetry.addData("potentiometer", );
 			telemetry.addData("drivemotors state", driveMotors.state);
 			telemetry.addData("drivemotors targetX", driveMotors.targetX);
 			telemetry.addData("drivemotors targetY", driveMotors.targetY);
 			telemetry.addData("drivemotors targetHeading", driveMotors.targetHeading);
+			telemetry.addData("drivemotors done", driveMotors.isDone());
 		}
 
 		saveHeading();

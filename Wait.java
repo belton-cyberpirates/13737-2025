@@ -22,7 +22,7 @@ public class Wait extends Action {
 	}
 	
 	public void process() {
-		auto.telemetry.addData("Wait time remaining", ( time - timer.milliseconds() ) / 1000);
+		auto.telemetry.addData("Wait time remaining", time - timer.milliseconds());
 	}
 
 }
