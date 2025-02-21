@@ -17,28 +17,18 @@ public class DriveCode extends LinearOpMode {
 	
 	// Drive constants
 	final double BASE_SPEED = .5;
-	final double MAX_BOOST = 0.6; // boost maxes out at an additional 60% of the base speed
+	final double MAX_BOOST = 0.66; // boost maxes out at an additional 60% of the base speed
 	final double STRAFE_MULT = 1.2;
+	final double TURN_MULT = 1.2;
 
 	// Arm constants
 	final double ARM_VELOCITY = 750;
 	final double WRIST_VELOCITY = 1000;
 	final double WRIST_LOWER_MULT = .7;
 	final double WRIST_BUTTON_MULT = 1.75;
-	final int WRIST_GRAB_POS = 1030;
 	
 	// Winch Constants
 	final double WINCH_POWER = 1;
-	
-	// Claw constants
-	final double CLAW_LEFT_OPEN_POS = 0.2;
-	final double CLAW_LEFT_CLOSE_POS = 0.07;
-	final double CLAW_RIGHT_OPEN_POS = 0.8;
-	final double CLAW_RIGHT_CLOSE_POS = 0.93;
-	final double CLAW_LEFT_HALF_CLOSE_POS = (CLAW_LEFT_OPEN_POS + CLAW_LEFT_CLOSE_POS) / 2;
-	final double CLAW_RIGHT_HALF_CLOSE_POS = (CLAW_RIGHT_OPEN_POS + CLAW_RIGHT_CLOSE_POS) / 2;
-	final double CLAW_LEFT_FULL_OPEN_POS = 0.4;
-	final double CLAW_RIGHT_FULL_OPEN_POS = 0.6;
 	
 	private DcMotorEx Winch;
 
@@ -60,13 +50,11 @@ public class DriveCode extends LinearOpMode {
 		waitForStart();
 
 		double savedHeading = getSavedHeading();
-		boolean prevSpecHotkey = false;
-		boolean prevBarHotkey = false;
 		
 		boolean hanging = false;
 
 		while (opModeIsActive()) {
-			// Reset yaw when start button is pressed so that a restart is not needed if the yaw should be reset again.
+			// Reset yaw when back button pressed so restarting is not needed if it needs a reset
 			if (gamepad1.back) {
 				driveMotors.odometry.recalibrateIMU();
 			}
@@ -89,7 +77,7 @@ public class DriveCode extends LinearOpMode {
 			double botHeading = driveMotors.odometry.getheading;
 
 
-			// Virtually rotate the joystick by the negative angle of the robot
+			// Virtually rotate the joystick by the angle of the robot
 			double rotatedX =
 				leftStickXGP1 * Math.cos(botHeading) -
 				leftStickYGP1 * Math.sin(botHeading);
@@ -97,18 +85,16 @@ public class DriveCode extends LinearOpMode {
 				leftStickXGP1 * Math.sin(botHeading) +
 				leftStickYGP1 * Math.cos(botHeading);
 			
-			// strafing is slower than rolling, bump speed
+			// strafing is slower than rolling, bump horizontal speed
 			rotatedX *= STRAFE_MULT;
-
 
 			// Set the power of the wheels based off the new joystick coordinates
 			// y+x+stick <- [-1,1]
-
 			driveMotors.DriveWithPower(
-				(-rotatedY - rotatedX + rightStickXGP1) * maxSpeed, // Back left
-				(-rotatedY + rotatedX + rightStickXGP1) * maxSpeed, // Front left
-				(rotatedY + rotatedX + rightStickXGP1) * maxSpeed,  // Front right
-				(rotatedY - rotatedX + rightStickXGP1) * maxSpeed   // Back right
+				-(-rotatedY - rotatedX + ( rightStickXGP1 * TURN_MULT )) * maxSpeed, // Back left
+				-(-rotatedY + rotatedX + ( rightStickXGP1 * TURN_MULT )) * maxSpeed, // Front left
+				-( rotatedY + rotatedX + ( rightStickXGP1 * TURN_MULT )) * maxSpeed, // Front right
+				-( rotatedY - rotatedX + ( rightStickXGP1 * TURN_MULT )) * maxSpeed  // Back right
 			);
 			
 			
@@ -130,28 +116,29 @@ public class DriveCode extends LinearOpMode {
 			
 			
 			// Claw code
-			if (gamepad2.dpad_up) {
-				intake.SetClawPos(CLAW_LEFT_FULL_OPEN_POS, CLAW_RIGHT_FULL_OPEN_POS);
-			}
-			
-			if (gamepad2.dpad_down) {
-				intake.SetClawPos(CLAW_LEFT_HALF_CLOSE_POS, CLAW_RIGHT_HALF_CLOSE_POS);
-			}
-			
-			if (gamepad2.dpad_right) {
-				intake.SetClawPos(CLAW_LEFT_HALF_CLOSE_POS, CLAW_RIGHT_FULL_OPEN_POS);
-			}
-			
-			if (gamepad2.dpad_left) {
-				intake.SetClawPos(CLAW_LEFT_FULL_OPEN_POS, CLAW_RIGHT_HALF_CLOSE_POS);
-			}
-
+			// Open
 			if (gamepad2.right_trigger > 0) {
 				intake.CloseClaw();
 			} 
-			
+			// Close
 			if (gamepad2.left_trigger > 0) {
 				intake.OpenClaw();
+			}
+			// Wide open
+			if (gamepad2.dpad_up) {
+				intake.SetClawPos(BotConfig.CLAW_LEFT_FULL_OPEN_POS, BotConfig.CLAW_RIGHT_FULL_OPEN_POS);
+			}
+			// Half open
+			if (gamepad2.dpad_down) {
+				intake.SetClawPos(BotConfig.CLAW_LEFT_HALF_CLOSE_POS, BotConfig.CLAW_RIGHT_HALF_CLOSE_POS);
+			}
+			// Left only
+			if (gamepad2.dpad_right) {
+				intake.SetClawPos(BotConfig.CLAW_LEFT_HALF_CLOSE_POS, BotConfig.CLAW_RIGHT_FULL_OPEN_POS);
+			}
+			// Right only
+			if (gamepad2.dpad_left) {
+				intake.SetClawPos(BotConfig.CLAW_LEFT_FULL_OPEN_POS, BotConfig.CLAW_RIGHT_HALF_CLOSE_POS);
 			}
 			
 
@@ -178,8 +165,10 @@ public class DriveCode extends LinearOpMode {
 			}
 			
 
+			// Process classes
 			driveMotors.process();
 			arm.process();
+
 
 			// Telemetry
 			// Odometry values
@@ -193,6 +182,7 @@ public class DriveCode extends LinearOpMode {
 		}
 	}
 
+
 	/**
 	 * if boost trigger unpressed, return base_speed,
 	 * else return base_speed + boost amount
@@ -203,11 +193,13 @@ public class DriveCode extends LinearOpMode {
 		return BASE_SPEED + boostSpeed;
 	}
 
+
 	double getSavedHeading() {
 		Heading heading = new Heading();
 		return heading.getHeading();
 	}
 	
+
 	void SetArmVelocity(double velocity) {
 		if ((velocity > 0) || (ArmLeft.getCurrentPosition() > -1600)) {
 			arm.MoveWithVelocity(velocity);
@@ -216,5 +208,4 @@ public class DriveCode extends LinearOpMode {
 			arm.MoveWithVelocity(0);
 		}
 	}
-	
 }

@@ -64,10 +64,15 @@ public class BotConfig {
   /*****************************************************************************
   ** CLAW CALIBRATION CONSTANTS
   *****************************************************************************/
-  public static final double CLAW_LEFT_OPEN_POS = 0.3;
+	public static final double CLAW_LEFT_OPEN_POS = 0.2;
+	public static final double CLAW_LEFT_FULL_OPEN_POS = 0.4;
 	public static final double CLAW_LEFT_CLOSE_POS = 0.07;
-	public static final double CLAW_RIGHT_OPEN_POS = 0.7;
+	public static final double CLAW_LEFT_HALF_CLOSE_POS = (CLAW_LEFT_OPEN_POS + CLAW_LEFT_CLOSE_POS) / 2;
+
+	public static final double CLAW_RIGHT_OPEN_POS = 0.8;
+	public static final double CLAW_RIGHT_FULL_OPEN_POS = 0.6;
 	public static final double CLAW_RIGHT_CLOSE_POS = 0.93;
+	public static final double CLAW_RIGHT_HALF_CLOSE_POS = (CLAW_RIGHT_OPEN_POS + CLAW_RIGHT_CLOSE_POS) / 2;
   // ---------------------------------------------------------------------------
 
 
