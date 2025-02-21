@@ -43,7 +43,7 @@ public class DriveMotors {
 
 	public GoBildaPinpointDriver odometry;
 
-	private Auto auto;
+	private LinearOpMode auto;
 
 	private DistanceSensor distSensor;
 
@@ -60,7 +60,7 @@ public class DriveMotors {
 	ElapsedTime odometryTimer = new ElapsedTime();
 
 
-	public DriveMotors(Auto auto) {
+	public DriveMotors(LinearOpMode auto) {
 		this.auto = auto;
 
 		this.frontRight = auto.hardwareMap.get(DcMotorEx.class, BotConfig.FRONT_RIGHT_WHEEL_NAME);
@@ -97,7 +97,7 @@ public class DriveMotors {
 
 	private void driveWithOdometry(double delta) {
 
-		double heading = auto.getHeading();
+		double heading = odometry.getHeading();
 
 		double xDir = xPosPidController.PIDControl(targetX, odometry.getPosX(), delta);
 		double yDir = yPosPidController.PIDControl(targetY, odometry.getPosY(), delta);
