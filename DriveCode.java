@@ -67,39 +67,31 @@ public class DriveCode extends LinearOpMode {
 
 	@Override
 	public void runOpMode() throws InterruptedException {
-		
-		// Assign winch motor
-		Winch = hardwareMap.get(DcMotorEx.class, "winch");
-		
-		// Assign servos
-		ClawLeft = hardwareMap.get(Servo.class, "claw_left");
-		ClawRight = hardwareMap.get(Servo.class, "claw_right");
 
 		DriveMotors driveMotors = new DriveMotors(this);
 		Arm arm = new Arm(this);
 		Intake intake = new intake(this);
 
+		// Create winch motor
+		Winch = hardwareMap.get(DcMotorEx.class, "winch");
 		
+		// Set winch motor behavior
 		Winch.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 		Winch.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 		// Wait for the start button to be pressed
 		waitForStart();
 
-		// Reset robot heading on startup (not initialization)
-		imu.resetYaw();
 		double savedHeading = getSavedHeading();
 		boolean prevSpecHotkey = false;
 		boolean prevBarHotkey = false;
 		
 		boolean hanging = false;
-		
-		double botHeading = 0;
 
 		while (opModeIsActive()) {
 			// Reset yaw when start button is pressed so that a restart is not needed if the yaw should be reset again.
-			if (gamepad1.start) {
-				imu.resetYaw();
+			if (gamepad1.back) {
+				driveMotors.odometry.recalibrateIMU();
 			}
 
 			
@@ -117,10 +109,7 @@ public class DriveCode extends LinearOpMode {
 			double maxSpeed = calcMaxSpeed(gamepad1.right_trigger - gamepad1.left_trigger, BASE_SPEED, MAX_BOOST);
 
 			// Get the heading of the bot (the angle it is facing) in radians
-			double newHeading = (savedHeading + imu .getRobotYawPitchRollAngles() .getYaw(AngleUnit.RADIANS));
-			//if (newHeading != 0) {
-				botHeading = newHeading;
-			//}
+			double botHeading = driveMotors.odometry.getheading;
 
 
 			// Virtually rotate the joystick by the negative angle of the robot
@@ -171,28 +160,26 @@ public class DriveCode extends LinearOpMode {
 			
 			// Claw code
 			if (gamepad2.dpad_up) {
-				ClawLeft.setPosition(CLAW_LEFT_FULL_OPEN_POS);
-				ClawRight.setPosition(CLAW_RIGHT_FULL_OPEN_POS);
+				intake.SetClawPos(CLAW_LEFT_FULL_OPEN_POS, CLAW_RIGHT_FULL_OPEN_POS);
 			}
 			
 			if (gamepad2.dpad_down) {
-				ClawLeft.setPosition(CLAW_LEFT_HALF_CLOSE_POS);
-				ClawRight.setPosition(CLAW_RIGHT_HALF_CLOSE_POS);
+				intake.SetClawPos(CLAW_LEFT_HALF_CLOSE_POS, CLAW_RIGHT_HALF_CLOSE_POS);
 			}
 			
 			if (gamepad2.dpad_right) {
-				ClawLeft.setPosition(CLAW_LEFT_HALF_CLOSE_POS);
-				ClawRight.setPosition(CLAW_RIGHT_FULL_OPEN_POS);
+				intake.SetClawPos(CLAW_LEFT_HALF_CLOSE_POS, CLAW_RIGHT_FULL_OPEN_POS);
 			}
 			
 			if (gamepad2.dpad_left) {
-				ClawLeft.setPosition(CLAW_LEFT_FULL_OPEN_POS);
-				ClawRight.setPosition(CLAW_RIGHT_HALF_CLOSE_POS);
+				intake.SetClawPos(CLAW_LEFT_FULL_OPEN_POS, CLAW_RIGHT_HALF_CLOSE_POS);
 			}
 
 			if (gamepad2.right_trigger > 0) {
 				intake.CloseClaw();
-			} else if (gamepad2.left_trigger > 0) {
+			} 
+			
+			if (gamepad2.left_trigger > 0) {
 				intake.OpenClaw();
 			}
 			
