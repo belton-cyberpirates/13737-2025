@@ -94,14 +94,18 @@ public class Intake {
   
   
 	public void OpenClaw() {
-		claw_left.setPosition(BotConfig.CLAW_LEFT_OPEN_POS);
-		claw_right.setPosition(BotConfig.CLAW_RIGHT_OPEN_POS);
+		SetClawPos(BotConfig.CLAW_LEFT_OPEN_POS, BotConfig.CLAW_RIGHT_OPEN_POS);
 	}
   
   
 	public void CloseClaw() {
-		claw_left.setPosition(BotConfig.CLAW_LEFT_CLOSE_POS);
-		claw_right.setPosition(BotConfig.CLAW_RIGHT_CLOSE_POS);
+		SetClawPos(BotConfig.CLAW_LEFT_CLOSE_POS, BotConfig.CLAW_RIGHT_CLOSE_POS);
+	}
+
+
+	public void SetClawPos(double leftPos, double rightPos) {
+		claw_left.setPosition(leftPos);
+		claw_right.setPosition(rightPos);
 	}
 
 
