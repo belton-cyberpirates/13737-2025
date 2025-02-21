@@ -191,33 +191,6 @@ public class DriveMotors {
 	}
 
 
-  	/*public void TurnToAngle(double targetAngleDegrees int time) {
-		SetToRunWithPower();
-		
-		ElapsedTime deltaTimer = new ElapsedTime();
-		ElapsedTime timer = new ElapsedTime();
-		
-		double error = Double.POSITIVE_INFINITY;
-		
-		while (auto.opModeIsActive()) {
-			double heading = auto.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
-			
-			double power = imuPidController.PIDControlRadians(targetAngle, heading, deltaTimer.seconds());
-			deltaTimer.reset();
-			frontLeft.setPower(power);
-			frontRight.setPower(power);
-			backLeft.setPower(power);
-			backRight.setPower(power);
-			
-			auto.telemetry.addData("heading", heading);
-			auto.telemetry.addData("target", targetAngle)
-			auto.telemetry.addData("error", error);
-			auto.telemetry.addData("power", power);
-			auto.telemetry.update();
-		}
-	}*/
-
-
 	public boolean isDone() {
 		switch (this.state) {
 			case ODOMETRY:
