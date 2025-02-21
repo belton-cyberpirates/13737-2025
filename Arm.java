@@ -22,8 +22,10 @@ public class Arm {
 	}
 
 	private LinearOpMode auto;
+
 	private DcMotorEx leftArm;
 	private DcMotorEx rightArm;
+
 	private DcMotorEx[] motors;
 
 	states state;
@@ -69,6 +71,8 @@ public class Arm {
 	public void Move(double targetPosition) {
 		setState(states.POSITION);
 
+		if (leftArm.targetPosition == targetPosition) { return; }
+
 		leftArm.setTargetPosition(targetPosition);
 		rightArm.setTargetPosition(-targetPosition);
 	}
@@ -80,13 +84,14 @@ public class Arm {
 		switch (newState) {
 			case states.POWER:
 				for(DcMotorEx motor : motors) motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+			
 			case states.VELOCITY:
 				for(DcMotorEx motor : motors) motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+			
 			case states.POSITION:
-				setVelocity(BotConfig.ARM_VELOCITY)
+				setVelocity(BotConfig.ARM_VELOCITY);
 				for(DcMotorEx motor : motors) motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 		}
-
 	}
 
   
