@@ -91,7 +91,7 @@ public class DriveMotors {
 				break;
 		}
 		
-		auto.telemetry.update();
+		odo.update();
 	}
 
 
@@ -115,10 +115,10 @@ public class DriveMotors {
 		rotatedX *= BotConfig.STRAFE_MULT;
 
 		// Set the power of the wheels based off the new movement vector
-		double backLeftPower   = ( rotatedY - rotatedX + anglePower);
-		double frontLeftPower  = ( rotatedY + rotatedX + anglePower);
-		double frontRightPower = (-rotatedY + rotatedX + anglePower);
-		double backRightPower  = (-rotatedY - rotatedX + anglePower);
+		double backLeftPower   = -( rotatedY - rotatedX + anglePower);
+		double frontLeftPower  = -( rotatedY + rotatedX + anglePower);
+		double frontRightPower = -(-rotatedY + rotatedX + anglePower);
+		double backRightPower  = -(-rotatedY - rotatedX + anglePower);
 
 		// Find highest motor power value
 		double highestPower = Collections.max(Arrays.asList( Math.abs(backLeftPower), Math.abs(frontLeftPower), Math.abs(frontRightPower), Math.abs(backRightPower) ));
@@ -130,12 +130,14 @@ public class DriveMotors {
 			frontRightPower /= highestPower;
 			backRightPower /= highestPower;
 		}
-		if (highestPower > .9) {
-			backLeftPower *= .9;
-			frontLeftPower *= .9;
-			frontRightPower *= .9;
-			backRightPower *= .9;
-		}
+
+		// // If trying to move at full power, scale down to 90%
+		// if (highestPower > .9) {
+		// 	backLeftPower *= .9;
+		// 	frontLeftPower *= .9;
+		// 	frontRightPower *= .9;
+		// 	backRightPower *= .9;
+		// }
 
 		backLeft.setPower(backLeftPower);
 		frontLeft.setPower(frontLeftPower);

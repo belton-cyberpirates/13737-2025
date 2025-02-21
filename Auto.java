@@ -83,16 +83,16 @@ public abstract class Auto extends LinearOpMode {
 				actions = Arrays.copyOfRange(actions, 1, actions.length);
 			}
 
-			driveMotors.odometry.process();
 			driveMotors.process();
 			arm.process();
 			
-			//telemetry.addData("potentiometer", );
 			telemetry.addData("drivemotors state", driveMotors.state);
 			telemetry.addData("drivemotors targetX", driveMotors.targetX);
 			telemetry.addData("drivemotors targetY", driveMotors.targetY);
 			telemetry.addData("drivemotors targetHeading", driveMotors.targetHeading);
 			telemetry.addData("drivemotors done", driveMotors.isDone());
+
+			telemetry.update();
 		}
 
 		saveHeading();
