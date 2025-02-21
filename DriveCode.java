@@ -64,22 +64,9 @@ public class DriveCode extends LinearOpMode {
 
 	// Other Classes
 	private Odometry odometry;
-	
-	// Other variables
-	private boolean slideFrozen;
 
 	@Override
 	public void runOpMode() throws InterruptedException {
-		// Assign drive motors
-		BackLeft = hardwareMap.get(DcMotorEx.class, "back_left");
-		FrontLeft = hardwareMap.get(DcMotorEx.class, "front_left");
-		FrontRight = hardwareMap.get(DcMotorEx.class, "front_right");
-		BackRight = hardwareMap.get(DcMotorEx.class, "back_right");
-
-		// Assign arm motors
-		ArmLeft = hardwareMap.get(DcMotorEx.class, "left_arm");
-		ArmRight = hardwareMap.get(DcMotorEx.class, "right_arm");
-		Wrist = hardwareMap.get(DcMotorEx.class, "wrist");
 		
 		// Assign winch motor
 		Winch = hardwareMap.get(DcMotorEx.class, "winch");
@@ -87,42 +74,13 @@ public class DriveCode extends LinearOpMode {
 		// Assign servos
 		ClawLeft = hardwareMap.get(Servo.class, "claw_left");
 		ClawRight = hardwareMap.get(Servo.class, "claw_right");
-		
-		imu = hardwareMap.get(IMU.class, "imu");
-		
-		DistSensor = hardwareMap.get(DistanceSensor.class, "dist_sensor");
-		ArmPot = hardwareMap.get(AnalogInput.class, "arm_pot");
 
-		odometry = new Odometry(this, imu);
+		DriveMotors driveMotors = new DriveMotors(this);
+		Arm arm = new Arm(this);
+		Intake intake = new intake(this);
 
-		
-		// Set zero power behaviours
-		BackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-		FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-		FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-		BackRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-		ArmLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-		ArmRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-		Wrist.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 		
 		Winch.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-		
-		FrontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-		FrontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-		BackLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-		BackRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-		
-		/*ArmLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-		ArmRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-		Wrist.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);*/
-		
-		Winch.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-		
-		ArmLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-		ArmRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-		Wrist.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-		
 		Winch.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 		// Wait for the start button to be pressed
@@ -179,6 +137,7 @@ public class DriveCode extends LinearOpMode {
 
 			// Set the power of the wheels based off the new joystick coordinates
 			// y+x+stick <- [-1,1]
+
 			BackLeft.setPower(
 				(-rotatedY - rotatedX + rightStickXGP1) * maxSpeed
 			);
@@ -192,11 +151,8 @@ public class DriveCode extends LinearOpMode {
 				(rotatedY - rotatedX + rightStickXGP1) * maxSpeed
 			);
 			
-			if (!gamepad2.right_bumper) {
-				SetArmVelocity(gamepad2.left_stick_y * ARM_VELOCITY);
-			}
 			
-			
+			// Winch code
 			if (gamepad1.dpad_up) {
 				hanging = true;
 			}
@@ -207,17 +163,13 @@ public class DriveCode extends LinearOpMode {
 			}
 			else if (hanging) {
 				Winch.setPower(WINCH_POWER);
-				ArmLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-				ArmRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-				ArmLeft.setPower(1);
-				ArmRight.setPower(1);
 			}
 			else {
 				Winch.setPower(0);
-				
 			}
 			
 			
+			// Claw code
 			if (gamepad2.dpad_up) {
 				ClawLeft.setPosition(CLAW_LEFT_FULL_OPEN_POS);
 				ClawRight.setPosition(CLAW_RIGHT_FULL_OPEN_POS);
@@ -237,87 +189,46 @@ public class DriveCode extends LinearOpMode {
 				ClawLeft.setPosition(CLAW_LEFT_FULL_OPEN_POS);
 				ClawRight.setPosition(CLAW_RIGHT_HALF_CLOSE_POS);
 			}
+
+			if (gamepad2.right_trigger > 0) {
+				intake.CloseClaw();
+			} else if (gamepad2.left_trigger > 0) {
+				intake.OpenClaw();
+			}
 			
-			if (!prevSpecHotkey) {
+
+			// Arm code
+			// High chamber hotkey
+			if (gamepad2.right_bumper) {
+				arm.Move(BotConfig.BAR_HEIGHT);
+			}
+			else {
+				SetArmVelocity(gamepad2.left_stick_y * ARM_VELOCITY);
+			}
+			
+
+			// Wrist code
+			// Specimen pickup hotkey
+			if (gamepad2.left_bumper) {
+				intake.MoveWrist(BotConfig.WRIST_SPECIMEN_HEIGHT);
+			}
+			else {
 				double wristPower = -gamepad2.right_stick_y * WRIST_VELOCITY;
 				double powerMult = (gamepad2.right_stick_y > 0 ? 1 : WRIST_LOWER_MULT);
 				double holdPower = gamepad2.left_bumper ? -0.025 : 0;
-				Wrist.setVelocity( wristPower * powerMult );
+				intake.MoveWristWithVelocity( wristPower * powerMult );
 			}
 			
-			if (gamepad2.right_trigger > 0) {
-				ClawLeft.setPosition(CLAW_LEFT_CLOSE_POS);
-				ClawRight.setPosition(CLAW_RIGHT_CLOSE_POS);
-			} else if (gamepad2.left_trigger > 0) {
-				ClawLeft.setPosition(CLAW_LEFT_OPEN_POS);
-				ClawRight.setPosition(CLAW_RIGHT_OPEN_POS);
-			}
-			
-			// Configured arm+wrist position "hotkeys"
-			if (gamepad2.right_bumper && !prevBarHotkey) {
-				// Set motor modes to position
-				ArmLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-				ArmRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-				//Wrist.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-				
-				// Set motor target positions
-				ArmLeft.setPower(1);
-				ArmLeft.setVelocity(750);
-				//ArmLeft.setTargetPosition(BotConfig.BAR_HEIGHT); // Move arm upwards
-				ArmRight.setPower(1);
-				ArmRight.setVelocity(750);
-				//ArmRight.setTargetPosition(BotConfig.BAR_HEIGHT);
-				//Wrist.setTargetPosition(-650); // Move wrist to face upwards
-				//Wrist.setPower(1);
-			}
-			
-			// Configured wrist position "hotkeys"
-			if (gamepad2.left_bumper && !prevSpecHotkey) {
-				// Set motor modes to position
-				Wrist.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-				
-				// Set motor target positions
-				Wrist.setPower(1);
-				Wrist.setVelocity(750);
-				Wrist.setTargetPosition(BotConfig.WRIST_SPECIMEN_HEIGHT); // Move wrist to specimen level
-			}
-			
-			// Reset arm and wrist modes if not pressed
-			if (!gamepad2.right_bumper && prevBarHotkey) {
-				ArmLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-				ArmRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-			}
-			
-			// Reset wrist modes if not pressed
-			if (!gamepad2.left_bumper && prevSpecHotkey) {
-				Wrist.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-			}
-			
-			prevBarHotkey = gamepad2.right_bumper;
-			prevSpecHotkey = gamepad2.left_bumper;
-			
-			odometry.process();
+
+			driveMotors.process();
+			arm.process();
 
 			// Telemetry
 			// Odometry values
 			telemetry.addData("Odometry:", true);
-			telemetry.addData("X pos", odometry.getX());
-			telemetry.addData("Y pos", odometry.getY());
-			telemetry.addData("Heading", odometry.getY());
-			telemetry.addLine();
-
-			// Arm values
-			telemetry.addData("Arm:", true);
-			telemetry.addData("Left arm pos", ArmLeft.getCurrentPosition());
-			telemetry.addData("Right arm pos", ArmRight.getCurrentPosition());
-			telemetry.addData("Wrist pos", Wrist.getCurrentPosition());
-			telemetry.addLine();
-
-			// Sensor values
-			telemetry.addData("Sensors:", true);
-			telemetry.addData("IMU heading", botHeading);
-			telemetry.addData("Distance Sensor", DistSensor.getDistance(DistanceUnit.MM));
-			telemetry.addData("Arm Pot", ArmPot.getVoltage());
+			telemetry.addData("X pos", driveMotors.odometry.getPosX());
+			telemetry.addData("Y pos", driveMotors.odometry.getPosY());
+			telemetry.addData("Heading", driveMotors.odometry.getHeading());
 			telemetry.addLine();
 
 			telemetry.update();
@@ -341,12 +252,10 @@ public class DriveCode extends LinearOpMode {
 	
 	void SetArmVelocity(double velocity) {
 		if ((velocity > 0) || (ArmLeft.getCurrentPosition() > -1600)) {
-			ArmLeft.setVelocity(velocity);
-			ArmRight.setVelocity(velocity);
+			arm.MoveWithVelocity(velocity);
 		}
 		else {
-			ArmLeft.setVelocity(0);
-			ArmRight.setVelocity(0);
+			arm.MoveWithVelocity(0);
 		}
 	}
 	
