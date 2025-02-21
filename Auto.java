@@ -29,15 +29,12 @@ public abstract class Auto extends LinearOpMode {
 	 * Initialize classes used by autos
 	 */
 	protected void Initialize() {
-		imu = hardwareMap.get(IMU.class, BotConfig.IMU_NAME);
-
 		driveMotors = new DriveMotors(this);
 		arm = new Arm(this);
 		intake = new Intake(this);
-		
 
-		imu.resetYaw();
-		telemetry.addData("Beginning Initialization...", false);
+		telemetry.addData("Beginning Initialization...", "");
+		telemetry.addData("DO NOT START AUTONOMOUS YET!", "");
 		telemetry.update();
 	}
 
@@ -47,15 +44,16 @@ public abstract class Auto extends LinearOpMode {
 	protected void MotorSetup() {
 		intake.CloseClaw();
 		intake.DropWrist();
+		arm.DropArm();
 		sleep(3000);
 		arm.Initialize();
 		intake.InitializeWrist();
-		telemetry.addData("Fully Initialized", true);
+		telemetry.addData("Fully Initialized", "");
 		telemetry.update();
 	}
 
 	protected void saveHeading() {
-		double _heading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+		double _heading = driveMotors.odometry.getHeading();
 		this.heading.setHeading(_heading);
 	}
 
@@ -96,10 +94,5 @@ public abstract class Auto extends LinearOpMode {
 		}
 
 		saveHeading();
-	}
-
-
-	public double getHeading() {
-		return -imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 	}
 }
