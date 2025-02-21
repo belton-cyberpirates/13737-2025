@@ -196,8 +196,8 @@ public class DriveMotors {
 			case ODOMETRY:
 				return odometryTimer.milliseconds() > 1000 &&
 					(Math.abs(xPosPidController.lastOutput) < .1) && 
-			  	(Math.abs(yPosPidController.lastOutput) < .05) && 
-			  	(Math.abs(imuPidController.lastOutput) < .05);
+					(Math.abs(yPosPidController.lastOutput) < .05) && 
+					(Math.abs(imuPidController.lastOutput) < .05);
 			
 			case DISTANCE:
 				return (Math.abs(distanceSensorPidController.lastError) < 5);
