@@ -46,7 +46,7 @@ public class BotConfig {
   /*****************************************************************************
   ** ARM CALIBRATION CONSTANTS
   *****************************************************************************/
-  public static final double BAR_HEIGHT = 2.15; //490;
+  public static final double BAR_HEIGHT = 490;
   public static final double BASKET_HEIGHT = 950;
   // ---------------------------------------------------------------------------
   
