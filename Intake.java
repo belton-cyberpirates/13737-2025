@@ -11,10 +11,19 @@ import org.firstinspires.ftc.teamcode.BotConfig;
 import java.util.List;
 
 public class Intake {
+
+	enum states {
+		POWER,
+		VELOCITY,
+		POSITION
+	}
+
 	private LinearOpMode auto;
 	private DcMotorEx wrist;
 	private Servo claw_left;
 	private Servo claw_right;
+
+	states state;
 	
 
 	public Intake(LinearOpMode auto) {
@@ -44,9 +53,43 @@ public class Intake {
 	}
 
 
-	public void MoveWrist(int position) {
-		wrist.setVelocity(BotConfig.WRIST_VELOCITY);
-		wrist.setTargetPosition(position);
+	public void MoveWristWithPower(double power) {
+		setState(states.POWER);
+
+		wrist.setPower(power);
+	}
+
+
+	public void MoveWristWithVelocity(double velocity) {
+		setState(states.VELOCITY);
+
+		wrist.setVelocity(velocity);
+	}
+
+
+	public void MoveWrist(double targetPosition) {
+		setState(states.POSITION);
+
+		if (wrist.targetPosition == targetPosition) { return; }
+
+		wrist.setTargetPosition(targetPosition);
+	}
+
+
+	public void setState(states newState) {
+		if (this.state == newState) { return; }
+
+		switch (newState) {
+			case states.POWER:
+				wrist.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+			
+			case states.VELOCITY:
+				wrist.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+			
+			case states.POSITION:
+				setVelocity(BotConfig.WRIST_VELOCITY);
+				wrist.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+		}
 	}
   
   
