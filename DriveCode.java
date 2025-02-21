@@ -40,30 +40,7 @@ public class DriveCode extends LinearOpMode {
 	final double CLAW_LEFT_FULL_OPEN_POS = 0.4;
 	final double CLAW_RIGHT_FULL_OPEN_POS = 0.6;
 	
-	// Drive motors
-	private DcMotorEx BackLeft;
-	private DcMotorEx FrontLeft;
-	private DcMotorEx FrontRight;
-	private DcMotorEx BackRight;
-
-	// Arm motors
-	private DcMotorEx ArmLeft;
-	private DcMotorEx ArmRight;
-	private DcMotorEx Wrist;
-	
 	private DcMotorEx Winch;
-	
-	// Servos
-	private Servo ClawLeft;
-	private Servo ClawRight;
-	
-	// Sensors
-	private IMU imu;
-	private DistanceSensor DistSensor;
-	private AnalogInput ArmPot;
-
-	// Other Classes
-	private Odometry odometry;
 
 	@Override
 	public void runOpMode() throws InterruptedException {
