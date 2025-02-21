@@ -127,17 +127,11 @@ public class DriveCode extends LinearOpMode {
 			// Set the power of the wheels based off the new joystick coordinates
 			// y+x+stick <- [-1,1]
 
-			BackLeft.setPower(
-				(-rotatedY - rotatedX + rightStickXGP1) * maxSpeed
-			);
-			FrontLeft.setPower(
-				(-rotatedY + rotatedX + rightStickXGP1) * maxSpeed
-			);
-			FrontRight.setPower(
-				(rotatedY + rotatedX + rightStickXGP1) * maxSpeed
-			);
-			BackRight.setPower(
-				(rotatedY - rotatedX + rightStickXGP1) * maxSpeed
+			driveMotors.DriveWithPower(
+				(-rotatedY - rotatedX + rightStickXGP1) * maxSpeed, // Back left
+				(-rotatedY + rotatedX + rightStickXGP1) * maxSpeed, // Front left
+				(rotatedY + rotatedX + rightStickXGP1) * maxSpeed,  // Front right
+				(rotatedY - rotatedX + rightStickXGP1) * maxSpeed   // Back right
 			);
 			
 			
