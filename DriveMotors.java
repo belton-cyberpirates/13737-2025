@@ -41,7 +41,7 @@ public class DriveMotors {
 	public DcMotorEx backLeft;
 	public DcMotorEx backRight;
 
-	public Odometry odometry;
+	public GoBildaPinpointDriver odometry;
 
 	private Auto auto;
 
@@ -70,7 +70,7 @@ public class DriveMotors {
 	
 		this.distSensor = auto.hardwareMap.get(DistanceSensor.class, BotConfig.DISTANCE_SENSOR_NAME);
 
-		this.odometry = new Odometry(auto, auto.imu);
+		this.odometry = auto.hardwareMap.get(GoBildaPinpointDriver.class, "odo");
 
 		ResetEncoders();
 		SetToRunWithPower();
@@ -99,11 +99,11 @@ public class DriveMotors {
 
 		double heading = auto.getHeading();
 
-		double xDir = xPosPidController.PIDControl(targetX, odometry.getX(), delta);
-		double yDir = yPosPidController.PIDControl(targetY, odometry.getY(), delta);
+		double xDir = xPosPidController.PIDControl(targetX, odometry.getPosX(), delta);
+		double yDir = yPosPidController.PIDControl(targetY, odometry.getPosY(), delta);
 		double anglePower = imuPidController.PIDControlRadians(targetHeading, heading, delta);
 
-		// Rotate the movement vector to cancel out the angle of the robot
+		// Rotate the movement vector to convert field relative direction to robot relative direction
 		double rotatedX =
 			xDir * Math.cos(heading) -
 			yDir * Math.sin(heading);
