@@ -33,6 +33,8 @@ public abstract class Auto extends LinearOpMode {
 		arm = new Arm(this);
 		intake = new Intake(this);
 
+		driveMotors.InitializeOdometry();
+
 		telemetry.addData("Beginning Initialization...", "");
 		telemetry.addData("DO NOT START AUTONOMOUS YET!", "");
 		telemetry.update();
