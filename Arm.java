@@ -38,6 +38,12 @@ public class Arm {
 		// create list of motors to make code cleaner
 		motors = new DcMotorEx[]{ this.leftArm, this.rightArm };
 	}
+
+
+	public void DropArm() {
+		MoveWithPower(-.1);
+	}
+
   	
 	public void process() {
 
@@ -48,7 +54,7 @@ public class Arm {
 		setState(states.POWER);
 
 		leftArm.setPower(power);
-		rightArm.setPower(power);
+		rightArm.setPower(-power);
 	}
 
 
@@ -56,7 +62,7 @@ public class Arm {
 		setState(states.VELOCITY);
 
 		leftArm.setVelocity(velocity);
-		rightArm.setVelocity(velocity);
+		rightArm.setVelocity(-velocity);
 	}
 
 
@@ -64,7 +70,7 @@ public class Arm {
 		setState(states.POSITION);
 
 		leftArm.setTargetPosition(targetPosition);
-		rightArm.setTargetPosition(targetPosition);
+		rightArm.setTargetPosition(-targetPosition);
 	}
 
 
