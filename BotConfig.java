@@ -29,7 +29,6 @@ public class BotConfig {
   /*****************************************************************************
   ** DISTANCE CALIBRATION CONSTANTS
   *****************************************************************************/
-  //public static final int TICKS_PER_360_DEG = 4150;
   public static final int TILE_LENGTH = 595; // MM
   // ---------------------------------------------------------------------------
 
@@ -40,6 +39,17 @@ public class BotConfig {
   public static final double STRAFE_MULT = 1.41;
   public static final int ARM_VELOCITY = 5000;
   public static final int WRIST_VELOCITY = 3500;
+  // ---------------------------------------------------------------------------
+
+
+  /*****************************************************************************
+  ** BASE CALIBRATION CONSTANTS
+  *****************************************************************************/
+  public static final int BAR_X = 1; //TODO
+  public static final int BLOCK_GRAB_X = 1; //TODO
+  public static final int FIRST_BLOCK_Y = 1; //TODO
+  public static final int SECOND_BLOCK_Y = 1; //TODO
+  public static final int THIRD_BLOCK_Y = 1; //TODO
   // ---------------------------------------------------------------------------
 
 
