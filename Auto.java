@@ -22,7 +22,6 @@ public abstract class Auto extends LinearOpMode {
 	public DriveMotors driveMotors;
 	public Arm arm;
 	public Intake intake;
-	public IMU imu;
 	public Heading heading;
 	
 	/**
@@ -62,7 +61,7 @@ public abstract class Auto extends LinearOpMode {
 	@Override
 	public void runOpMode() {
 		Initialize();
-		MotorSetup();
+		//MotorSetup();
 
 		waitForStart();
 
@@ -86,6 +85,9 @@ public abstract class Auto extends LinearOpMode {
 			driveMotors.process();
 			arm.process();
 			
+			telemetry.addData("X pos", driveMotors.odometry.getPosX());
+			telemetry.addData("Y pos", driveMotors.odometry.getPosY());
+			telemetry.addData("Heading", driveMotors.odometry.getHeading());
 			telemetry.addData("drivemotors state", driveMotors.state);
 			telemetry.addData("drivemotors targetX", driveMotors.targetX);
 			telemetry.addData("drivemotors targetY", driveMotors.targetY);
