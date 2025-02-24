@@ -36,6 +36,9 @@ public class Arm {
 
 		this.leftArm = auto.hardwareMap.get(DcMotorEx.class, BotConfig.ARM_LEFT_NAME);
 		this.rightArm = auto.hardwareMap.get(DcMotorEx.class, BotConfig.ARM_RIGHT_NAME);
+		
+		this.leftArm.setTargetPosition(0);
+		this.rightArm.setTargetPosition(0);
 
 		// create list of motors to make code cleaner
 		motors = new DcMotorEx[]{ this.leftArm, this.rightArm };
@@ -71,24 +74,25 @@ public class Arm {
 	public void Move(double targetPosition) {
 		setState(states.POSITION);
 
-		if (leftArm.targetPosition == targetPosition) { return; }
+		if (leftArm.getTargetPosition() == targetPosition) { return; }
 
-		leftArm.setTargetPosition(targetPosition);
-		rightArm.setTargetPosition(-targetPosition);
+		leftArm.setTargetPosition((int)targetPosition);
+		rightArm.setTargetPosition((int)-targetPosition);
 	}
 
 
 	public void setState(states newState) {
 		if (this.state == newState) { return; }
+		this.state = newState;
 
 		switch (newState) {
-			case states.POWER:
+			case POWER:
 				for(DcMotorEx motor : motors) motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 			
-			case states.VELOCITY:
+			case VELOCITY:
 				for(DcMotorEx motor : motors) motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 			
-			case states.POSITION:
+			case POSITION:
 				setVelocity(BotConfig.ARM_VELOCITY);
 				for(DcMotorEx motor : motors) motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 		}
@@ -105,5 +109,9 @@ public class Arm {
 	
 	public boolean isBusy() {
 		return leftArm.isBusy() || rightArm.isBusy();
+	}
+	
+	public int getHeight() {
+		return leftArm.getCurrentPosition();
 	}
 }
