@@ -32,12 +32,16 @@ public class DriveCode extends LinearOpMode {
 	
 	private DcMotorEx Winch;
 
+	DriveMotors driveMotors;
+	Arm arm;
+	Intake intake;
+
 	@Override
 	public void runOpMode() throws InterruptedException {
-
-		DriveMotors driveMotors = new DriveMotors(this);
-		Arm arm = new Arm(this);
-		Intake intake = new intake(this);
+		
+		driveMotors = new DriveMotors(this);
+		arm = new Arm(this);
+		intake = new Intake(this);
 
 		// Create winch motor
 		Winch = hardwareMap.get(DcMotorEx.class, "winch");
@@ -55,7 +59,7 @@ public class DriveCode extends LinearOpMode {
 
 		while (opModeIsActive()) {
 			// Reset yaw when back button pressed so restarting is not needed if it needs a reset
-			if (gamepad1.back) {
+			if (gamepad1.a) {
 				driveMotors.odometry.recalibrateIMU();
 			}
 
@@ -74,7 +78,7 @@ public class DriveCode extends LinearOpMode {
 			double maxSpeed = calcMaxSpeed(gamepad1.right_trigger - gamepad1.left_trigger, BASE_SPEED, MAX_BOOST);
 
 			// Get the heading of the bot (the angle it is facing) in radians
-			double botHeading = driveMotors.odometry.getheading;
+			double botHeading = driveMotors.odometry.getHeading();
 
 
 			// Virtually rotate the joystick by the angle of the robot
@@ -160,7 +164,7 @@ public class DriveCode extends LinearOpMode {
 			else {
 				double wristPower = -gamepad2.right_stick_y * WRIST_VELOCITY;
 				double powerMult = (gamepad2.right_stick_y > 0 ? 1 : WRIST_LOWER_MULT);
-				double holdPower = gamepad2.left_bumper ? -0.025 : 0;
+				//double holdPower = gamepad2.left_bumper ? -0.025 : 0;
 				intake.MoveWristWithVelocity( wristPower * powerMult );
 			}
 			
@@ -201,7 +205,7 @@ public class DriveCode extends LinearOpMode {
 	
 
 	void SetArmVelocity(double velocity) {
-		if ((velocity > 0) || (ArmLeft.getCurrentPosition() > -1600)) {
+		if ((velocity > 0) || (this.arm.getHeight() < 1600)) {
 			arm.MoveWithVelocity(velocity);
 		}
 		else {
