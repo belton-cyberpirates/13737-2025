@@ -199,8 +199,7 @@ public class DriveCode extends LinearOpMode {
 
 
 	double getSavedHeading() {
-		Heading heading = new Heading();
-		return heading.getHeading();
+		return Heading.getHeading();
 	}
 	
 
