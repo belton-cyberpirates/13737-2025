@@ -23,7 +23,7 @@ public class Intake {
 	private Servo claw_left;
 	private Servo claw_right;
 
-	states state = states.POWER;
+	states state;
 	
 
 	public Intake(LinearOpMode auto) {
