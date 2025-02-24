@@ -33,7 +33,7 @@ public class DriveMotors {
 	static PIDController distanceSensorPidController = new PIDController(0.007, 0.0005, 0.00018);
 	static PIDController xPosPidController = new PIDController(0.015, 0.00002, 0.0005);
 	static PIDController yPosPidController = new PIDController(0.015, 0.00002, 0.0005);
-	static PIDController imuPidController = new PIDController(1.8, 0, 0.033);
+	static PIDController imuPidController = new PIDController(.8, 0, 0.005);
 
 	static Orientation angles;
 
@@ -68,6 +68,11 @@ public class DriveMotors {
 		this.frontLeft = auto.hardwareMap.get(DcMotorEx.class, BotConfig.FRONT_LEFT_WHEEL_NAME);
 		this.backLeft = auto.hardwareMap.get(DcMotorEx.class, BotConfig.BACK_LEFT_WHEEL_NAME);
 		this.backRight = auto.hardwareMap.get(DcMotorEx.class, BotConfig.BACK_RIGHT_WHEEL_NAME);
+		
+		this.backLeft.setTargetPosition(0);
+		this.frontLeft.setTargetPosition(0);
+		this.frontRight.setTargetPosition(0);
+		this.backRight.setTargetPosition(0);
 	
 		this.distSensor = auto.hardwareMap.get(DistanceSensor.class, BotConfig.DISTANCE_SENSOR_NAME);
 
@@ -134,7 +139,7 @@ public class DriveMotors {
 				break;
 		}
 		
-		odo.update();
+		this.odometry.update();
 		deltaTimer.reset();
 	}
 
@@ -169,10 +174,10 @@ public class DriveMotors {
 		rotatedX *= BotConfig.STRAFE_MULT;
 
 		// Set the power of the wheels based off the new movement vector
-		double backLeftPower   = -( rotatedY - rotatedX + anglePower);
-		double frontLeftPower  = -( rotatedY + rotatedX + anglePower);
-		double frontRightPower = -(-rotatedY + rotatedX + anglePower);
-		double backRightPower  = -(-rotatedY - rotatedX + anglePower);
+		double backLeftPower   = (/* rotatedY - rotatedX +*/ anglePower);
+		double frontLeftPower  = (/* rotatedY + rotatedX +*/ anglePower);
+		double frontRightPower = (/*-rotatedY + rotatedX +*/ anglePower);
+		double backRightPower  = (/*-rotatedY - rotatedX +*/ anglePower);
 
 		// Find highest motor power value
 		double highestPower = Collections.max(Arrays.asList( Math.abs(backLeftPower), Math.abs(frontLeftPower), Math.abs(frontRightPower), Math.abs(backRightPower) ));
