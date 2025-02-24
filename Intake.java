@@ -23,12 +23,14 @@ public class Intake {
 	private Servo claw_left;
 	private Servo claw_right;
 
-	states state;
+	states state = states.POWER;
 	
 
 	public Intake(LinearOpMode auto) {
 		this.auto = auto;
+		
 		this.wrist = auto.hardwareMap.get(DcMotorEx.class, BotConfig.WRIST_NAME);
+		
 		this.claw_left = auto.hardwareMap.get(Servo.class, BotConfig.CLAW_LEFT_NAME);
 		this.claw_right = auto.hardwareMap.get(Servo.class, BotConfig.CLAW_RIGHT_NAME);
 		
@@ -70,24 +72,25 @@ public class Intake {
 	public void MoveWrist(double targetPosition) {
 		setState(states.POSITION);
 
-		if (wrist.targetPosition == targetPosition) { return; }
+		if (wrist.getTargetPosition() == targetPosition) { return; }
 
-		wrist.setTargetPosition(targetPosition);
+		wrist.setTargetPosition((int)targetPosition);
 	}
 
 
 	public void setState(states newState) {
 		if (this.state == newState) { return; }
+		this.state = newState;
 
 		switch (newState) {
-			case states.POWER:
+			case POWER:
 				wrist.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 			
-			case states.VELOCITY:
+			case VELOCITY:
 				wrist.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 			
-			case states.POSITION:
-				setVelocity(BotConfig.WRIST_VELOCITY);
+			case POSITION:
+				wrist.setVelocity(BotConfig.WRIST_VELOCITY);
 				wrist.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 		}
 	}
