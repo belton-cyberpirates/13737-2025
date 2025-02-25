@@ -256,9 +256,9 @@ public class DriveMotors {
 		switch (this.state) {
 			case ODOMETRY:
 				return odometryTimer.milliseconds() > 750 &&
-					(Math.abs(xPosPidController.lastOutput) < 1) && 
-					//(Math.abs(yPosPidController.lastError) < 5) && 
-					(Math.abs(imuPidController.lastError) < .03);
+					(Math.abs(xPosPidController.lastError) < 5) && // max vertical error - MM
+					//(Math.abs(yPosPidController.lastError) < 5) && // max horizontal error - MM
+					(Math.abs(imuPidController.lastError) < .03); // max angle error - radians
 			
 			case DISTANCE:
 				return (Math.abs(distanceSensorPidController.lastError) < 5);
