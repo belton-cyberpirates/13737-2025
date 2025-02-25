@@ -31,7 +31,7 @@ public class DriveMotors {
 	}
 
 	static PIDController distanceSensorPidController = new PIDController(0, 0, 0);
-	static PIDController xPosPidController = new PIDController(0.0025, 0.000001, 0.000004);
+	static PIDController xPosPidController = new PIDController(0.0025, 0.000001, 0.000004); // kI too high???
 	static PIDController yPosPidController = new PIDController(0., 0., 0.);
 	static PIDController imuPidController = new PIDController(1, 0, 0.001);
 
