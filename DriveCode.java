@@ -204,11 +204,11 @@ public class DriveCode extends LinearOpMode {
 	
 
 	void SetArmVelocity(double velocity) {
-		if ((velocity > 0) || (this.arm.getHeight() < 1600)) {
+		// if ((velocity > 0) || (this.arm.getHeight() < 1600)) {
 			arm.MoveWithVelocity(velocity);
-		}
-		else {
-			arm.MoveWithVelocity(0);
-		}
+		// }
+		// else {
+		// 	arm.MoveWithVelocity(0);
+		// }
 	}
 }
