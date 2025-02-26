@@ -28,7 +28,7 @@ public class Arm {
 
 	private DcMotorEx[] motors;
 
-	states state;
+	public states state;
 
 
 	public Arm(LinearOpMode auto) {
@@ -66,8 +66,8 @@ public class Arm {
 	public void MoveWithVelocity(double velocity) {
 		setState(states.VELOCITY);
 
-		leftArm.setVelocity(velocity);
-		rightArm.setVelocity(-velocity);
+		leftArm.setVelocity(-velocity);
+		rightArm.setVelocity(velocity);
 	}
 
 
@@ -76,8 +76,8 @@ public class Arm {
 
 		if (leftArm.getTargetPosition() == targetPosition) { return; }
 
-		leftArm.setTargetPosition((int)targetPosition);
-		rightArm.setTargetPosition((int)-targetPosition);
+		leftArm.setTargetPosition(-(int)targetPosition);
+		rightArm.setTargetPosition((int)targetPosition);
 	}
 
 
@@ -88,13 +88,16 @@ public class Arm {
 		switch (newState) {
 			case POWER:
 				for(DcMotorEx motor : motors) motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+				break;
 			
 			case VELOCITY:
 				for(DcMotorEx motor : motors) motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+				break;
 			
 			case POSITION:
 				setVelocity(BotConfig.ARM_VELOCITY);
 				for(DcMotorEx motor : motors) motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+				break;
 		}
 	}
 
@@ -112,6 +115,6 @@ public class Arm {
 	}
 	
 	public int getHeight() {
-		return leftArm.getCurrentPosition();
+		return rightArm.getCurrentPosition();
 	}
 }
