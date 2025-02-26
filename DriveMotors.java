@@ -31,8 +31,8 @@ public class DriveMotors {
 	}
 
 	static PIDController distanceSensorPidController = new PIDController(0, 0, 0);
-	static PIDController xPosPidController = new PIDController(0.0025, 0.000001, 0.000004); // kI too high???
-	static PIDController yPosPidController = new PIDController(0., 0., 0.);
+	static PIDController xPosPidController = new PIDController(0.00255, 0.0000002, 0.000005);
+	static PIDController yPosPidController = new PIDController(0.00255, 0.0000002, 0.0000045);
 	static PIDController imuPidController = new PIDController(1, 0, 0.001);
 
 	static Orientation angles;
@@ -171,7 +171,7 @@ public class DriveMotors {
 			yDir * Math.cos(heading);
 
 		// Strafing is slower than rolling, bump speed
-		rotatedX *= BotConfig.STRAFE_MULT;
+		rotatedY *= BotConfig.STRAFE_MULT;
 
 		// Set the power of the wheels based off the new movement vector
 		double backLeftPower   = (-rotatedX - rotatedY + anglePower);
@@ -255,9 +255,9 @@ public class DriveMotors {
 	public boolean isDone() {
 		switch (this.state) {
 			case ODOMETRY:
-				return odometryTimer.milliseconds() > 750 &&
-					(Math.abs(xPosPidController.lastError) < 5) && // max vertical error - MM
-					//(Math.abs(yPosPidController.lastError) < 5) && // max horizontal error - MM
+				return odometryTimer.milliseconds() > 750 && 
+					(Math.abs(xPosPidController.lastError) < 17) && // max vertical error - MM
+					(Math.abs(yPosPidController.lastError) < 17) && // max horizontal error - MM
 					(Math.abs(imuPidController.lastError) < .03); // max angle error - radians
 			
 			case DISTANCE:
