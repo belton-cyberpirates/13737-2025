@@ -45,10 +45,10 @@ public class BotConfig {
   /*****************************************************************************
   ** BASE CALIBRATION CONSTANTS
   *****************************************************************************/
-  public static final int BAR_X = 1; //TODO
-  public static final int BLOCK_GRAB_X = 1; //TODO
-  public static final int FIRST_BLOCK_Y = 1; //TODO
-  public static final int SECOND_BLOCK_Y = 1; //TODO
+  public static final int BAR_X = 550; //TODO
+  public static final int BLOCK_GRAB_X = 350; //TODO
+  public static final int FIRST_BLOCK_Y = -1000; //TODO
+  public static final int SECOND_BLOCK_Y = -1275; //TODO
   public static final int THIRD_BLOCK_Y = 1; //TODO
   // ---------------------------------------------------------------------------
 
@@ -56,7 +56,7 @@ public class BotConfig {
   /*****************************************************************************
   ** ARM CALIBRATION CONSTANTS
   *****************************************************************************/
-  public static final double BAR_HEIGHT = 490;
+  public static final double BAR_HEIGHT = 200;
   public static final double BASKET_HEIGHT = 950;
   // ---------------------------------------------------------------------------
   
