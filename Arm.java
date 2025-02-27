@@ -37,6 +37,9 @@ public class Arm {
 		this.leftArm = auto.hardwareMap.get(DcMotorEx.class, BotConfig.ARM_LEFT_NAME);
 		this.rightArm = auto.hardwareMap.get(DcMotorEx.class, BotConfig.ARM_RIGHT_NAME);
 		
+		this.leftArm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+		this.rightArm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+		
 		this.leftArm.setTargetPosition(0);
 		this.rightArm.setTargetPosition(0);
 
@@ -58,8 +61,8 @@ public class Arm {
 	public void MoveWithPower(double power) {
 		setState(states.POWER);
 
-		leftArm.setPower(power);
-		rightArm.setPower(-power);
+		leftArm.setPower(-power);
+		rightArm.setPower(power);
 	}
 
 
@@ -76,8 +79,8 @@ public class Arm {
 
 		if (leftArm.getTargetPosition() == targetPosition) { return; }
 
-		leftArm.setTargetPosition(-(int)targetPosition);
-		rightArm.setTargetPosition((int)targetPosition);
+		leftArm.setTargetPosition((int)targetPosition);
+		rightArm.setTargetPosition(-(int)targetPosition);
 	}
 
 
@@ -103,7 +106,8 @@ public class Arm {
 
   
 	public void Initialize() {
-		for(DcMotorEx motor : motors) motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+		for(DcMotorEx motor : motors) motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+		for(DcMotorEx motor : motors) motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 	}
   
 	private void setVelocity(int armVelocity) {
@@ -115,6 +119,6 @@ public class Arm {
 	}
 	
 	public int getHeight() {
-		return rightArm.getCurrentPosition();
+		return leftArm.getCurrentPosition();
 	}
 }
