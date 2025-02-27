@@ -158,14 +158,14 @@ public class DriveCode extends LinearOpMode {
 
 			// Wrist code
 			// Specimen pickup hotkey
-			if (gamepad2.left_bumper) {
+			if (false) {
 				intake.MoveWrist(BotConfig.WRIST_SPECIMEN_HEIGHT);
 			}
 			else {
 				double wristPower = -gamepad2.right_stick_y * WRIST_VELOCITY;
 				double powerMult = (gamepad2.right_stick_y > 0 ? 1 : WRIST_LOWER_MULT);
-				//double holdPower = gamepad2.left_bumper ? -0.025 : 0;
-				intake.MoveWristWithVelocity( wristPower * powerMult );
+				double holdPower = gamepad2.left_bumper ? -1 : 0;
+				intake.MoveWristWithVelocity(  (wristPower * powerMult) + holdPower  );
 			}
 			
 
@@ -199,7 +199,8 @@ public class DriveCode extends LinearOpMode {
 
 
 	double getSavedHeading() {
-		return Heading.getHeading();
+		Heading heading = new Heading();
+		return heading.getHeading();
 	}
 	
 
