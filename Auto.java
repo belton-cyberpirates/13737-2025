@@ -61,7 +61,7 @@ public abstract class Auto extends LinearOpMode {
 	@Override
 	public void runOpMode() {
 		Initialize();
-		//MotorSetup();
+		MotorSetup();
 
 		waitForStart();
 
@@ -88,11 +88,8 @@ public abstract class Auto extends LinearOpMode {
 			telemetry.addData("X pos", driveMotors.odometry.getPosX());
 			telemetry.addData("Y pos", driveMotors.odometry.getPosY());
 			telemetry.addData("Heading", driveMotors.odometry.getHeading());
-			telemetry.addData("drivemotors state", driveMotors.state);
-			telemetry.addData("drivemotors targetX", driveMotors.targetX);
-			telemetry.addData("drivemotors targetY", driveMotors.targetY);
-			telemetry.addData("drivemotors targetHeading", driveMotors.targetHeading);
-			telemetry.addData("drivemotors done", driveMotors.isDone());
+			telemetry.addData("Arm Height", arm.getHeight());
+			telemetry.addData("Wrist Pos", intake.getWristPos());
 
 			telemetry.update();
 		}
