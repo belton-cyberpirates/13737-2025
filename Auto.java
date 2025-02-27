@@ -22,22 +22,20 @@ public abstract class Auto extends LinearOpMode {
 	public DriveMotors driveMotors;
 	public Arm arm;
 	public Intake intake;
-	public IMU imu;
 	public Heading heading;
 	
 	/**
 	 * Initialize classes used by autos
 	 */
 	protected void Initialize() {
-		imu = hardwareMap.get(IMU.class, BotConfig.IMU_NAME);
-
 		driveMotors = new DriveMotors(this);
 		arm = new Arm(this);
 		intake = new Intake(this);
-		
 
-		imu.resetYaw();
-		telemetry.addData("Beginning Initialization...", false);
+		driveMotors.InitializeOdometry();
+
+		telemetry.addData("Beginning Initialization...", "");
+		telemetry.addData("DO NOT START AUTONOMOUS YET!", "");
 		telemetry.update();
 	}
 
@@ -47,15 +45,16 @@ public abstract class Auto extends LinearOpMode {
 	protected void MotorSetup() {
 		intake.CloseClaw();
 		intake.DropWrist();
+		arm.DropArm();
 		sleep(3000);
 		arm.Initialize();
 		intake.InitializeWrist();
-		telemetry.addData("Fully Initialized", true);
+		telemetry.addData("Fully Initialized", "");
 		telemetry.update();
 	}
 
 	protected void saveHeading() {
-		double _heading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+		double _heading = driveMotors.odometry.getHeading();
 		this.heading.setHeading(_heading);
 	}
 
@@ -83,23 +82,18 @@ public abstract class Auto extends LinearOpMode {
 				actions = Arrays.copyOfRange(actions, 1, actions.length);
 			}
 
-			driveMotors.odometry.process();
 			driveMotors.process();
 			arm.process();
 			
-			//telemetry.addData("potentiometer", );
-			telemetry.addData("drivemotors state", driveMotors.state);
-			telemetry.addData("drivemotors targetX", driveMotors.targetX);
-			telemetry.addData("drivemotors targetY", driveMotors.targetY);
-			telemetry.addData("drivemotors targetHeading", driveMotors.targetHeading);
-			telemetry.addData("drivemotors done", driveMotors.isDone());
+			telemetry.addData("X pos", driveMotors.odometry.getPosX());
+			telemetry.addData("Y pos", driveMotors.odometry.getPosY());
+			telemetry.addData("Heading", driveMotors.odometry.getHeading());
+			telemetry.addData("Arm Height", arm.getHeight());
+			telemetry.addData("Wrist Pos", intake.getWristPos());
+
+			telemetry.update();
 		}
 
 		saveHeading();
-	}
-
-
-	public double getHeading() {
-		return -imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 	}
 }

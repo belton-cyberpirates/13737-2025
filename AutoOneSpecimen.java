@@ -8,22 +8,21 @@ import org.firstinspires.ftc.teamcode.BotConfig;
 import org.firstinspires.ftc.teamcode.Auto;
 
 
-@Autonomous(name = "Place One", preselectTeleOp="Field Centric (main)")
+@Autonomous(name = "Score First Specimen", preselectTeleOp="Field Centric (main)")
 public class AutoOneSpecimen extends Auto {
 
 	public Action[] getActions() {
 		Action[] actions = {
 			// ======================= AUTO START ======================= //
-
-			// Score first specimen
-			new MoveWrist(this, BotConfig.WRIST_BAR_READY_HEIGHT, false),
-			new Move(this, 0, 550, 0),
-			new MoveArm(this, BotConfig.BAR_HEIGHT, true),
-			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT, false),
-			new Wait(this, 500),
-			new MoveArm(this, 0, false),
-			new Wait(this, 750),
+			
+			new Move(this, BotConfig.BAR_X, 0, 0),
+			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT, true),
+			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT+400, false),
+			new Move(this, BotConfig.BAR_X-450, 0, 0),
 			new OpenClaw(this),
+			new MoveWrist(this, 0, false),
+			
+			new Wait(this, 1000),
 			
 			// ======================== AUTO END ======================== //
 		};

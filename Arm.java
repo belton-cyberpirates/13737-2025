@@ -14,63 +14,111 @@ import org.firstinspires.ftc.teamcode.Direction;
 
 
 public class Arm {
+
+	enum states {
+		POWER,
+		VELOCITY,
+		POSITION
+	}
+
 	private LinearOpMode auto;
+
 	private DcMotorEx leftArm;
 	private DcMotorEx rightArm;
+
 	private DcMotorEx[] motors;
-	
-	private PIDController pidController = new PIDController(1.3, 0.06, 0.2);
-	private double targetPosition;
-	private AnalogInput armPot;
-	private ElapsedTime deltaTimer = new ElapsedTime();
-	private ElapsedTime armTimer = new ElapsedTime();
+
+	public states state;
 
 
 	public Arm(LinearOpMode auto) {
 		this.auto = auto;
+
 		this.leftArm = auto.hardwareMap.get(DcMotorEx.class, BotConfig.ARM_LEFT_NAME);
 		this.rightArm = auto.hardwareMap.get(DcMotorEx.class, BotConfig.ARM_RIGHT_NAME);
-		this.armPot = auto.hardwareMap.get(AnalogInput.class, "arm_pot");
+		
+		this.leftArm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+		this.rightArm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+		
+		this.leftArm.setTargetPosition(0);
+		this.rightArm.setTargetPosition(0);
 
 		// create list of motors to make code cleaner
 		motors = new DcMotorEx[]{ this.leftArm, this.rightArm };
 	}
+
+
+	public void DropArm() {
+		MoveWithPower(-.1);
+	}
+
   	
 	public void process() {
-		double deltaTime = deltaTimer.seconds();
-		
-		double currHeight = armPot.getVoltage();
-		double error = targetPosition - currHeight;
-		
-		double power = pidController.PIDControl(error, deltaTime);
 
-		leftArm.setPower(power);
+	}
+
+
+	public void MoveWithPower(double power) {
+		setState(states.POWER);
+
+		leftArm.setPower(-power);
 		rightArm.setPower(power);
-		
-		auto.telemetry.addData("arm error", pidController.lastOutput);
-		auto.telemetry.addData("arm power", power);
-		auto.telemetry.addData("arm value", armPot.getVoltage());
-		auto.telemetry.addData("arm error", error);
-		
-		deltaTimer.reset();
+	}
+
+
+	public void MoveWithVelocity(double velocity) {
+		setState(states.VELOCITY);
+
+		leftArm.setVelocity(-velocity);
+		rightArm.setVelocity(velocity);
+	}
+
+
+	public void Move(double targetPosition) {
+		setState(states.POSITION);
+
+		if (leftArm.getTargetPosition() == targetPosition) { return; }
+
+		leftArm.setTargetPosition((int)targetPosition);
+		rightArm.setTargetPosition(-(int)targetPosition);
+	}
+
+
+	public void setState(states newState) {
+		if (this.state == newState) { return; }
+		this.state = newState;
+
+		switch (newState) {
+			case POWER:
+				for(DcMotorEx motor : motors) motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+				break;
+			
+			case VELOCITY:
+				for(DcMotorEx motor : motors) motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+				break;
+			
+			case POSITION:
+				setVelocity(BotConfig.ARM_VELOCITY);
+				for(DcMotorEx motor : motors) motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+				break;
+		}
 	}
 
   
 	public void Initialize() {
-		for(DcMotorEx motor : motors) motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+		for(DcMotorEx motor : motors) motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+		for(DcMotorEx motor : motors) motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 	}
   
 	private void setVelocity(int armVelocity) {
 		for(DcMotorEx motor : motors) motor.setVelocity(armVelocity);
 	}
-  
-	public void Move(double targetPosition) {
-		armTimer.reset();
-		this.targetPosition = targetPosition;
-	}
 	
 	public boolean isBusy() {
-		return armTimer.milliseconds() < 500 ||
-			(Math.abs(pidController.lastError) > .05);
+		return leftArm.isBusy() || rightArm.isBusy();
+	}
+	
+	public int getHeight() {
+		return leftArm.getCurrentPosition();
 	}
 }

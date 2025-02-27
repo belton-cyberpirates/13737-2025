@@ -29,7 +29,6 @@ public class BotConfig {
   /*****************************************************************************
   ** DISTANCE CALIBRATION CONSTANTS
   *****************************************************************************/
-  //public static final int TICKS_PER_360_DEG = 4150;
   public static final int TILE_LENGTH = 595; // MM
   // ---------------------------------------------------------------------------
 
@@ -39,35 +38,51 @@ public class BotConfig {
   *****************************************************************************/
   public static final double STRAFE_MULT = 1.41;
   public static final int ARM_VELOCITY = 5000;
-  public static final int WRIST_VELOCITY = 3500;
+  public static final int WRIST_VELOCITY = 2500;
+  // ---------------------------------------------------------------------------
+
+
+  /*****************************************************************************
+  ** BASE CALIBRATION CONSTANTS
+  *****************************************************************************/
+  public static final int BAR_X = 665; //TODO
+  public static final int BLOCK_GRAB_X = 300; //TODO
+  public static final int FIRST_BLOCK_Y = -1000; //TODO
+  public static final int SECOND_BLOCK_Y = -1275; //TODO
+  public static final int THIRD_BLOCK_Y = 1; //TODO
   // ---------------------------------------------------------------------------
 
 
   /*****************************************************************************
   ** ARM CALIBRATION CONSTANTS
   *****************************************************************************/
-  public static final double BAR_HEIGHT = 2.15; //490;
+  public static final double BAR_HEIGHT = 200;
   public static final double BASKET_HEIGHT = 950;
+  public static final double MAX_ARM_HEIGHT = 500;
   // ---------------------------------------------------------------------------
   
   
   /*****************************************************************************
   ** WRIST CALIBRATION CONSTANTS
   *****************************************************************************/
-  public static final int WRIST_SPECIMEN_HEIGHT = 1440;
-  public static final int WRIST_SAMPLE_HEIGHT = 1580;
-  public static final int WRIST_BAR_READY_HEIGHT = 600;
-  public static final int WRIST_BAR_HEIGHT = 900;
+  public static final int WRIST_SPECIMEN_HEIGHT = 1000;
+  public static final int WRIST_SAMPLE_HEIGHT = 1400;
+  public static final int WRIST_BAR_HEIGHT = 600;
   // ---------------------------------------------------------------------------
   
   
   /*****************************************************************************
   ** CLAW CALIBRATION CONSTANTS
   *****************************************************************************/
-  public static final double CLAW_LEFT_OPEN_POS = 0.3;
+	public static final double CLAW_LEFT_OPEN_POS = 0.2;
+	public static final double CLAW_LEFT_FULL_OPEN_POS = 0.4;
 	public static final double CLAW_LEFT_CLOSE_POS = 0.07;
-	public static final double CLAW_RIGHT_OPEN_POS = 0.7;
+	public static final double CLAW_LEFT_HALF_CLOSE_POS = (CLAW_LEFT_OPEN_POS + CLAW_LEFT_CLOSE_POS) / 2;
+
+	public static final double CLAW_RIGHT_OPEN_POS = 0.8;
+	public static final double CLAW_RIGHT_FULL_OPEN_POS = 0.6;
 	public static final double CLAW_RIGHT_CLOSE_POS = 0.93;
+	public static final double CLAW_RIGHT_HALF_CLOSE_POS = (CLAW_RIGHT_OPEN_POS + CLAW_RIGHT_CLOSE_POS) / 2;
   // ---------------------------------------------------------------------------
 
 
