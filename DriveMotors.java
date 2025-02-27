@@ -93,7 +93,7 @@ public class DriveMotors {
 		the tracking point the Y (strafe) odometry pod is. forward of center is a positive number,
 		backwards is a negative number.
 		 */
-		this.odometry.setOffsets(33, 135); 
+		this.odometry.setOffsets(145, -70); 
 
 		/*
 		Set the kind of pods used by your robot. If you're using goBILDA odometry pods, select either
@@ -164,11 +164,11 @@ public class DriveMotors {
 
 		// Rotate the movement vector to convert field relative direction to robot relative direction
 		double rotatedX =
-			xDir * Math.cos(heading) -
-			yDir * Math.sin(heading);
+			xDir * Math.cos(-heading) -
+			yDir * Math.sin(-heading);
 		double rotatedY =
-			xDir * Math.sin(heading) +
-			yDir * Math.cos(heading);
+			xDir * Math.sin(-heading) +
+			yDir * Math.cos(-heading);
 
 		// Strafing is slower than rolling, bump speed
 		rotatedY *= BotConfig.STRAFE_MULT;
