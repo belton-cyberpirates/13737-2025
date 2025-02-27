@@ -31,19 +31,18 @@ public class Intake {
 		
 		this.wrist = auto.hardwareMap.get(DcMotorEx.class, BotConfig.WRIST_NAME);
 		
+		this.wrist.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+		
 		this.claw_left = auto.hardwareMap.get(Servo.class, BotConfig.CLAW_LEFT_NAME);
 		this.claw_right = auto.hardwareMap.get(Servo.class, BotConfig.CLAW_RIGHT_NAME);
 		
-		wrist.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 		wrist.setTargetPosition(0);
-		wrist.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-		wrist.setPower(1);
 	}
 	
 	
 	public void DropWrist() {
 		wrist.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-		wrist.setPower(-.2);
+		wrist.setPower(-.05);
 	}
 	
 	
@@ -85,13 +84,16 @@ public class Intake {
 		switch (newState) {
 			case POWER:
 				wrist.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+				break;
 			
 			case VELOCITY:
 				wrist.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+				break;
 			
 			case POSITION:
 				wrist.setVelocity(BotConfig.WRIST_VELOCITY);
 				wrist.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+				break;
 		}
 	}
   
@@ -114,5 +116,9 @@ public class Intake {
 
 	public boolean isWristBusy() {
 		return wrist.isBusy();
+	}
+	
+	public int getWristPos() {
+		return wrist.getCurrentPosition();
 	}
 }
