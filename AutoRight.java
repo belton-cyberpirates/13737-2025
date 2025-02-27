@@ -8,97 +8,32 @@ import org.firstinspires.ftc.teamcode.BotConfig;
 import org.firstinspires.ftc.teamcode.Auto;
 
 
-@Autonomous(name = "Sigma Auto Right"/*, preselectTeleOp="Field Centric (main)"*/)
+@Autonomous(name = "Specimens")
 public class AutoRight extends Auto {
 
 	public Action[] getActions() {
 		Action[] actions = {
 			// ======================= AUTO START ======================= //
-
+			
 			// Score first specimen
-			new MoveWrist(this, BotConfig.WRIST_BAR_READY_HEIGHT, false),
-			new Move(this, 0, 550, 0),
-			new MoveArm(this, BotConfig.BAR_HEIGHT, true),
-			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT, false),
-			new Wait(this, 500),
-			new MoveArm(this, 0, false),
-			new Wait(this, 750),
-			
-			// Reset wrist
+			new Move(this, BotConfig.BAR_X, 0, 0),
+			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT, true),
+			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT+400, false),
+			new Move(this, BotConfig.BAR_X-450, 0, 0),
 			new OpenClaw(this),
-			new MoveWrist(this, 0, false),
-			new Wait(this, 500),
 			
-			// Grab first block
-			new Move(this, 1020, 400, 0),
+			// Grab next block
+			new Move(this, BotConfig.BLOCK_GRAB_X, BotConfig.FIRST_BLOCK_Y, 0),
 			new MoveWrist(this, BotConfig.WRIST_SAMPLE_HEIGHT, true),
 			new CloseClaw(this),
-			new Wait(this, 500),
-			new MoveWrist(this, BotConfig.WRIST_SAMPLE_HEIGHT - 300, true),
+			new Wait(this, 250),
+			new MoveWrist(this, BotConfig.WRIST_SAMPLE_HEIGHT - 200, false),
 			
-			// Drop first block into observation zone
-			new Move(this, 1020, 400, -175),
+			// Place block in zone
+			new Move(this, 400, BotConfig.FIRST_BLOCK_Y, -175),
 			new OpenClaw(this),
-			new Wait(this, 500),
-			new MoveWrist(this, 0, true),
-			new Wait(this, 2500),
 			
-			// Grab newly made specimen
-			new MoveWrist(this, BotConfig.WRIST_SPECIMEN_HEIGHT, true),
-			new Wait(this, 250),
-			new CloseClaw(this),
-			new Wait(this, 250),
-			new MoveWrist(this, 0, false),
-			
-			// Score second specimen
-			new MoveWrist(this, BotConfig.WRIST_BAR_READY_HEIGHT, false),
-			new Move(this, 0, 550, 0),
-			new MoveArm(this, BotConfig.BAR_HEIGHT + 10, true),
-			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT, false),
-			new Wait(this, 500),
-			new MoveArm(this, 0, false),
-			new Wait(this, 750),
-			
-			
-			// Round two
-			
-			// Reset wrist
-			new OpenClaw(this),
-			new MoveWrist(this, 0, false),
-			new Wait(this, 500),
-			
-			// Grab 2nd block
-			new Move(this, 1260, 400, 0),
-			new MoveWrist(this, BotConfig.WRIST_SAMPLE_HEIGHT, true),
-			new CloseClaw(this),
-			new Wait(this, 500),
-			new MoveWrist(this, BotConfig.WRIST_SAMPLE_HEIGHT - 300, true),
-			
-			// Drop 2nd block into observation zone
-			new Move(this, 1260, 400, -175),
-			new OpenClaw(this),
-			new Wait(this, 500),
-			new MoveWrist(this, 0, true),
-			new Wait(this, 2500),
-			
-			// Grab newly made specimen
-			new MoveWrist(this, BotConfig.WRIST_SPECIMEN_HEIGHT, true),
-			new Wait(this, 250),
-			new CloseClaw(this),
-			new Wait(this, 250),
-			new MoveWrist(this, 0, false),
-			
-			// Score third specimen
-			new MoveWrist(this, BotConfig.WRIST_BAR_READY_HEIGHT, false),
-			new Move(this, 0, 550, 0),
-			new MoveArm(this, BotConfig.BAR_HEIGHT + 10, true),
-			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT, false),
-			new Wait(this, 500),
-			new MoveArm(this, 0, false),
-			new Wait(this, 750),
-			
-			
-			new Wait(this, 50000),
+			new Wait(this, 1000),
 			
 			// ======================== AUTO END ======================== //
 		};
