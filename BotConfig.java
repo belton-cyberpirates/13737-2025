@@ -38,25 +38,32 @@ public class BotConfig {
   *****************************************************************************/
   public static final double STRAFE_MULT = 1.41;
   public static final int ARM_VELOCITY = 5000;
-  public static final int WRIST_VELOCITY = 2500;
+  public static final int WRIST_VELOCITY = 1000;
   // ---------------------------------------------------------------------------
 
 
   /*****************************************************************************
   ** BASE CALIBRATION CONSTANTS
   *****************************************************************************/
-  public static final int BAR_X = 665; //TODO
-  public static final int BLOCK_GRAB_X = 300; //TODO
-  public static final int FIRST_BLOCK_Y = -1000; //TODO
-  public static final int SECOND_BLOCK_Y = -1275; //TODO
-  public static final int THIRD_BLOCK_Y = 1; //TODO
+  public static final int BAR_X = 665;
+  
+  public static final int PICKUP_X = 380;
+  public static final int PICKUP_Y = -470;
+  
+  public static final int BLOCK_GRAB_X = 320;
+  
+  public static final int PLOW_X = 1200;
+  
+  public static final int FIRST_BLOCK_Y = -1000;
+  public static final int SECOND_BLOCK_Y = -1200;
+  public static final int THIRD_BLOCK_Y = 1;
   // ---------------------------------------------------------------------------
 
 
   /*****************************************************************************
   ** ARM CALIBRATION CONSTANTS
   *****************************************************************************/
-  public static final double BAR_HEIGHT = 200;
+  public static final double BAR_HEIGHT = 0;
   public static final double BASKET_HEIGHT = 950;
   public static final double MAX_ARM_HEIGHT = 500;
   // ---------------------------------------------------------------------------
@@ -65,7 +72,7 @@ public class BotConfig {
   /*****************************************************************************
   ** WRIST CALIBRATION CONSTANTS
   *****************************************************************************/
-  public static final int WRIST_SPECIMEN_HEIGHT = 1000;
+  public static final int WRIST_SPECIMEN_HEIGHT = 1370;
   public static final int WRIST_SAMPLE_HEIGHT = 1400;
   public static final int WRIST_BAR_HEIGHT = 600;
   // ---------------------------------------------------------------------------
@@ -83,6 +90,8 @@ public class BotConfig {
 	public static final double CLAW_RIGHT_FULL_OPEN_POS = 0.6;
 	public static final double CLAW_RIGHT_CLOSE_POS = 0.93;
 	public static final double CLAW_RIGHT_HALF_CLOSE_POS = (CLAW_RIGHT_OPEN_POS + CLAW_RIGHT_CLOSE_POS) / 2;
+	
+	public static final int HUMAN_WAIT_TIME = 500;
   // ---------------------------------------------------------------------------
 
 
