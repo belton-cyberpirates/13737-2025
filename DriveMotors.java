@@ -252,7 +252,7 @@ public class DriveMotors {
 				return odometryTimer.milliseconds() > 750 && 
 					(Math.abs(forwardPidController.lastError) < 17) && // max vertical error - MM
 					(Math.abs(strafePidController.lastError) < 17) && // max horizontal error - MM
-					(Math.abs(imuPidController.lastError) < .03); // max angle error - radians
+					(Math.abs(imuPidController.lastError) < .05); // max angle error - radians
 			
 			case DISTANCE:
 				return (Math.abs(distanceSensorPidController.lastError) < 5);
