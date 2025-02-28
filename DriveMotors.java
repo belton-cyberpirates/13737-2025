@@ -31,8 +31,8 @@ public class DriveMotors {
 	}
 
 	static PIDController distanceSensorPidController = new PIDController(0, 0, 0);
-	static PIDController xPosPidController = new PIDController(0.00255, 0.0000002, 0.000005);
-	static PIDController yPosPidController = new PIDController(0.00255, 0.0000002, 0.0000045);
+	static PIDController forwardPidController = new PIDController(0.00255, 0.0000002, 0.000005);
+	static PIDController strafePidController = new PIDController(0.0027, 0.00000025, 0.000005);
 	static PIDController imuPidController = new PIDController(1, 0, 0.001);
 
 	static Orientation angles;
@@ -156,28 +156,31 @@ public class DriveMotors {
 
 	private void driveWithOdometry(double delta) {
 
+		// Get heading from Odometry
 		double heading = odometry.getHeading();
 
-		double xDir = xPosPidController.PIDControl(targetX, odometry.getPosX(), delta);
-		double yDir = yPosPidController.PIDControl(targetY, odometry.getPosY(), delta);
-		double anglePower = imuPidController.PIDControlRadians(targetHeading, heading, delta);
+		// Get robot movement errors
+		double xError = targetX - odometry.getPosX();
+		double yError = targetY - odometry.getPosY();
 
 		// Rotate the movement vector to convert field relative direction to robot relative direction
-		double rotatedX =
-			xDir * Math.cos(-heading) -
-			yDir * Math.sin(-heading);
-		double rotatedY =
-			xDir * Math.sin(-heading) +
-			yDir * Math.cos(-heading);
+		double forwardError =
+			xError * Math.cos(-heading) -
+			yError * Math.sin(-heading);
+		double horizontalError =
+			xError * Math.sin(-heading) +
+			yError * Math.cos(-heading);
 
-		// Strafing is slower than rolling, bump speed
-		rotatedY *= BotConfig.STRAFE_MULT;
+		// Get powers from PID
+		double forwardPower = forwardPidController.PIDControl(forwardError, delta);
+		double horizontalPower = strafePidController.PIDControl(horizontalError, delta);
+		double anglePower = imuPidController.PIDControlRadians(targetHeading, heading, delta);
 
 		// Set the power of the wheels based off the new movement vector
-		double backLeftPower   = (-rotatedX - rotatedY + anglePower);
-		double frontLeftPower  = (-rotatedX + rotatedY + anglePower);
-		double frontRightPower = ( rotatedX + rotatedY + anglePower);
-		double backRightPower  = ( rotatedX - rotatedY + anglePower);
+		double backLeftPower   = (-forwardPower - horizontalPower + anglePower);
+		double frontLeftPower  = (-forwardPower + horizontalPower + anglePower);
+		double frontRightPower = ( forwardPower + horizontalPower + anglePower);
+		double backRightPower  = ( forwardPower - horizontalPower + anglePower);
 
 		// Find highest motor power value
 		double highestPower = Collections.max(Arrays.asList( Math.abs(backLeftPower), Math.abs(frontLeftPower), Math.abs(frontRightPower), Math.abs(backRightPower) ));
@@ -190,24 +193,15 @@ public class DriveMotors {
 			backRightPower /= highestPower;
 		}
 
-		// // If trying to move at full power, scale down to 90%
-		// if (highestPower > .9) {
-		// 	backLeftPower *= .9;
-		// 	frontLeftPower *= .9;
-		// 	frontRightPower *= .9;
-		// 	backRightPower *= .9;
-		// }
-
 		backLeft.setPower(backLeftPower);
 		frontLeft.setPower(frontLeftPower);
 		frontRight.setPower(frontRightPower);
 		backRight.setPower(backRightPower);
 		
 		auto.telemetry.addData("drivemotors heading", heading);
-		auto.telemetry.addData("drivemotors anglePower", anglePower);
 		
-		auto.telemetry.addData("drivemotors xDir", xDir);
-		auto.telemetry.addData("drivemotors yDir", yDir);
+		auto.telemetry.addData("drivemotors forwardPower", forwardPower);
+		auto.telemetry.addData("drivemotors horizontalPower", horizontalPower);
 		auto.telemetry.addData("drivemotors anglePower", anglePower);
 	}
 
@@ -256,8 +250,8 @@ public class DriveMotors {
 		switch (this.state) {
 			case ODOMETRY:
 				return odometryTimer.milliseconds() > 750 && 
-					(Math.abs(xPosPidController.lastError) < 17) && // max vertical error - MM
-					(Math.abs(yPosPidController.lastError) < 17) && // max horizontal error - MM
+					(Math.abs(forwardPidController.lastError) < 17) && // max vertical error - MM
+					(Math.abs(strafePidController.lastError) < 17) && // max horizontal error - MM
 					(Math.abs(imuPidController.lastError) < .03); // max angle error - radians
 			
 			case DISTANCE:
