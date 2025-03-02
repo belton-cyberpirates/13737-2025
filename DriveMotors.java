@@ -207,11 +207,14 @@ public class DriveMotors {
 
 
 	public void driveWithDistanceSensor(double delta) {
+		// Get distance error
 		double dist = distSensor.getDistance(DistanceUnit.MM);
 		double error = targetDistance - dist;
 		
+		// Get power value from PID
 		double power = distanceSensorPidController.PIDControl(error, delta);
 
+		// Set motor power from PID value
 		frontLeft.setPower(-power);
 		frontRight.setPower(power);
 		backLeft.setPower(-power);
