@@ -39,6 +39,7 @@ public class BotConfig {
   public static final double STRAFE_MULT = 1.41;
   public static final int ARM_VELOCITY = 5000;
   public static final int WRIST_VELOCITY = 1000;
+  public static final double DIST_TIME_MULT = 3;
   // ---------------------------------------------------------------------------
 
 

@@ -60,6 +60,8 @@ public class DriveMotors {
 	
 	ElapsedTime odometryTimer = new ElapsedTime();
 
+	double maxMoveTime = 0;
+
 
 	public DriveMotors(LinearOpMode auto) {
 		this.auto = auto;
@@ -227,6 +229,9 @@ public class DriveMotors {
 
 
 	public void Move(double xPos, double yPos, double heading) {
+		double distToTarget = Math.sqrt( Math.pow(targetX - xPos, 2) + Math.pow(targetY - yPos, 2) ) + (heading * 80);
+		this.maxMoveTime = distToTarget * BotConfig.DIST_TIME_MULT;
+
 		this.targetX = xPos;
 		this.targetY = yPos;
 		this.targetHeading = -( heading * ( Math.PI / 180 ) );
@@ -252,10 +257,13 @@ public class DriveMotors {
 	public boolean isDone() {
 		switch (this.state) {
 			case ODOMETRY:
-				return odometryTimer.milliseconds() > 750 && 
-					(Math.abs(forwardPidController.lastError) < 17) && // max vertical error - MM
-					(Math.abs(strafePidController.lastError) < 17) && // max horizontal error - MM
-					(Math.abs(imuPidController.lastError) < .05); // max angle error - radians
+				return (
+						(odometryTimer.milliseconds() > 750) && 
+						(Math.abs(forwardPidController.lastError) < 17) && // max vertical error - MM
+						(Math.abs(strafePidController.lastError) < 17) && // max horizontal error - MM
+						(Math.abs(imuPidController.lastError) < .05) // max angle error - radians
+					) || (odometryTimer.milliseconds() > maxMoveTime)
+					; 
 			
 			case DISTANCE:
 				return (Math.abs(distanceSensorPidController.lastError) < 5);
