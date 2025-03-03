@@ -38,8 +38,7 @@ public class BotConfig {
   *****************************************************************************/
   public static final double STRAFE_MULT = 1.41;
   public static final int ARM_VELOCITY = 5000;
-  public static final int WRIST_VELOCITY = 1000;
-  public static final double DIST_TIME_MULT = 3;
+  public static final int WRIST_VELOCITY = 1500;
   // ---------------------------------------------------------------------------
 
 
@@ -48,12 +47,15 @@ public class BotConfig {
   *****************************************************************************/
   public static final int BAR_X = 665;
   
-  public static final int PICKUP_X = 380;
-  public static final int PICKUP_Y = -470;
+  public static final int PICKUP_X = 390;
+  public static final int PICKUP_Y = -430;
   
   public static final int BLOCK_GRAB_X = 320;
   
   public static final int PLOW_X = 1200;
+  
+  public static final int BASKET_X = 300;
+  public static final int BASKET_Y = 1000;
   
   public static final int FIRST_BLOCK_Y = -1000;
   public static final int SECOND_BLOCK_Y = -1200;
@@ -65,8 +67,8 @@ public class BotConfig {
   ** ARM CALIBRATION CONSTANTS
   *****************************************************************************/
   public static final double BAR_HEIGHT = 0;
-  public static final double BASKET_HEIGHT = 950;
-  public static final double MAX_ARM_HEIGHT = 500;
+  public static final double BASKET_HEIGHT = 600;
+  public static final double MAX_ARM_HEIGHT = 600;
   // ---------------------------------------------------------------------------
   
   
