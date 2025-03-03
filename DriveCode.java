@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 
 @TeleOp(name="Field Centric (main)", group="DriveCodes")
 public class DriveCode extends LinearOpMode {
@@ -49,6 +50,10 @@ public class DriveCode extends LinearOpMode {
 		// Set winch motor behavior
 		Winch.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 		Winch.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+		// Recalibrate odometry and set current position
+		Pose2D odometryPos = driveMotors.odometry.getPosition();
+		driveMotors.InitializeOdometry(odometryPos);
 
 		// Wait for the start button to be pressed
 		waitForStart();
