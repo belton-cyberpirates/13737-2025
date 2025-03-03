@@ -31,8 +31,8 @@ public class DriveMotors {
 	}
 
 	static PIDController distanceSensorPidController = new PIDController(0, 0, 0);
-	static PIDController forwardPidController = new PIDController(0.00255, 0.0000003, 0.000005);
-	static PIDController strafePidController = new PIDController(0.00265, 0.00000033, 0.000003);
+	static PIDController forwardPidController = new PIDController(0.00255, 0.00000031, 0.0000025);
+	static PIDController strafePidController = new PIDController(0.00265, 0.00000033, 0.0000025);
 	static PIDController imuPidController = new PIDController(1, 0, 0.001);
 
 	static Orientation angles;
@@ -59,8 +59,6 @@ public class DriveMotors {
 	public int targetDistance;
 	
 	ElapsedTime odometryTimer = new ElapsedTime();
-
-	double maxMoveTime = 0;
 
 
 	public DriveMotors(LinearOpMode auto) {
@@ -202,6 +200,10 @@ public class DriveMotors {
 		
 		auto.telemetry.addData("drivemotors heading", heading);
 		
+		auto.telemetry.addData("drivemotors xError", xError);
+		auto.telemetry.addData("drivemotors yError", yError);
+		auto.telemetry.addData("drivemotors angleError", targetHeading - heading);
+		
 		auto.telemetry.addData("drivemotors forwardPower", forwardPower);
 		auto.telemetry.addData("drivemotors horizontalPower", horizontalPower);
 		auto.telemetry.addData("drivemotors anglePower", anglePower);
@@ -209,14 +211,11 @@ public class DriveMotors {
 
 
 	public void driveWithDistanceSensor(double delta) {
-		// Get distance error
 		double dist = distSensor.getDistance(DistanceUnit.MM);
 		double error = targetDistance - dist;
 		
-		// Get power value from PID
 		double power = distanceSensorPidController.PIDControl(error, delta);
 
-		// Set motor power from PID value
 		frontLeft.setPower(-power);
 		frontRight.setPower(power);
 		backLeft.setPower(-power);
@@ -229,9 +228,6 @@ public class DriveMotors {
 
 
 	public void Move(double xPos, double yPos, double heading) {
-		double distToTarget = Math.sqrt( Math.pow(targetX - xPos, 2) + Math.pow(targetY - yPos, 2) ) + (heading * 80);
-		this.maxMoveTime = distToTarget * BotConfig.DIST_TIME_MULT;
-
 		this.targetX = xPos;
 		this.targetY = yPos;
 		this.targetHeading = -( heading * ( Math.PI / 180 ) );
@@ -257,13 +253,10 @@ public class DriveMotors {
 	public boolean isDone() {
 		switch (this.state) {
 			case ODOMETRY:
-				return (
-						(odometryTimer.milliseconds() > 750) && 
-						(Math.abs(forwardPidController.lastError) < 17) && // max vertical error - MM
-						(Math.abs(strafePidController.lastError) < 17) && // max horizontal error - MM
-						(Math.abs(imuPidController.lastError) < .05) // max angle error - radians
-					) || (odometryTimer.milliseconds() > maxMoveTime)
-					; 
+				return odometryTimer.milliseconds() > 750 && 
+					(Math.abs(forwardPidController.lastError) < 20) && // max vertical error - MM
+					(Math.abs(strafePidController.lastError) < 20) && // max horizontal error - MM
+					(Math.abs(imuPidController.lastError) < .05); // max angle error - radians
 			
 			case DISTANCE:
 				return (Math.abs(distanceSensorPidController.lastError) < 5);
