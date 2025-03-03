@@ -34,7 +34,7 @@ public class AutoLeft extends Auto {
 			new Wait(this, 250),
 			new MoveWrist(this, 0, false),
 			
-			// Score 2nd sample block
+			// Score 2nd sample
 			new Move(this, BotConfig.BASKET_X, BotConfig.BASKET_Y, -135),
 			new MoveArm(this, BotConfig.BASKET_HEIGHT, true),
 			new MoveWrist(this, 800, true),
@@ -54,7 +54,7 @@ public class AutoLeft extends Auto {
 			new MoveWrist(this, 0, false),
 			new Wait(this, 500),
 			
-			// Score 3rd sample block
+			// Score 3rd sample
 			new Move(this, BotConfig.BASKET_X, BotConfig.BASKET_Y, -135),
 			new MoveArm(this, BotConfig.BASKET_HEIGHT, true),
 			new MoveWrist(this, 800, true),
