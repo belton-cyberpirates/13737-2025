@@ -15,6 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import com.qualcomm.robotcore.hardware.AnalogInput;
+import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 
 import org.firstinspires.ftc.teamcode.Direction;
 import org.firstinspires.ftc.teamcode.BotConfig;
@@ -123,6 +124,12 @@ public class DriveMotors {
 		 */
 		//odo.recalibrateIMU();
 		this.odometry.resetPosAndIMU();
+	}
+
+
+	public void InitializeOdometry(Pose2D pos) {
+		InitializeOdometry();
+		odometry.setPosition(pos);
 	}
 
 
