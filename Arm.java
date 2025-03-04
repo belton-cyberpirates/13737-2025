@@ -49,7 +49,7 @@ public class Arm {
 
 
 	public void DropArm() {
-		MoveWithPower(-.1);
+		MoveWithPower(.2);
 	}
 
   	
