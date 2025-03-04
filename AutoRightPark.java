@@ -19,7 +19,8 @@ public class AutoRightPark extends Auto {
 			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT, false),
 			new Move(this, BotConfig.BAR_X, 0, 0),
 			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT+400, false),
-			new Move(this, BotConfig.BAR_X-450, 0, 0),
+			new Wait(this, 100),
+			new Move(this, BotConfig.BAR_SCORE_X, 0, 0),
 			new OpenClawWide(this),
 			
 			// Grab next block
@@ -51,7 +52,7 @@ public class AutoRightPark extends Auto {
 			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT, false),
 			new Move(this, BotConfig.BAR_X, 100, 0),
 			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT+400, false),
-			new Move(this, BotConfig.BAR_X-440, 100, 0),
+			new Move(this, BotConfig.BAR_SCORE_X, 100, 0),
 			new OpenClawWide(this),
 			
 			// Pick up 3rd specimen
@@ -65,12 +66,12 @@ public class AutoRightPark extends Auto {
 			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT, false),
 			new Move(this, BotConfig.BAR_X, 200, 0),
 			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT+400, false),
-			new Move(this, BotConfig.BAR_X-440, 200, 0),
+			new Move(this, BotConfig.BAR_SCORE_X, 200, 0),
 			new OpenClawWide(this),
 			
 			new Wait(this, 250),
 			
-			new Move(this, 100, -1300, 0),
+			new Move(this, 100, -1200, 0),
 			
 			// ======================== AUTO END ======================== //
 		};
