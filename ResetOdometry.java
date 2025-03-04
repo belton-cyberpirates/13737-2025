@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 
-@Autonomous(name = "Reset Odometry")
+@Autonomous(name = "Reset Odometry", group="3")
 public class ResetOdometry extends LinearOpMode {
 
 	public void runOpMode() {

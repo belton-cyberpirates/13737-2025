@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.BotConfig;
 import org.firstinspires.ftc.teamcode.Auto;
 
 
-@Autonomous(name = "Specimens - Four")
+@Autonomous(name = "Specimens - Four", group="1")
 public class AutoRightFour extends Auto {
 
 	public Action[] getActions() {
