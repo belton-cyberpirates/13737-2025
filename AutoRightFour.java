@@ -19,8 +19,13 @@ public class AutoRightFour extends Auto {
 			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT, false),
 			new Move(this, BotConfig.BAR_X, 0, 0),
 			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT+400, false),
-			new Move(this, BotConfig.BAR_X-450, 0, 0),
+			new Wait(this, 100),
+			new Move(this, BotConfig.BAR_SCORE_X, 0, 0),
 			new OpenClawWide(this),
+			
+			// Reset wrist
+			new MoveWrist(this, BotConfig.WRIST_PASSIVE, false),
+			new Wait(this, 250),
 			
 			// Grab next block
 			new Move(this, BotConfig.BLOCK_GRAB_X, BotConfig.FIRST_BLOCK_Y, 0),
@@ -51,8 +56,12 @@ public class AutoRightFour extends Auto {
 			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT, false),
 			new Move(this, BotConfig.BAR_X, 100, 0),
 			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT+400, false),
-			new Move(this, BotConfig.BAR_X-440, 100, 0),
+			new Move(this, BotConfig.BAR_SCORE_X, 100, 0),
 			new OpenClawWide(this),
+			
+			// Reset wrist
+			new MoveWrist(this, BotConfig.WRIST_PASSIVE, false),
+			new Wait(this, 250),
 			
 			// Pick up 3rd specimen
 			new Move(this, BotConfig.PICKUP_X, BotConfig.PICKUP_Y, 135),
@@ -65,8 +74,12 @@ public class AutoRightFour extends Auto {
 			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT, false),
 			new Move(this, BotConfig.BAR_X, 200, 0),
 			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT+400, false),
-			new Move(this, BotConfig.BAR_X-440, 200, 0),
+			new Move(this, BotConfig.BAR_SCORE_X, 200, 0),
 			new OpenClawWide(this),
+			
+			// Reset wrist
+			new MoveWrist(this, BotConfig.WRIST_PASSIVE, false),
+			new Wait(this, 250),
 			
 			// Pick up 4th specimen
 			new Move(this, BotConfig.PICKUP_X, BotConfig.PICKUP_Y, 135),
@@ -79,8 +92,12 @@ public class AutoRightFour extends Auto {
 			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT, false),
 			new Move(this, BotConfig.BAR_X, 300, 0),
 			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT+400, false),
-			new Move(this, BotConfig.BAR_X-440, 300, 0),
+			new Move(this, BotConfig.BAR_SCORE_X, 300, 0),
 			new OpenClawWide(this),
+			
+			// Reset wrist
+			new MoveWrist(this, BotConfig.WRIST_PASSIVE, false),
+			new Wait(this, 250),
 			
 			new Wait(this, 250),
 			new Move(this, 100, -1300, 0),
