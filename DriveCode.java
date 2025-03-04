@@ -11,7 +11,6 @@ import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 
 @TeleOp(name="Field Centric (main)", group="DriveCodes")
 public class DriveCode extends LinearOpMode {
@@ -24,7 +23,7 @@ public class DriveCode extends LinearOpMode {
 
 	// Arm constants
 	final double ARM_VELOCITY = 750;
-	final double WRIST_VELOCITY = 1000;
+	final double WRIST_VELOCITY = 1500;
 	final double WRIST_LOWER_MULT = .7;
 	final double WRIST_BUTTON_MULT = 1.75;
 	
@@ -64,7 +63,7 @@ public class DriveCode extends LinearOpMode {
 
 		while (opModeIsActive()) {
 			// Reset yaw when back button pressed so restarting is not needed if it needs a reset
-			if (gamepad1.a) {
+			if (gamepad1.y) {
 				driveMotors.odometry.recalibrateIMU();
 			}
 
@@ -96,15 +95,21 @@ public class DriveCode extends LinearOpMode {
 			
 			// strafing is slower than rolling, bump horizontal speed
 			rotatedX *= STRAFE_MULT;
-
-			// Set the power of the wheels based off the new joystick coordinates
-			// y+x+stick <- [-1,1]
-			driveMotors.DriveWithPower(
-				( rotatedY + rotatedX - ( rightStickXGP1 * TURN_MULT )) * maxSpeed, // Back left
-				( rotatedY - rotatedX - ( rightStickXGP1 * TURN_MULT )) * maxSpeed, // Front left
-				(-rotatedY - rotatedX - ( rightStickXGP1 * TURN_MULT )) * maxSpeed, // Front right
-				(-rotatedY + rotatedX - ( rightStickXGP1 * TURN_MULT )) * maxSpeed  // Back right
-			);
+			
+			
+			if (gamepad1.a) {
+				driveMotors.Move(BotConfig.PICKUP_X, BotConfig.PICKUP_Y, 135);
+			}
+			else {
+				// Set the power of the wheels based off the new joystick coordinates
+				// y+x+stick <- [-1,1]
+				driveMotors.DriveWithPower(
+					( rotatedY + rotatedX - ( rightStickXGP1 * TURN_MULT )) * maxSpeed, // Back left
+					( rotatedY - rotatedX - ( rightStickXGP1 * TURN_MULT )) * maxSpeed, // Front left
+					(-rotatedY - rotatedX - ( rightStickXGP1 * TURN_MULT )) * maxSpeed, // Front right
+					(-rotatedY + rotatedX - ( rightStickXGP1 * TURN_MULT )) * maxSpeed  // Back right
+				);
+			}
 			
 			
 			// Winch code
@@ -153,8 +158,8 @@ public class DriveCode extends LinearOpMode {
 
 			// Arm code
 			// High chamber hotkey
-			if (gamepad2.right_bumper) {
-				arm.Move(BotConfig.BAR_HEIGHT);
+			if (false) {
+				
 			}
 			else {
 				SetArmVelocity(gamepad2.left_stick_y * ARM_VELOCITY);
@@ -163,14 +168,15 @@ public class DriveCode extends LinearOpMode {
 
 			// Wrist code
 			// Specimen pickup hotkey
-			if (false) {
+			if (gamepad2.left_bumper) {
 				intake.MoveWrist(BotConfig.WRIST_SPECIMEN_HEIGHT);
+				intake.wrist.setVelocity(BotConfig.WRIST_VELOCITY * 2);
 			}
 			else {
 				double wristPower = -gamepad2.right_stick_y * WRIST_VELOCITY;
 				double powerMult = (gamepad2.right_stick_y > 0 ? 1 : WRIST_LOWER_MULT);
-				double holdPower = gamepad2.left_bumper ? -1 : 0;
-				intake.MoveWristWithVelocity(  (wristPower * powerMult) + holdPower  );
+				double holdPower = gamepad2.right_bumper ? -1 : 0;
+				intake.MoveWristWithVelocity( (wristPower * powerMult) + holdPower );
 			}
 			
 
@@ -185,6 +191,7 @@ public class DriveCode extends LinearOpMode {
 			telemetry.addData("X pos", driveMotors.odometry.getPosX());
 			telemetry.addData("Y pos", driveMotors.odometry.getPosY());
 			telemetry.addData("Heading", driveMotors.odometry.getHeading());
+			telemetry.addData("Wrist mode", intake.wrist.getMode());
 			telemetry.addLine();
 
 			telemetry.update();
@@ -210,11 +217,11 @@ public class DriveCode extends LinearOpMode {
 	
 
 	void SetArmVelocity(double velocity) {
-		// if ((velocity > 0) || (this.arm.getHeight() < 1600)) {
+		if ((velocity > 0) || (this.arm.getHeight() < BotConfig.MAX_ARM_HEIGHT)) {
 			arm.MoveWithVelocity(velocity);
-		// }
-		// else {
-		// 	arm.MoveWithVelocity(0);
-		// }
+		}
+		else {
+			arm.MoveWithPower(-.1);
+		}
 	}
 }
