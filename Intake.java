@@ -19,7 +19,7 @@ public class Intake {
 	}
 
 	private LinearOpMode auto;
-	private DcMotorEx wrist;
+	public DcMotorEx wrist;
 	private Servo claw_left;
 	private Servo claw_right;
 
@@ -37,6 +37,7 @@ public class Intake {
 		this.claw_right = auto.hardwareMap.get(Servo.class, BotConfig.CLAW_RIGHT_NAME);
 		
 		wrist.setTargetPosition(0);
+		
 	}
 	
 	
@@ -71,7 +72,7 @@ public class Intake {
 	public void MoveWrist(double targetPosition) {
 		setState(states.POSITION);
 
-		if (wrist.getTargetPosition() == targetPosition) { return; }
+		//if (wrist.getTargetPosition() == targetPosition) { return; }
 
 		wrist.setTargetPosition((int)targetPosition);
 	}
