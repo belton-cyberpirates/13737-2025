@@ -62,7 +62,7 @@ public class BotConfig {
   public static final int SECOND_BLOCK_Y = -1240;
   
   public static final int THIRD_BLOCK_X = 880;
-  public static final int THIRD_BLOCK_Y = -960;
+  public static final int THIRD_BLOCK_Y = -980;
   // ---------------------------------------------------------------------------
 
 
@@ -71,6 +71,7 @@ public class BotConfig {
   *****************************************************************************/
   public static final double BAR_HEIGHT = 0;
   public static final double BASKET_HEIGHT = 600;
+  public static final double BASKET_SAFE_HEIGHT = 490;
   public static final double MAX_ARM_HEIGHT = 600;
   // ---------------------------------------------------------------------------
   
@@ -79,12 +80,13 @@ public class BotConfig {
   ** WRIST CALIBRATION CONSTANTS
   *****************************************************************************/
   public static final int WRIST_SPECIMEN_HEIGHT = 1370;
-  public static final int WRIST_SAMPLE_HEIGHT = 1400;
-  public static final int WRIST_SIDE_SAMPLE_HEIGHT = 1450;
+  public static final int WRIST_SAMPLE_HEIGHT = 1405;
+  public static final int WRIST_SIDE_SAMPLE_HEIGHT = 1425;
   
   public static final int WRIST_BAR_HEIGHT = 600;
   public static final int WRIST_PASSIVE = 500;
   public static final int WRIST_DUNK_HEIGHT = 760;
+  public static final int WRIST_BASKET_SAFE_HEIGHT = 670;
   
   // ---------------------------------------------------------------------------
   
