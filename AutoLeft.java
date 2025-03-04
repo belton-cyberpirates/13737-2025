@@ -23,7 +23,7 @@ public class AutoLeft extends Auto {
 			new Wait(this, 250),
 			
 			// Reset arm and wrist
-			new MoveWrist(this, 0, false),
+			new MoveWrist(this, BotConfig.WRIST_PASSIVE, false),
 			new MoveArm(this, 0, true),
 			
 			// Grab 2nd sample
@@ -42,7 +42,7 @@ public class AutoLeft extends Auto {
 			new Wait(this, 250),
 			
 			// Reset arm and wrist
-			new MoveWrist(this, 0, false),
+			new MoveWrist(this, BotConfig.WRIST_PASSIVE, false),
 			new MoveArm(this, 0, true),
 			
 			// Grab 3rd sample
@@ -62,13 +62,13 @@ public class AutoLeft extends Auto {
 			new Wait(this, 250),
 			
 			// Reset arm and wrist
-			new MoveWrist(this, 0, false),
+			new MoveWrist(this, BotConfig.WRIST_PASSIVE, false),
 			new MoveArm(this, 0, true),
 			
 			// Grab 4th sample
-			new Move(this, BotConfig.THIRD_BLOCK_X, -BotConfig.THIRD_BLOCK_Y, -90),
+			new Move(this, BotConfig.THIRD_BLOCK_X, -BotConfig.THIRD_BLOCK_Y - 100, -90),
 			new MoveWrist(this, BotConfig.WRIST_SIDE_SAMPLE_HEIGHT, true),
-			new Move(this, BotConfig.THIRD_BLOCK_X, -BotConfig.THIRD_BLOCK_Y + 50, -90),
+			new Move(this, BotConfig.THIRD_BLOCK_X, -BotConfig.THIRD_BLOCK_Y, -90),
 			new Wait(this, 250),
 			new CloseClaw(this),
 			new Wait(this, 250),
