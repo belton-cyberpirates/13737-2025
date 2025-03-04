@@ -37,7 +37,7 @@ public class BotConfig {
   ** DRIVE SPEED CONSTANTS
   *****************************************************************************/
   public static final double STRAFE_MULT = 1.41;
-  public static final int ARM_VELOCITY = 5000;
+  public static final int ARM_VELOCITY = 2000;
   public static final int WRIST_VELOCITY = 1500;
   // ---------------------------------------------------------------------------
 
@@ -46,6 +46,7 @@ public class BotConfig {
   ** BASE CALIBRATION CONSTANTS
   *****************************************************************************/
   public static final int BAR_X = 665;
+  public static final int BAR_SCORE_X = BAR_X - 350;
   
   public static final int PICKUP_X = 390;
   public static final int PICKUP_Y = -430;
@@ -58,8 +59,10 @@ public class BotConfig {
   public static final int BASKET_Y = 1000;
   
   public static final int FIRST_BLOCK_Y = -1000;
-  public static final int SECOND_BLOCK_Y = -1200;
-  public static final int THIRD_BLOCK_Y = 1;
+  public static final int SECOND_BLOCK_Y = -1240;
+  
+  public static final int THIRD_BLOCK_X = 880;
+  public static final int THIRD_BLOCK_Y = -960;
   // ---------------------------------------------------------------------------
 
 
@@ -77,7 +80,12 @@ public class BotConfig {
   *****************************************************************************/
   public static final int WRIST_SPECIMEN_HEIGHT = 1370;
   public static final int WRIST_SAMPLE_HEIGHT = 1400;
+  public static final int WRIST_SIDE_SAMPLE_HEIGHT = 1450;
+  
   public static final int WRIST_BAR_HEIGHT = 600;
+  public static final int WRIST_PASSIVE = 500;
+  public static final int WRIST_DUNK_HEIGHT = 760;
+  
   // ---------------------------------------------------------------------------
   
   
