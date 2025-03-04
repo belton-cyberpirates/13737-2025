@@ -158,8 +158,9 @@ public class DriveCode extends LinearOpMode {
 
 			// Arm code
 			// High chamber hotkey
-			if (false) {
-				
+			if (gamepad2.right_stick_button) {
+				arm.Move(BotConfig.BASKET_SAFE_HEIGHT);
+				arm.setVelocity((int)ARM_VELOCITY);
 			}
 			else {
 				SetArmVelocity(gamepad2.left_stick_y * ARM_VELOCITY);
@@ -168,14 +169,18 @@ public class DriveCode extends LinearOpMode {
 
 			// Wrist code
 			// Specimen pickup hotkey
-			if (gamepad2.left_bumper) {
+			if (gamepad2.right_stick_button) {
+				intake.MoveWrist(BotConfig.WRIST_BASKET_SAFE_HEIGHT);
+				intake.wrist.setVelocity(BotConfig.WRIST_VELOCITY);
+			}
+			else if (gamepad2.right_bumper) {
 				intake.MoveWrist(BotConfig.WRIST_SPECIMEN_HEIGHT);
 				intake.wrist.setVelocity(BotConfig.WRIST_VELOCITY * 2);
 			}
 			else {
 				double wristPower = -gamepad2.right_stick_y * WRIST_VELOCITY;
 				double powerMult = (gamepad2.right_stick_y > 0 ? 1 : WRIST_LOWER_MULT);
-				double holdPower = gamepad2.right_bumper ? -1 : 0;
+				double holdPower = gamepad2.left_bumper ? -1 : 0;
 				intake.MoveWristWithVelocity( (wristPower * powerMult) + holdPower );
 			}
 			
