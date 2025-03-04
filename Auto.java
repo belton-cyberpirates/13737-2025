@@ -46,9 +46,12 @@ public abstract class Auto extends LinearOpMode {
 		intake.CloseClaw();
 		intake.DropWrist();
 		arm.DropArm();
+
 		sleep(3000);
+		
 		arm.Initialize();
 		intake.InitializeWrist();
+		
 		telemetry.addData("Fully Initialized", "");
 		telemetry.update();
 	}
@@ -87,7 +90,6 @@ public abstract class Auto extends LinearOpMode {
 			
 			telemetry.addData("X pos", driveMotors.odometry.getPosX());
 			telemetry.addData("Y pos", driveMotors.odometry.getPosY());
-			telemetry.addData("Heading", driveMotors.odometry.getHeading());
 			telemetry.addData("Arm Height", arm.getHeight());
 			telemetry.addData("Wrist Pos", intake.getWristPos());
 
