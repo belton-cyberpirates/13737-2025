@@ -179,7 +179,7 @@ public class DriveCode extends LinearOpMode {
 			}
 			else {
 				double wristPower = -gamepad2.right_stick_y * WRIST_VELOCITY;
-				double powerMult = (gamepad2.right_stick_y > 0 ? 1 : WRIST_LOWER_MULT);
+				double powerMult = gamepad2.right_stick_y > 0 ? 1 : WRIST_LOWER_MULT;
 				double holdPower = gamepad2.left_bumper ? -1 : 0;
 				intake.MoveWristWithVelocity( (wristPower * powerMult) + holdPower );
 			}
@@ -192,12 +192,13 @@ public class DriveCode extends LinearOpMode {
 
 			// Telemetry
 			// Odometry values
-			telemetry.addData("Odometry:", true);
 			telemetry.addData("X pos", driveMotors.odometry.getPosX());
 			telemetry.addData("Y pos", driveMotors.odometry.getPosY());
 			telemetry.addData("Heading", driveMotors.odometry.getHeading());
-			telemetry.addData("Wrist mode", intake.wrist.getMode());
-			telemetry.addLine();
+
+			// Arm + intake values
+			telemetry.addData("Arm pos", arm.getheight());
+			telemetry.addData("Wrist pos", intake.wrist.getCurrentPosition());
 
 			telemetry.update();
 		}
