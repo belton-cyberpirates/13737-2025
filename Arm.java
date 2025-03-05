@@ -110,7 +110,7 @@ public class Arm {
 		for(DcMotorEx motor : motors) motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 	}
   
-	private void setVelocity(int armVelocity) {
+	public void setVelocity(int armVelocity) {
 		for(DcMotorEx motor : motors) motor.setVelocity(armVelocity);
 	}
 	
