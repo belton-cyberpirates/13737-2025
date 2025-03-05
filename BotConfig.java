@@ -59,9 +59,9 @@ public class BotConfig {
   public static final int BASKET_Y = 1000;
   
   public static final int FIRST_BLOCK_Y = -1000;
-  public static final int SECOND_BLOCK_Y = -1240;
+  public static final int SECOND_BLOCK_Y = -1230;
   
-  public static final int THIRD_BLOCK_X = 880;
+  public static final int THIRD_BLOCK_X = 890;
   public static final int THIRD_BLOCK_Y = -980;
   // ---------------------------------------------------------------------------
 
@@ -71,7 +71,7 @@ public class BotConfig {
   *****************************************************************************/
   public static final double BAR_HEIGHT = 0;
   public static final double BASKET_HEIGHT = 600;
-  public static final double BASKET_SAFE_HEIGHT = 490;
+  public static final double BASKET_SAFE_HEIGHT = 520;
   public static final double MAX_ARM_HEIGHT = 600;
   // ---------------------------------------------------------------------------
   
