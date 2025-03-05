@@ -15,7 +15,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import com.qualcomm.robotcore.hardware.AnalogInput;
-import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 
 import org.firstinspires.ftc.teamcode.Direction;
 import org.firstinspires.ftc.teamcode.BotConfig;
@@ -32,9 +31,9 @@ public class DriveMotors {
 	}
 
 	static PIDController distanceSensorPidController = new PIDController(0, 0, 0);
-	static PIDController forwardPidController = new PIDController(0.00255, 0.00000031, 0.0000025);
+	static PIDController forwardPidController = new PIDController(0.00255, 0.00000033, 0.00000225);
 	static PIDController strafePidController = new PIDController(0.00265, 0.00000033, 0.0000025);
-	static PIDController imuPidController = new PIDController(1.1, 0, 0.0005);
+	static PIDController imuPidController = new PIDController(1.2, 0, 0.0005);
 
 	static Orientation angles;
 
@@ -124,12 +123,6 @@ public class DriveMotors {
 		 */
 		//odo.recalibrateIMU();
 		this.odometry.resetPosAndIMU();
-	}
-
-
-	public void InitializeOdometry(Pose2D pos) {
-		InitializeOdometry();
-		odometry.setPosition(pos);
 	}
 
 
