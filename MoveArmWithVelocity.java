@@ -29,7 +29,7 @@ public class MoveArmWithVelocity extends Action {
 	public void onStart() {
 		startTime = new ElapsedTime();
 		this.auto.arm.Move(this.targetPosition);
-		this.auto.arm.setVelocity(this.velocity);
+		this.auto.arm.setVelocity((int)this.velocity);
 	}
 
 	public boolean isDone() {
