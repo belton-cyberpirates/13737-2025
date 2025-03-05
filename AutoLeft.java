@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.BotConfig;
 import org.firstinspires.ftc.teamcode.Auto;
 
 
-@Autonomous(name = "Baskets")
+@Autonomous(name = "Baskets", group="1")
 public class AutoLeft extends Auto {
 
 	public Action[] getActions() {
