@@ -87,7 +87,7 @@ public class AutoLeft extends Auto {
 			new MoveWrist(this, BotConfig.WRIST_PASSIVE, true),
 			new MoveArmWithVelocity(this, 0, true, BotConfig.ARM_VELOCITY/4),
 			
-			// Preform a level 1 ascend
+			// Preform a level 1 ascent
 			new MoveWrist(this, 800, false),
 			new Move(this, 1650, 580, 90)
 			
