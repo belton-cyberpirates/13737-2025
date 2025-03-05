@@ -28,6 +28,6 @@ public class MoveArm extends Action {
 	}
 
 	public boolean isDone() {
-		return !(this.wait && this.auto.arm.isBusy()) || (expectedTime != 0 && startTime.time() >= expectedTime);;
+		return !(this.wait && this.auto.arm.isBusy()) || (expectedTime != 0 && startTime.time() >= expectedTime);
 	}
 }
