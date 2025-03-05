@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.BotConfig;
 import org.firstinspires.ftc.teamcode.Auto;
 
 
-@Autonomous(name = "Score First Specimen", preselectTeleOp="Field Centric (main)", group="2")
+@Autonomous(name = "Score Specimen", preselectTeleOp="Field Centric (main)", group="2")
 public class AutoOneSpecimen extends Auto {
 
 	public Action[] getActions() {
