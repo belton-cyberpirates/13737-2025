@@ -50,10 +50,6 @@ public class DriveCode extends LinearOpMode {
 		Winch.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 		Winch.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-		// Recalibrate odometry and set current position
-		Pose2D odometryPos = driveMotors.odometry.getPosition();
-		driveMotors.InitializeOdometry(odometryPos);
-
 		// Wait for the start button to be pressed
 		waitForStart();
 
@@ -160,7 +156,7 @@ public class DriveCode extends LinearOpMode {
 			// High chamber hotkey
 			if (gamepad2.right_stick_button) {
 				arm.Move(BotConfig.BASKET_SAFE_HEIGHT);
-				arm.setVelocity((int)ARM_VELOCITY);
+				arm.setVelocity((int)( ARM_VELOCITY * 2 ));
 			}
 			else {
 				SetArmVelocity(gamepad2.left_stick_y * ARM_VELOCITY);
