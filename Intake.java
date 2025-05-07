@@ -22,6 +22,9 @@ public class Intake {
 	public DcMotorEx wrist;
 	private Servo claw_left;
 	private Servo claw_right;
+	
+	private Servo differential_left;
+	private Servo differential_right;
 
 	states state;
 	
@@ -35,6 +38,9 @@ public class Intake {
 		
 		this.claw_left = auto.hardwareMap.get(Servo.class, BotConfig.CLAW_LEFT_NAME);
 		this.claw_right = auto.hardwareMap.get(Servo.class, BotConfig.CLAW_RIGHT_NAME);
+		
+		this.differential_left = auto.hardwareMap.get(Servo.class, BotConfig.DIFFERENTIAL_LEFT_NAME);
+		this.differential_right = auto.hardwareMap.get(Servo.class, BotConfig.DIFFERENTIAL_RIGHT_NAME);
 		
 		wrist.setTargetPosition(0);
 		
@@ -52,6 +58,16 @@ public class Intake {
 		wrist.setTargetPosition(0);
 		wrist.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 		wrist.setPower(1);
+	}
+	
+	
+	public void MoveDifferential(double pitch, double roll) {
+		
+	  double angle1 = pitch / BotConfig.DIFFERENTIAL_SERVO_DEGREES;
+	  double angle2 = roll / BotConfig.DIFFERENTIAL_SERVO_DEGREES / 2;
+	  
+	  differential_left.setPosition(0.5 + angle1 + angle2);
+	  differential_right.setPosition(0.5 - angle1 + angle2);
 	}
 
 

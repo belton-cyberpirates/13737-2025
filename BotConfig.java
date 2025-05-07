@@ -13,9 +13,12 @@ public class BotConfig {
   public static final String ARM_LEFT_NAME = "left_arm";
   public static final String ARM_RIGHT_NAME = "right_arm";
   
+  public static final String WRIST_NAME = "wrist";
   public static final String CLAW_LEFT_NAME = "claw_left";
   public static final String CLAW_RIGHT_NAME = "claw_right";
-  public static final String WRIST_NAME = "wrist";
+  
+  public static final String DIFFERENTIAL_LEFT_NAME = "differential_left";
+  public static final String DIFFERENTIAL_RIGHT_NAME = "differential_right";
   
   public static final String DISTANCE_SENSOR_NAME = "dist_sensor";
   public static final String IMU_NAME = "imu";
@@ -37,6 +40,7 @@ public class BotConfig {
   ** DRIVE SPEED CONSTANTS
   *****************************************************************************/
   public static final double STRAFE_MULT = 1.41;
+  public static final int MAX_DRIVE_VELOCITY = 4000;
   public static final int ARM_VELOCITY = 2000;
   public static final int WRIST_VELOCITY = 1500;
   // ---------------------------------------------------------------------------
@@ -79,7 +83,7 @@ public class BotConfig {
   /*****************************************************************************
   ** WRIST CALIBRATION CONSTANTS
   *****************************************************************************/
-  public static final int WRIST_SPECIMEN_HEIGHT = 1370;
+  public static final int WRIST_SPECIMEN_HEIGHT = 1120;
   public static final int WRIST_SAMPLE_HEIGHT = 1405;
   public static final int WRIST_SIDE_SAMPLE_HEIGHT = 1425;
   
@@ -94,15 +98,17 @@ public class BotConfig {
   /*****************************************************************************
   ** CLAW CALIBRATION CONSTANTS
   *****************************************************************************/
-	public static final double CLAW_LEFT_OPEN_POS = 0.2;
-	public static final double CLAW_LEFT_FULL_OPEN_POS = 0.4;
-	public static final double CLAW_LEFT_CLOSE_POS = 0.07;
+	public static final double CLAW_LEFT_OPEN_POS = .8;
+	public static final double CLAW_LEFT_FULL_OPEN_POS = 0.6;
+	public static final double CLAW_LEFT_CLOSE_POS = 1;
 	public static final double CLAW_LEFT_HALF_CLOSE_POS = (CLAW_LEFT_OPEN_POS + CLAW_LEFT_CLOSE_POS) / 2;
 
-	public static final double CLAW_RIGHT_OPEN_POS = 0.8;
-	public static final double CLAW_RIGHT_FULL_OPEN_POS = 0.6;
-	public static final double CLAW_RIGHT_CLOSE_POS = 0.93;
+	public static final double CLAW_RIGHT_OPEN_POS = .2;
+	public static final double CLAW_RIGHT_FULL_OPEN_POS = 0.4;
+	public static final double CLAW_RIGHT_CLOSE_POS = 0;
 	public static final double CLAW_RIGHT_HALF_CLOSE_POS = (CLAW_RIGHT_OPEN_POS + CLAW_RIGHT_CLOSE_POS) / 2;
+	
+	public static final double DIFFERENTIAL_SERVO_DEGREES = 300;
 	
 	public static final int HUMAN_WAIT_TIME = 500;
   // ---------------------------------------------------------------------------

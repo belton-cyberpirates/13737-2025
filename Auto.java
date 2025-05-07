@@ -44,6 +44,8 @@ public abstract class Auto extends LinearOpMode {
 	 */
 	protected void MotorSetup() {
 		intake.CloseClaw();
+		intake.MoveDifferential(-90, 0);
+		
 		intake.DropWrist();
 		arm.DropArm();
 

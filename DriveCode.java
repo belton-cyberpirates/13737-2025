@@ -35,6 +35,8 @@ public class DriveCode extends LinearOpMode {
 	DriveMotors driveMotors;
 	Arm arm;
 	Intake intake;
+	
+	double specimenHeight = BotConfig.WRIST_SPECIMEN_HEIGHT;
 
 	@Override
 	public void runOpMode() throws InterruptedException {
@@ -56,12 +58,19 @@ public class DriveCode extends LinearOpMode {
 		double savedHeading = getSavedHeading();
 		
 		boolean hanging = false;
+		
+		//intake.MoveDifferential(-90, 0);
 
 		while (opModeIsActive()) {
-			// Reset yaw when back button pressed so restarting is not needed if it needs a reset
+			// Reset yaw when y button pressed so restarting is not needed if it needs a reset
 			if (gamepad1.y) {
 				driveMotors.odometry.recalibrateIMU();
 			}
+			
+
+			// Process classes
+			double deltaTime = driveMotors.process();
+			arm.process();
 
 			
 			// Gamepad variables
@@ -76,18 +85,27 @@ public class DriveCode extends LinearOpMode {
 
 			// Get the speed the bot would go with the joystick pushed all the way
 			double maxSpeed = calcMaxSpeed(gamepad1.right_trigger - gamepad1.left_trigger, BASE_SPEED, MAX_BOOST);
-
-			// Get the heading of the bot (the angle it is facing) in radians
-			double botHeading = driveMotors.odometry.getHeading();
-
+			
+			double joystickLength = Math.sqrt( Math.pow(gamepad1.right_stick_y, 2) + Math.pow(gamepad1.right_stick_x, 2) );
+			double joystickAngle = -Math.atan2(gamepad1.right_stick_y, gamepad1.right_stick_x) - Math.PI/2;
+			
+			double turnPower = 
+			joystickLength > .95 ?
+				driveMotors.imuPidController.PIDControlRadians(
+					joystickAngle,
+					driveMotors.heading,
+					deltaTime
+				)
+			: 
+				-gamepad1.right_stick_x;
 
 			// Virtually rotate the joystick by the angle of the robot
 			double rotatedX =
-				leftStickXGP1 * Math.cos(botHeading) -
-				leftStickYGP1 * Math.sin(botHeading);
+				leftStickXGP1 * Math.cos(driveMotors.heading) -
+				leftStickYGP1 * Math.sin(driveMotors.heading);
 			double rotatedY =
-				leftStickXGP1 * Math.sin(botHeading) +
-				leftStickYGP1 * Math.cos(botHeading);
+				leftStickXGP1 * Math.sin(driveMotors.heading) +
+				leftStickYGP1 * Math.cos(driveMotors.heading);
 			
 			// strafing is slower than rolling, bump horizontal speed
 			rotatedX *= STRAFE_MULT;
@@ -100,10 +118,10 @@ public class DriveCode extends LinearOpMode {
 				// Set the power of the wheels based off the new joystick coordinates
 				// y+x+stick <- [-1,1]
 				driveMotors.DriveWithPower(
-					( rotatedY + rotatedX - ( rightStickXGP1 * TURN_MULT )) * maxSpeed, // Back left
-					( rotatedY - rotatedX - ( rightStickXGP1 * TURN_MULT )) * maxSpeed, // Front left
-					(-rotatedY - rotatedX - ( rightStickXGP1 * TURN_MULT )) * maxSpeed, // Front right
-					(-rotatedY + rotatedX - ( rightStickXGP1 * TURN_MULT )) * maxSpeed  // Back right
+					( rotatedY + rotatedX + ( turnPower )) * maxSpeed, // Back left
+					( rotatedY - rotatedX + ( turnPower )) * maxSpeed, // Front left
+					(-rotatedY - rotatedX + ( turnPower )) * maxSpeed, // Front right
+					(-rotatedY + rotatedX + ( turnPower )) * maxSpeed  // Back right
 				);
 			}
 			
@@ -125,6 +143,18 @@ public class DriveCode extends LinearOpMode {
 			}
 			
 			
+			// Differential code
+			if (gamepad2.a) {
+				intake.MoveDifferential(0, 0);
+			}
+			if (gamepad2.b) {
+				intake.MoveDifferential(100, 0);
+			}
+			if (gamepad2.x) {
+				intake.MoveDifferential(0, 100);
+			}
+			
+			
 			// Claw code
 			// Open
 			if (gamepad2.right_trigger > 0) {
@@ -143,11 +173,11 @@ public class DriveCode extends LinearOpMode {
 				intake.SetClawPos(BotConfig.CLAW_LEFT_HALF_CLOSE_POS, BotConfig.CLAW_RIGHT_HALF_CLOSE_POS);
 			}
 			// Left only
-			if (gamepad2.dpad_right) {
+			if (gamepad2.dpad_left) {
 				intake.SetClawPos(BotConfig.CLAW_LEFT_HALF_CLOSE_POS, BotConfig.CLAW_RIGHT_FULL_OPEN_POS);
 			}
 			// Right only
-			if (gamepad2.dpad_left) {
+			if (gamepad2.dpad_right) {
 				intake.SetClawPos(BotConfig.CLAW_LEFT_FULL_OPEN_POS, BotConfig.CLAW_RIGHT_HALF_CLOSE_POS);
 			}
 			
@@ -170,8 +200,9 @@ public class DriveCode extends LinearOpMode {
 				intake.wrist.setVelocity(BotConfig.WRIST_VELOCITY);
 			}
 			else if (gamepad2.right_bumper) {
-				intake.MoveWrist(BotConfig.WRIST_SPECIMEN_HEIGHT);
-				intake.wrist.setVelocity(BotConfig.WRIST_VELOCITY * 2);
+				intake.MoveDifferential(100, 0);
+				intake.MoveWrist(specimenHeight);
+				intake.wrist.setVelocity(BotConfig.WRIST_VELOCITY);
 			}
 			else {
 				double wristPower = -gamepad2.right_stick_y * WRIST_VELOCITY;
@@ -179,11 +210,9 @@ public class DriveCode extends LinearOpMode {
 				double holdPower = gamepad2.left_bumper ? -1 : 0;
 				intake.MoveWristWithVelocity( (wristPower * powerMult) + holdPower );
 			}
-			
-
-			// Process classes
-			driveMotors.process();
-			arm.process();
+			if (gamepad2.y) {
+				specimenHeight = intake.getWristPos();
+			}
 
 
 			// Telemetry
@@ -193,8 +222,14 @@ public class DriveCode extends LinearOpMode {
 			telemetry.addData("Heading", driveMotors.odometry.getHeading());
 
 			// Arm + intake values
-			telemetry.addData("Arm pos", arm.getheight());
+			telemetry.addData("Arm pos", arm.getHeight());
 			telemetry.addData("Wrist pos", intake.wrist.getCurrentPosition());
+
+			// Turning values
+			telemetry.addData("joystickAngle", joystickAngle);
+			telemetry.addData("turnPower", turnPower);
+			telemetry.addData("Wrist power", intake.wrist.getPower());
+			telemetry.addData("Wrist vel", intake.wrist.getVelocity());
 
 			telemetry.update();
 		}
