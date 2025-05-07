@@ -10,11 +10,15 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.JavaUtil;
+import com.qualcomm.robotcore.hardware.AnalogInput;
+
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import com.qualcomm.robotcore.hardware.AnalogInput;
+import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 import org.firstinspires.ftc.teamcode.Direction;
 import org.firstinspires.ftc.teamcode.BotConfig;
@@ -30,10 +34,10 @@ public class DriveMotors {
 		IDLE
 	}
 
-	static PIDController distanceSensorPidController = new PIDController(0, 0, 0);
-	static PIDController forwardPidController = new PIDController(0.00255, 0.00000033, 0.00000225);
-	static PIDController strafePidController = new PIDController(0.00265, 0.00000033, 0.0000025);
-	static PIDController imuPidController = new PIDController(1.2, 0, 0.0005);
+	public static PIDController distanceSensorPidController = new PIDController(0, 0, 0);
+	public static PIDController forwardPidController = new PIDController(5, 0, 0);
+	public static PIDController strafePidController = new PIDController(6.5, 0.001, 0.001);
+	public static PIDController imuPidController = new PIDController(3000, 0, 0);
 
 	static Orientation angles;
 
@@ -59,6 +63,8 @@ public class DriveMotors {
 	public int targetDistance;
 	
 	ElapsedTime odometryTimer = new ElapsedTime();
+	
+	public double heading = 0;
 
 
 	public DriveMotors(LinearOpMode auto) {
@@ -79,7 +85,6 @@ public class DriveMotors {
 		this.odometry = auto.hardwareMap.get(GoBildaPinpointDriver.class, "odo");
 
 		ResetEncoders();
-		SetToRunWithPower();
 		SetZeroBehaviour();
 	}
 
@@ -123,24 +128,35 @@ public class DriveMotors {
 		 */
 		//odo.recalibrateIMU();
 		this.odometry.resetPosAndIMU();
+		this.odometry.setPosition( new Pose2D(DistanceUnit.MM, 0, -20, AngleUnit.RADIANS, 0) );
 	}
 
 
-	public void process() {
+	public double process() {
 		double deltaTime = deltaTimer.seconds();
+		
+		// Get the heading of the bot (the angle it is facing) in radians
+		double newHeading = odometry.getHeading();
+		if (!Double.isNaN(newHeading)) {
+			this.heading = newHeading;
+		}
 
 		switch (this.state) {
 			case ODOMETRY:
+				SetToRunWithVelocity();
 				driveWithOdometry(deltaTime);
 				break;
 			
 			case DISTANCE:
+				SetToRunWithPower();
 				driveWithDistanceSensor(deltaTime);
 				break;
 		}
 		
 		this.odometry.update();
 		deltaTimer.reset();
+		
+		return deltaTime;
 	}
 
 
@@ -155,9 +171,6 @@ public class DriveMotors {
 
 
 	private void driveWithOdometry(double delta) {
-
-		// Get heading from Odometry
-		double heading = odometry.getHeading();
 
 		// Get robot movement errors
 		double xError = targetX - odometry.getPosX();
@@ -186,17 +199,18 @@ public class DriveMotors {
 		double highestPower = Collections.max(Arrays.asList( Math.abs(backLeftPower), Math.abs(frontLeftPower), Math.abs(frontRightPower), Math.abs(backRightPower) ));
 
 		// Scale power values if trying to run motors faster than possible
-		if (highestPower > 1) {
-			backLeftPower /= highestPower;
-			frontLeftPower /= highestPower;
-			frontRightPower /= highestPower;
-			backRightPower /= highestPower;
+		if (highestPower > BotConfig.MAX_DRIVE_VELOCITY) {
+			double mult = BotConfig.MAX_DRIVE_VELOCITY / highestPower;
+			backLeftPower *= mult;
+			frontLeftPower *= mult;
+			frontRightPower *= mult;
+			backRightPower *= mult;
 		}
 
-		backLeft.setPower(backLeftPower);
-		frontLeft.setPower(frontLeftPower);
-		frontRight.setPower(frontRightPower);
-		backRight.setPower(backRightPower);
+		backLeft.setVelocity(backLeftPower);
+		frontLeft.setVelocity(frontLeftPower);
+		frontRight.setVelocity(frontRightPower);
+		backRight.setVelocity(backRightPower);
 		
 		auto.telemetry.addData("drivemotors heading", heading);
 		
@@ -254,9 +268,9 @@ public class DriveMotors {
 		switch (this.state) {
 			case ODOMETRY:
 				return odometryTimer.milliseconds() > 750 && 
-					(Math.abs(forwardPidController.lastError) < 20) && // max vertical error - MM
-					(Math.abs(strafePidController.lastError) < 20) && // max horizontal error - MM
-					(Math.abs(imuPidController.lastError) < .05); // max angle error - radians
+					(Math.abs(forwardPidController.lastError) < 10) && // max vertical error - MM
+					(Math.abs(strafePidController.lastError) < 10) && // max horizontal error - MM
+					(Math.abs(imuPidController.lastError) < .03); // max angle error - radians
 			
 			case DISTANCE:
 				return (Math.abs(distanceSensorPidController.lastError) < 5);
@@ -271,6 +285,14 @@ public class DriveMotors {
 		this.frontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 		this.backLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 		this.backRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+	}
+
+
+	private void SetToRunWithVelocity() {
+		this.frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+		this.frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+		this.backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+		this.backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 	}
   
   
