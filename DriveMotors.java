@@ -35,9 +35,9 @@ public class DriveMotors {
 	}
 
 	public static PIDController distanceSensorPidController = new PIDController(0, 0, 0);
-	public static PIDController forwardPidController = new PIDController(5, 0, 0);
-	public static PIDController strafePidController = new PIDController(6.5, 0.001, 0.001);
-	public static PIDController imuPidController = new PIDController(3000, 0, 0);
+	public static PIDController forwardPidController = new PIDController(0.00255, 0.00000033, 0.00000225);
+	public static PIDController strafePidController = new PIDController(0.00265, 0.00000033, 0.0000025);
+	public static PIDController imuPidController = new PIDController(1.2, 0, 0.0005);
 
 	static Orientation angles;
 
@@ -199,18 +199,17 @@ public class DriveMotors {
 		double highestPower = Collections.max(Arrays.asList( Math.abs(backLeftPower), Math.abs(frontLeftPower), Math.abs(frontRightPower), Math.abs(backRightPower) ));
 
 		// Scale power values if trying to run motors faster than possible
-		if (highestPower > BotConfig.MAX_DRIVE_VELOCITY) {
-			double mult = BotConfig.MAX_DRIVE_VELOCITY / highestPower;
-			backLeftPower *= mult;
-			frontLeftPower *= mult;
-			frontRightPower *= mult;
-			backRightPower *= mult;
+		if (highestPower > 1) {
+			backLeftPower /= highestPower;
+			frontLeftPower /= highestPower;
+			frontRightPower /= highestPower;
+			backRightPower /= highestPower;
 		}
 
-		backLeft.setVelocity(backLeftPower);
-		frontLeft.setVelocity(frontLeftPower);
-		frontRight.setVelocity(frontRightPower);
-		backRight.setVelocity(backRightPower);
+		backLeft.setPower(backLeftPower);
+		frontLeft.setPower(frontLeftPower);
+		frontRight.setPower(frontRightPower);
+		backRight.setPower(backRightPower);
 		
 		auto.telemetry.addData("drivemotors heading", heading);
 		
@@ -268,8 +267,8 @@ public class DriveMotors {
 		switch (this.state) {
 			case ODOMETRY:
 				return odometryTimer.milliseconds() > 750 && 
-					(Math.abs(forwardPidController.lastError) < 10) && // max vertical error - MM
-					(Math.abs(strafePidController.lastError) < 10) && // max horizontal error - MM
+					(Math.abs(forwardPidController.lastError) < 20) && // max vertical error - MM
+					(Math.abs(strafePidController.lastError) < 20) && // max horizontal error - MM
 					(Math.abs(imuPidController.lastError) < .03); // max angle error - radians
 			
 			case DISTANCE:
