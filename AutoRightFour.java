@@ -16,9 +16,10 @@ public class AutoRightFour extends Auto {
 			// ======================= AUTO START ======================= //
 			
 			// Score first specimen
+			new MoveDifferential(this, 0, 0),
 			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT, false),
 			new Move(this, BotConfig.BAR_X, 0, 0),
-			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT+400, false),
+			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT+300, false),
 			new Wait(this, 100),
 			new Move(this, BotConfig.BAR_SCORE_X, 0, 0),
 			new OpenClawWide(this),
@@ -27,9 +28,9 @@ public class AutoRightFour extends Auto {
 			new MoveWrist(this, BotConfig.WRIST_PASSIVE, false),
 			new Wait(this, 250),
 			
-			// Grab next block
+			// Grab first block
 			new Move(this, BotConfig.BLOCK_GRAB_X, BotConfig.FIRST_BLOCK_Y, 0),
-			new MoveWrist(this, BotConfig.WRIST_SAMPLE_HEIGHT, true),
+			new MoveWristWithVelocity(this, BotConfig.WRIST_SAMPLE_HEIGHT, true, BotConfig.WRIST_VELOCITY / 1.5),
 			new Wait(this, 250),
 			new CloseClaw(this),
 			new Wait(this, 250),
@@ -46,7 +47,8 @@ public class AutoRightFour extends Auto {
 			new Move(this, 300, BotConfig.SECOND_BLOCK_Y, 90),
 			
 			// Pick up 2nd specimen
-			new Move(this, BotConfig.PICKUP_X, BotConfig.PICKUP_Y, 135),
+			new MoveDifferential(this, 100, 0),
+			new Move(this, BotConfig.PICKUP_X, BotConfig.PICKUP_Y, 180),
 			new MoveWrist(this, BotConfig.WRIST_SPECIMEN_HEIGHT, true),
 			new Wait(this, BotConfig.HUMAN_WAIT_TIME),
 			new CloseClaw(this),
@@ -54,8 +56,10 @@ public class AutoRightFour extends Auto {
 			
 			// Score 2nd specimen
 			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT, false),
+			new MoveDifferential(this, 0, 0),
 			new Move(this, BotConfig.BAR_X, 100, 0),
-			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT+400, false),
+			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT+300, false),
+			new Wait(this, 100),
 			new Move(this, BotConfig.BAR_SCORE_X, 100, 0),
 			new OpenClawWide(this),
 			
@@ -64,7 +68,8 @@ public class AutoRightFour extends Auto {
 			new Wait(this, 250),
 			
 			// Pick up 3rd specimen
-			new Move(this, BotConfig.PICKUP_X, BotConfig.PICKUP_Y, 135),
+			new MoveDifferential(this, 100, 0),
+			new Move(this, BotConfig.PICKUP_X, BotConfig.PICKUP_Y, 180),
 			new MoveWrist(this, BotConfig.WRIST_SPECIMEN_HEIGHT, true),
 			new Wait(this, BotConfig.HUMAN_WAIT_TIME),
 			new CloseClaw(this),
@@ -72,8 +77,10 @@ public class AutoRightFour extends Auto {
 			
 			// Score 3rd specimen
 			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT, false),
+			new MoveDifferential(this, 0, 0),
 			new Move(this, BotConfig.BAR_X, 200, 0),
-			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT+400, false),
+			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT+300, false),
+			new Wait(this, 100),
 			new Move(this, BotConfig.BAR_SCORE_X, 200, 0),
 			new OpenClawWide(this),
 			
@@ -82,7 +89,8 @@ public class AutoRightFour extends Auto {
 			new Wait(this, 250),
 			
 			// Pick up 4th specimen
-			new Move(this, BotConfig.PICKUP_X, BotConfig.PICKUP_Y, 135),
+			new MoveDifferential(this, 100, 0),
+			new Move(this, BotConfig.PICKUP_X, BotConfig.PICKUP_Y, 180),
 			new MoveWrist(this, BotConfig.WRIST_SPECIMEN_HEIGHT, true),
 			new Wait(this, BotConfig.HUMAN_WAIT_TIME),
 			new CloseClaw(this),
@@ -90,8 +98,10 @@ public class AutoRightFour extends Auto {
 			
 			// Score 4th specimen
 			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT, false),
+			new MoveDifferential(this, 0, 0),
 			new Move(this, BotConfig.BAR_X, 300, 0),
-			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT+400, false),
+			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT+300, false),
+			new Wait(this, 100),
 			new Move(this, BotConfig.BAR_SCORE_X, 300, 0),
 			new OpenClawWide(this),
 			

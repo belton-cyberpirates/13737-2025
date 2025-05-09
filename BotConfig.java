@@ -40,20 +40,20 @@ public class BotConfig {
   ** DRIVE SPEED CONSTANTS
   *****************************************************************************/
   public static final double STRAFE_MULT = 1.41;
-  public static final int MAX_DRIVE_VELOCITY = 4000;
+  public static final int MAX_DRIVE_VELOCITY = 2750;
   public static final int ARM_VELOCITY = 2000;
-  public static final int WRIST_VELOCITY = 1500;
+  public static final int WRIST_VELOCITY = 2000;
   // ---------------------------------------------------------------------------
 
 
   /*****************************************************************************
   ** BASE CALIBRATION CONSTANTS
   *****************************************************************************/
-  public static final int BAR_X = 665;
-  public static final int BAR_SCORE_X = BAR_X - 350;
+  public static final int BAR_X = 645;
+  public static final int BAR_SCORE_X = BAR_X - 300;
   
-  public static final int PICKUP_X = 390;
-  public static final int PICKUP_Y = -430;
+  public static final int PICKUP_X = 435;
+  public static final int PICKUP_Y = -845;
   
   public static final int BLOCK_GRAB_X = 320;
   
@@ -83,12 +83,12 @@ public class BotConfig {
   /*****************************************************************************
   ** WRIST CALIBRATION CONSTANTS
   *****************************************************************************/
-  public static final int WRIST_SPECIMEN_HEIGHT = 1120;
-  public static final int WRIST_SAMPLE_HEIGHT = 1405;
+  public static final int WRIST_SPECIMEN_HEIGHT = 1610;
+  public static final int WRIST_SAMPLE_HEIGHT = 1785;
   public static final int WRIST_SIDE_SAMPLE_HEIGHT = 1425;
   
-  public static final int WRIST_BAR_HEIGHT = 600;
-  public static final int WRIST_PASSIVE = 500;
+  public static final int WRIST_BAR_HEIGHT = 625;
+  public static final int WRIST_PASSIVE = 550;
   public static final int WRIST_DUNK_HEIGHT = 760;
   public static final int WRIST_BASKET_SAFE_HEIGHT = 670;
   
@@ -110,7 +110,7 @@ public class BotConfig {
 	
 	public static final double DIFFERENTIAL_SERVO_DEGREES = 300;
 	
-	public static final int HUMAN_WAIT_TIME = 500;
+	public static final int HUMAN_WAIT_TIME = 200;
   // ---------------------------------------------------------------------------
 
 
