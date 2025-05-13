@@ -37,7 +37,7 @@ public class DriveMotors {
 	public static PIDController distanceSensorPidController = new PIDController(0, 0, 0);
 	public static PIDController forwardPidController = new PIDController(0.00255, 0.00000033, 0.00000225);
 	public static PIDController strafePidController = new PIDController(0.00265, 0.00000033, 0.0000025);
-	public static PIDController imuPidController = new PIDController(1.2, 0, 0.0005);
+	public static PIDController imuPidController = new PIDController(1.2, 0, 0.001);
 
 	static Orientation angles;
 
@@ -197,14 +197,14 @@ public class DriveMotors {
 
 		// Find highest motor power value
 		double highestPower = Collections.max(Arrays.asList( Math.abs(backLeftPower), Math.abs(frontLeftPower), Math.abs(frontRightPower), Math.abs(backRightPower) ));
-
+		auto.telemetry.addData("", highestPower);
 		// Scale power values if trying to run motors faster than possible
-		if (highestPower > 1) {
-			backLeftPower /= highestPower;
-			frontLeftPower /= highestPower;
-			frontRightPower /= highestPower;
-			backRightPower /= highestPower;
-		}
+		// if (highestPower > 1) {
+		// 	backLeftPower /= highestPower;
+		// 	frontLeftPower /= highestPower;
+		// 	frontRightPower /= highestPower;
+		// 	backRightPower /= highestPower;
+		// }
 
 		backLeft.setPower(backLeftPower);
 		frontLeft.setPower(frontLeftPower);
