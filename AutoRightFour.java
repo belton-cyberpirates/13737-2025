@@ -8,109 +8,103 @@ import org.firstinspires.ftc.teamcode.BotConfig;
 import org.firstinspires.ftc.teamcode.Auto;
 
 
-@Autonomous(name = "Specimens - Four", group="1")
-public class AutoRightFour extends Auto {
+@Autonomous(name = "Specimens - TEST", group="1")
+public class AutoRightFour_Copy extends Auto {
 
 	public Action[] getActions() {
 		Action[] actions = {
 			// ======================= AUTO START ======================= //
 			
-			// Score first specimen
-			new MoveDifferential(this, 0, 0),
-			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT, false),
-			new Move(this, BotConfig.BAR_X, 0, 0),
-			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT+300, false),
-			new Wait(this, 100),
-			new Move(this, BotConfig.BAR_SCORE_X, 0, 0),
+			// Score first
+			new MoveDifferential(this, 110, 0),
+			new MoveWristWithVelocity(this, 1300, false, BotConfig.WRIST_VELOCITY),
+			new Move(this, 300, -250, -35, .75),
+			new Move(this, 550, 0, -35),
+			
+			new MoveWristWithVelocity(this, 1125, true, BotConfig.WRIST_VELOCITY),
+			new Wait(this, 250),
+			new Move(this, 300, -100, -35, 1),
 			new OpenClawWide(this),
 			
-			// Reset wrist
-			new MoveWrist(this, BotConfig.WRIST_PASSIVE, false),
-			new Wait(this, 250),
 			
-			// Grab first block
-			new Move(this, BotConfig.BLOCK_GRAB_X, BotConfig.FIRST_BLOCK_Y, 0),
-			new MoveWristWithVelocity(this, BotConfig.WRIST_SAMPLE_HEIGHT, true, BotConfig.WRIST_VELOCITY / 1.5),
+			// Plow first block
+			new MoveWrist(this, 20, false),
+			new Wait(this, 700),
+			new Move(this, 300, -600, 0, 1.5),
+			new Move(this, BotConfig.PLOW_X, -600, 0),
+			new Move(this, BotConfig.PLOW_X, BotConfig.FIRST_BLOCK_Y, 0, .5),
+			new Move(this, 200, BotConfig.FIRST_BLOCK_Y, 0),
+			
+			// Plow second block
+			new Move(this, BotConfig.PLOW_X, -750, 0),
+			new Move(this, BotConfig.PLOW_X, BotConfig.SECOND_BLOCK_Y, 0, .75),
+			new Move(this, 200, BotConfig.SECOND_BLOCK_Y, 0),
+			
+			
+			// Grab second
+			new MoveDifferential(this, 150, 0),
+			new Move(this, 100, BotConfig.PICKUP_Y, 0),
 			new Wait(this, 250),
 			new CloseClaw(this),
+			new Wait(this, 400),
+			
+			// Score second
+			new MoveDifferential(this, 110, 0),
+			new MoveWristWithVelocity(this, 1300, false, BotConfig.WRIST_VELOCITY),
 			new Wait(this, 250),
-			new MoveWrist(this, BotConfig.WRIST_SAMPLE_HEIGHT - 50, false),
+			new Move(this, 300, -250, -35, .75),
+			new Move(this, 550, 0, -35),
 			
-			// Place block in zone
-			new Move(this, 400, BotConfig.FIRST_BLOCK_Y, -175),
+			new MoveWristWithVelocity(this, 1125, true, BotConfig.WRIST_VELOCITY),
+			new Wait(this, 250),
+			new Move(this, 300, -100, -35, 1),
 			new OpenClawWide(this),
-			new MoveWrist(this, 0, false),
+			new MoveWrist(this, 20, false),
 			
-			// Push second block
-			new Move(this, BotConfig.PLOW_X, BotConfig.FIRST_BLOCK_Y, 180),
-			new Move(this, BotConfig.PLOW_X, BotConfig.SECOND_BLOCK_Y, 90),
-			new Move(this, 300, BotConfig.SECOND_BLOCK_Y, 90),
 			
-			// Pick up 2nd specimen
-			new MoveDifferential(this, 100, 0),
-			new Move(this, BotConfig.PICKUP_X, BotConfig.PICKUP_Y, 180),
-			new MoveWrist(this, BotConfig.WRIST_SPECIMEN_HEIGHT, true),
-			new Wait(this, BotConfig.HUMAN_WAIT_TIME),
+			// Grab third
+			new MoveDifferential(this, 150, 0),
+			new Move(this, 100, BotConfig.PICKUP_Y, 0),
+			new Wait(this, 250),
 			new CloseClaw(this),
-			new Wait(this, 300),
+			new Wait(this, 400),
 			
-			// Score 2nd specimen
-			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT, false),
-			new MoveDifferential(this, 0, 0),
-			new Move(this, BotConfig.BAR_X, 100, 0),
-			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT+300, false),
-			new Wait(this, 100),
-			new Move(this, BotConfig.BAR_SCORE_X, 100, 0),
-			new OpenClawWide(this),
-			
-			// Reset wrist
-			new MoveWrist(this, BotConfig.WRIST_PASSIVE, false),
+			// Score third
+			new MoveDifferential(this, 110, 0),
+			new MoveWristWithVelocity(this, 1300, false, BotConfig.WRIST_VELOCITY),
 			new Wait(this, 250),
+			new Move(this, 300, -250, -35, .75),
+			new Move(this, 550, 0, -35),
 			
-			// Pick up 3rd specimen
-			new MoveDifferential(this, 100, 0),
-			new Move(this, BotConfig.PICKUP_X, BotConfig.PICKUP_Y, 180),
-			new MoveWrist(this, BotConfig.WRIST_SPECIMEN_HEIGHT, true),
-			new Wait(this, BotConfig.HUMAN_WAIT_TIME),
+			new MoveWristWithVelocity(this, 1125, true, BotConfig.WRIST_VELOCITY),
+			new Wait(this, 250),
+			new Move(this, 300, -100, -35, 1),
+			new OpenClawWide(this),
+			new MoveWrist(this, 20, false),
+			
+			
+			// Grab fourth
+			new MoveDifferential(this, 150, 0),
+			new Move(this, 100, BotConfig.PICKUP_Y, 0),
+			new Wait(this, 250),
 			new CloseClaw(this),
-			new Wait(this, 300),
+			new Wait(this, 400),
 			
-			// Score 3rd specimen
-			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT, false),
-			new MoveDifferential(this, 0, 0),
-			new Move(this, BotConfig.BAR_X, 200, 0),
-			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT+300, false),
-			new Wait(this, 100),
-			new Move(this, BotConfig.BAR_SCORE_X, 200, 0),
+			// Score fourth
+			new MoveDifferential(this, 110, 0),
+			new MoveWristWithVelocity(this, 1300, false, BotConfig.WRIST_VELOCITY),
+			new Wait(this, 250),
+			new Move(this, 300, -250, -35, .75),
+			new Move(this, 550, 0, -35),
+			
+			new MoveWristWithVelocity(this, 1125, true, BotConfig.WRIST_VELOCITY),
+			new Wait(this, 250),
+			new Move(this, 300, -100, -35, 1),
 			new OpenClawWide(this),
+			new MoveWrist(this, 20, false),
 			
-			// Reset wrist
-			new MoveWrist(this, BotConfig.WRIST_PASSIVE, false),
-			new Wait(this, 250),
-			
-			// Pick up 4th specimen
-			new MoveDifferential(this, 100, 0),
-			new Move(this, BotConfig.PICKUP_X, BotConfig.PICKUP_Y, 180),
-			new MoveWrist(this, BotConfig.WRIST_SPECIMEN_HEIGHT, true),
-			new Wait(this, BotConfig.HUMAN_WAIT_TIME),
-			new CloseClaw(this),
-			new Wait(this, 300),
-			
-			// Score 4th specimen
-			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT, false),
-			new MoveDifferential(this, 0, 0),
-			new Move(this, BotConfig.BAR_X, 300, 0),
-			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT+300, false),
-			new Wait(this, 100),
-			new Move(this, BotConfig.BAR_SCORE_X, 300, 0),
-			new OpenClawWide(this),
-			
-			// Reset wrist
-			new MoveWrist(this, BotConfig.WRIST_PASSIVE, false),
-			new Wait(this, 250),
-			
-			new Wait(this, 250),
-			new Move(this, 100, -1300, 0),
+			// Park
+			new Move(this, 200, -1000, 0),
 			
 			
 			// ======================== AUTO END ======================== //
