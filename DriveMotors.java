@@ -35,8 +35,8 @@ public class DriveMotors {
 	}
 
 	public static PIDController distanceSensorPidController = new PIDController(0, 0, 0);
-	public static PIDController forwardPidController = new PIDController(0.00255, 0.00000033, 0.00000225);
-	public static PIDController strafePidController = new PIDController(0.00265, 0.00000033, 0.0000025);
+	public static PIDController forwardPidController = new PIDController(0.00255, 0.00000033, 0.0000025);
+	public static PIDController strafePidController = new PIDController(0.00265, 0.0000004, 0.000004);
 	public static PIDController imuPidController = new PIDController(1.2, 0, 0.001);
 
 	static Orientation angles;
