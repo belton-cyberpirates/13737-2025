@@ -15,20 +15,23 @@ public class AutoOneSpecimen extends Auto {
 		Action[] actions = {
 			// ======================= AUTO START ======================= //
 			
-			// Score first specimen
-			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT, false),
-			new Move(this, BotConfig.BAR_X, 0, 0),
-			new MoveWrist(this, BotConfig.WRIST_BAR_HEIGHT+400, false),
-			new Wait(this, 100),
-			new Move(this, BotConfig.BAR_SCORE_X, 0, 0),
+			// Score first
+			new MoveDifferential(this, 110, 0),
+			new MoveWristWithVelocity(this, 1300, false, BotConfig.WRIST_VELOCITY),
+			new Move(this, 300, -250, -35, .75),
+			new Move(this, 550, 0, -35),
+			
+			new MoveWristWithVelocity(this, 1125, true, BotConfig.WRIST_VELOCITY),
+			new Wait(this, 250),
+			new Move(this, 300, -100, -35, 1),
 			new OpenClawWide(this),
 			
 			// Reset wrist
-			new MoveWrist(this, BotConfig.WRIST_PASSIVE, false),
-			new Wait(this, 250),
+			new MoveWrist(this, 20, false),
+			new Wait(this, 700),
 			
-			// Move out of the way
-			new Move(this, BotConfig.BLOCK_GRAB_X, -BotConfig.FIRST_BLOCK_Y, 0),
+			// Park
+			new Move(this, 0, -1000, 0),
 			
 			// ======================== AUTO END ======================== //
 		};
