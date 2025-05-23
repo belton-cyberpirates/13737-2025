@@ -55,18 +55,18 @@ public class BotConfig {
   public static final int PICKUP_X = 435;
   public static final int PICKUP_Y = -845;
   
-  public static final int BLOCK_GRAB_X = 320;
+  public static final int BLOCK_GRAB_X = 350;
   
   public static final int PLOW_X = 1200;
   
   public static final int BASKET_X = 300;
   public static final int BASKET_Y = 1000;
   
-  public static final int FIRST_BLOCK_Y = -1000;
-  public static final int SECOND_BLOCK_Y = -1230;
+  public static final int FIRST_BLOCK_Y = -960;
+  public static final int SECOND_BLOCK_Y = -1250;
   
   public static final int THIRD_BLOCK_X = 890;
-  public static final int THIRD_BLOCK_Y = -980;
+  public static final int THIRD_BLOCK_Y = -960;
   // ---------------------------------------------------------------------------
 
 
@@ -89,7 +89,7 @@ public class BotConfig {
   
   public static final int WRIST_BAR_HEIGHT = 625;
   public static final int WRIST_PASSIVE = 550;
-  public static final int WRIST_DUNK_HEIGHT = 760;
+  public static final int WRIST_DUNK_HEIGHT = 1100;
   public static final int WRIST_BASKET_SAFE_HEIGHT = 670;
   
   // ---------------------------------------------------------------------------
