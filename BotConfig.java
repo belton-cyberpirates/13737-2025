@@ -41,7 +41,7 @@ public class BotConfig {
   *****************************************************************************/
   public static final double STRAFE_MULT = 1.41;
   public static final int MAX_DRIVE_VELOCITY = 2750;
-  public static final int ARM_VELOCITY = 2000;
+  public static final int ARM_VELOCITY = 2500;
   public static final int WRIST_VELOCITY = 2000;
   // ---------------------------------------------------------------------------
 
@@ -55,17 +55,17 @@ public class BotConfig {
   public static final int PICKUP_X = 435;
   public static final int PICKUP_Y = -845;
   
-  public static final int BLOCK_GRAB_X = 350;
+  public static final int BLOCK_GRAB_X = 360;
   
   public static final int PLOW_X = 1200;
   
-  public static final int BASKET_X = 300;
-  public static final int BASKET_Y = 1000;
+  public static final int BASKET_X = 330;
+  public static final int BASKET_Y = 900;
   
-  public static final int FIRST_BLOCK_Y = -960;
-  public static final int SECOND_BLOCK_Y = -1250;
+  public static final int FIRST_BLOCK_Y = -980;
+  public static final int SECOND_BLOCK_Y = -1270;
   
-  public static final int THIRD_BLOCK_X = 890;
+  public static final int THIRD_BLOCK_X = 915;
   public static final int THIRD_BLOCK_Y = -960;
   // ---------------------------------------------------------------------------
 
@@ -74,7 +74,7 @@ public class BotConfig {
   ** ARM CALIBRATION CONSTANTS
   *****************************************************************************/
   public static final double BAR_HEIGHT = 0;
-  public static final double BASKET_HEIGHT = 600;
+  public static final double BASKET_HEIGHT = 700;
   public static final double BASKET_SAFE_HEIGHT = 520;
   public static final double MAX_ARM_HEIGHT = 600;
   // ---------------------------------------------------------------------------
@@ -89,7 +89,7 @@ public class BotConfig {
   
   public static final int WRIST_BAR_HEIGHT = 625;
   public static final int WRIST_PASSIVE = 550;
-  public static final int WRIST_DUNK_HEIGHT = 1100;
+  public static final int WRIST_DUNK_HEIGHT = 800;
   public static final int WRIST_BASKET_SAFE_HEIGHT = 670;
   
   // ---------------------------------------------------------------------------
