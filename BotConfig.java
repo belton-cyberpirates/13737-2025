@@ -52,18 +52,18 @@ public class BotConfig {
   public static final int BAR_X = 645;
   public static final int BAR_SCORE_X = BAR_X - 300;
   
-  public static final int PICKUP_X = 435;
-  public static final int PICKUP_Y = -845;
+  public static final int PICKUP_X = 650;
+  public static final int PICKUP_Y = -850;
   
-  public static final int BLOCK_GRAB_X = 360;
+  public static final int BLOCK_GRAB_X = 330;
   
   public static final int PLOW_X = 1200;
   
-  public static final int BASKET_X = 330;
+  public static final int BASKET_X = 380;
   public static final int BASKET_Y = 900;
   
   public static final int FIRST_BLOCK_Y = -980;
-  public static final int SECOND_BLOCK_Y = -1270;
+  public static final int SECOND_BLOCK_Y = -1240;
   
   public static final int THIRD_BLOCK_X = 915;
   public static final int THIRD_BLOCK_Y = -960;
