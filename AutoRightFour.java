@@ -17,7 +17,8 @@ public class AutoRightFour extends Auto {
 			
 			// Score first
 			new MoveDifferential(this, 110, 0),
-			new MoveWristWithVelocity(this, 1300, false, BotConfig.WRIST_VELOCITY),
+			new MoveWristWithVelocity(this, 1350, false, BotConfig.WRIST_VELOCITY),
+			new Wait(this, 250),
 			new Move(this, 300, -250, -35, .75),
 			new Move(this, 550, 0, -35),
 			
@@ -36,7 +37,7 @@ public class AutoRightFour extends Auto {
 			new Move(this, 200, BotConfig.FIRST_BLOCK_Y, 0, 1),
 			
 			// Plow second block
-			new Move(this, BotConfig.PLOW_X, -675, 0, 1),
+			new Move(this, BotConfig.PLOW_X, -600, 0, 1),
 			new Move(this, BotConfig.PLOW_X, BotConfig.SECOND_BLOCK_Y, 0, .75),
 			new Move(this, 200, BotConfig.SECOND_BLOCK_Y, 0, 1),
 			
@@ -50,8 +51,8 @@ public class AutoRightFour extends Auto {
 			
 			// Score second
 			new MoveDifferential(this, 110, 0),
-			new MoveWristWithVelocity(this, 1300, false, BotConfig.WRIST_VELOCITY),
-			new Wait(this, 250),
+			new MoveWristWithVelocity(this, 1350, false, BotConfig.WRIST_VELOCITY),
+			new Wait(this, 500),
 			new Move(this, 300, -250, -35, .75),
 			new Move(this, 550, 0, -35),
 			
@@ -71,9 +72,9 @@ public class AutoRightFour extends Auto {
 			
 			// Score third
 			new MoveDifferential(this, 110, 0),
-			new MoveWristWithVelocity(this, 1300, false, BotConfig.WRIST_VELOCITY),
-			new Wait(this, 250),
-			new Move(this, 300, -250, -35, .75),
+			new MoveWristWithVelocity(this, 1350, false, BotConfig.WRIST_VELOCITY),
+			new Wait(this, 500),
+			new Move(this, 300, -225, -35, .75),
 			new Move(this, 550, 0, -35),
 			
 			new MoveWristWithVelocity(this, 1125, true, BotConfig.WRIST_VELOCITY),
@@ -92,9 +93,9 @@ public class AutoRightFour extends Auto {
 			
 			// Score fourth
 			new MoveDifferential(this, 110, 0),
-			new MoveWristWithVelocity(this, 1300, false, BotConfig.WRIST_VELOCITY),
-			new Wait(this, 250),
-			new Move(this, 300, -250, -35, .75),
+			new MoveWristWithVelocity(this, 1350, false, BotConfig.WRIST_VELOCITY),
+			new Wait(this, 500),
+			new Move(this, 300, -200, -35, .75),
 			new Move(this, 550, 0, -35),
 			
 			new MoveWristWithVelocity(this, 1125, true, BotConfig.WRIST_VELOCITY),
