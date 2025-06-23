@@ -24,6 +24,9 @@ public class PIDController {
 
 	public double PIDControlRadians(double reference, double state, double delta) {
 		double error = angleWrap(reference - state);
+		if (Double.isNaN(error)) {
+			throw new RuntimeException("Error is NaN: " + error + ", reference=" + reference + ", state=" + state + ", delta=" + delta);
+		}
 		return PIDControl(error, delta);
 	}
 
@@ -31,10 +34,10 @@ public class PIDController {
 
 	public double PIDControl(double error, double delta) {
 		
-		this.integralSum += error * delta;
 		double derivative = (error - lastError) / delta;
 
 		this.lastError = error;
+		this.integralSum += error * delta;
 
 		double output = (error * this.Kp) + (derivative * this.Kd) + (this.integralSum * this.Ki);
 		
