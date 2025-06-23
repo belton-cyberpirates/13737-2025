@@ -17,7 +17,7 @@ public class AutoLeft extends Auto {
 			
 			// Score starting sample
 			new MoveDifferential(this, 0, 0),
-			new Move(this, 85, 820, -115, .5),
+			new Move(this, 85, 790, -107, .5),
 			new MoveArm(this, BotConfig.BASKET_HEIGHT, true, 1),
 			new MoveWrist(this, BotConfig.WRIST_DUNK_HEIGHT, true),
 			new OpenClawWide(this),
