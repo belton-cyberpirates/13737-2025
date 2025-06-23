@@ -90,7 +90,7 @@ public class DriveCode extends LinearOpMode {
 			double joystickAngle = -Math.atan2(gamepad1.right_stick_y, gamepad1.right_stick_x) - Math.PI/2;
 			
 			double turnPower = 
-			joystickLength > .95 ?
+			joystickLength > 10 ?
 				driveMotors.imuPidController.PIDControlRadians(
 					joystickAngle,
 					driveMotors.heading,
@@ -112,7 +112,7 @@ public class DriveCode extends LinearOpMode {
 			
 			
 			if (gamepad1.a) {
-				driveMotors.Move(BotConfig.PICKUP_X, BotConfig.PICKUP_Y, 135);
+				driveMotors.Move(BotConfig.PICKUP_X, BotConfig.PICKUP_Y, 180);
 			}
 			else {
 				// Set the power of the wheels based off the new joystick coordinates
