@@ -15,6 +15,7 @@ public class MoveWrist extends Action {
 
 	public void onStart() {
 		this.auto.intake.MoveWrist(this.targetPosition);
+		this.auto.intake.wrist.setVelocity(BotConfig.WRIST_VELOCITY);
 	}
 
 	public boolean isDone() {

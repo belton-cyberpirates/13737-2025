@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.util.ElapsedTime;
+
 
 public class MoveArm extends Action {
 	Auto auto;
@@ -25,9 +27,10 @@ public class MoveArm extends Action {
 	public void onStart() {
 		startTime = new ElapsedTime();
 		this.auto.arm.Move(this.targetPosition);
+		this.auto.arm.setVelocity(BotConfig.ARM_VELOCITY);
 	}
 
 	public boolean isDone() {
-		return !(this.wait && this.auto.arm.isBusy()) || (expectedTime != 0 && startTime.time() >= expectedTime);
+		return !(this.wait && this.auto.arm.isBusy()) || ((expectedTime != 0) && (startTime.time() >= expectedTime));
 	}
 }
