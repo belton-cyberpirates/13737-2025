@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.BotConfig;
 import org.firstinspires.ftc.teamcode.Auto;
 
 
-@Autonomous(name = "Baskets", group="1")
+@Autonomous(name = "Baskets", group="1", preselectTeleOp="Field Centric (main)")
 public class AutoLeft extends Auto {
 
 	public Action[] getActions() {
@@ -17,10 +17,11 @@ public class AutoLeft extends Auto {
 			
 			// Score starting sample
 			new MoveDifferential(this, 0, 0),
-			new Move(this, 85, 790, -107, .5),
+			new Move(this, 80, 750, -107, .5),
 			new MoveArm(this, BotConfig.BASKET_HEIGHT, true, 1),
-			new MoveWrist(this, BotConfig.WRIST_DUNK_HEIGHT, true),
-			new OpenClawWide(this),
+			new MoveWrist(this, BotConfig.WRIST_DUNK_HEIGHT, false),
+			new Wait(this, BotConfig.WRIST_DUNK_TIME),
+			new OpenClawHalfWide(this),
 			new Wait(this, 250),
 			
 			// Reset arm and wrist
@@ -33,13 +34,14 @@ public class AutoLeft extends Auto {
 			new Wait(this, 250),
 			new CloseClaw(this),
 			new Wait(this, 500),
-			new MoveWrist(this, 0, false),
+			new MoveWrist(this, BotConfig.WRIST_PASSIVE, false),
 			
 			// Score 2nd sample
 			new Move(this, BotConfig.BASKET_X, BotConfig.BASKET_Y, -135, 2),
 			new MoveArm(this, BotConfig.BASKET_HEIGHT, true, 1),
-			new MoveWrist(this, BotConfig.WRIST_DUNK_HEIGHT, true),
-			new OpenClawWide(this),
+			new MoveWrist(this, BotConfig.WRIST_DUNK_HEIGHT, false),
+			new Wait(this, BotConfig.WRIST_DUNK_TIME),
+			new OpenClawHalfWide(this),
 			new Wait(this, 250),
 			
 			// Reset arm and wrist
@@ -52,13 +54,14 @@ public class AutoLeft extends Auto {
 			new Wait(this, 250),
 			new CloseClaw(this),
 			new Wait(this, 500),
-			new MoveWrist(this, 0, false),
-			new Wait(this, 500),
+			new MoveWrist(this, BotConfig.WRIST_PASSIVE, false),
 			
 			// Score 3rd sample 
-			new Move(this, BotConfig.BASKET_X, BotConfig.BASKET_Y, -135, 2),
+			new Move(this, BotConfig.BASKET_X, BotConfig.BASKET_Y, 90, .5),
+			new Move(this, BotConfig.BASKET_X, BotConfig.BASKET_Y, -135, 1.5),
 			new MoveArm(this, BotConfig.BASKET_HEIGHT, true, 1),
-			new MoveWrist(this, BotConfig.WRIST_DUNK_HEIGHT, true),
+			new MoveWrist(this, BotConfig.WRIST_DUNK_HEIGHT, false),
+			new Wait(this, BotConfig.WRIST_DUNK_TIME),
 			new OpenClaw(this),
 			new Wait(this, 250),
 			
@@ -66,38 +69,40 @@ public class AutoLeft extends Auto {
 			new MoveWrist(this, BotConfig.WRIST_PASSIVE, false),
 			new MoveArmWithVelocity(this, 0, true, BotConfig.ARM_VELOCITY/3, 1),
 			
-			/*
 			// Grab 4th sample
-			new MoveDifferential(this, 0, 90),
-			new Move(this, BotConfig.THIRD_BLOCK_X, -BotConfig.THIRD_BLOCK_Y - 200, -90, 4),
-			new MoveWrist(this, BotConfig.WRIST_SAMPLE_HEIGHT - 250, true),
-			new Move(this, BotConfig.THIRD_BLOCK_X, -BotConfig.THIRD_BLOCK_Y, -90, 2),
-			new MoveWristWithVelocity(this, BotConfig.WRIST_SAMPLE_HEIGHT, true, BotConfig.WRIST_VELOCITY / 5),
+			new MoveDifferential(this, 100, 0),
+			new Move(this, BotConfig.THIRD_BLOCK_X, -BotConfig.THIRD_BLOCK_Y - 100, -90, 4),
+			new MoveWrist(this, BotConfig.WRIST_SIDE_SAMPLE_HEIGHT, true),
+			new Wait(this, 250),
+			new Move(this, BotConfig.THIRD_BLOCK_X, -BotConfig.THIRD_BLOCK_Y, -90, 1.5),
 			
 			new Wait(this, 250),
 			new CloseClaw(this),
 			new Wait(this, 250),
-			new Move(this, BotConfig.THIRD_BLOCK_X, -BotConfig.THIRD_BLOCK_Y - 150, -90, 1),
-			new MoveWrist(this, 0, false),
-			new Wait(this, 500),
+			new Move(this, BotConfig.THIRD_BLOCK_X, -BotConfig.THIRD_BLOCK_Y - 100, -90, 0),
+			new MoveWrist(this, BotConfig.WRIST_PASSIVE, false),
 			
 			// Score 4th sample 
 			new Move(this, BotConfig.BASKET_X, BotConfig.BASKET_Y, -135, 2),
+			new MoveDifferential(this, 0, 0),
 			new MoveArm(this, BotConfig.BASKET_HEIGHT, true, 1),
-			new MoveWrist(this, BotConfig.WRIST_DUNK_HEIGHT, true),
+			new MoveWrist(this, BotConfig.WRIST_DUNK_HEIGHT, false),
+			new Wait(this, BotConfig.WRIST_DUNK_TIME),
 			new OpenClawWide(this),
 			new Wait(this, 250),
 			
 			// Reset arm and wrist
-			new MoveWrist(this, BotConfig.WRIST_PASSIVE, true),
-			new MoveArmWithVelocity(this, 0, true, BotConfig.ARM_VELOCITY/3, 1),*/
+			new MoveWrist(this, BotConfig.WRIST_PASSIVE, false),
+			new MoveArmWithVelocity(this, 0, true, BotConfig.ARM_VELOCITY/3, 1),
 			
-			// Preform a level 1 ascend
-			new MoveWrist(this, 800, false),
-			new Move(this, 1265, 490, 90, 1),
-			new Move(this, 1265, 470, 90),
-			new MoveWrist(this, 1000, false),
-			new Wait(this, 1000),
+			// // Perform a level 1 ascent
+			// new MoveWrist(this, 800, false),
+			// new MoveArmWithVelocity(this, 0, false, BotConfig.ARM_VELOCITY/3),
+			
+			// new Move(this, 1265, 490, 90, 1),
+			// new Move(this, 1265, 470, 90),
+			// new MoveWrist(this, 1000, false),
+			// new Wait(this, 1000),
 			
 			
 			// ======================== AUTO END ======================== //

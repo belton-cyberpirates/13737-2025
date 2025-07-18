@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.BotConfig;
 import org.firstinspires.ftc.teamcode.Auto;
 
 
-@Autonomous(name = "Return", preselectTeleOp="Odometry Test Right", group="3")
+@Autonomous(name = "Return", group="3")
 public class AutoReturn extends Auto {
 
 	public Action[] getActions() {

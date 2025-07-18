@@ -41,7 +41,7 @@ public class BotConfig {
   *****************************************************************************/
   public static final double STRAFE_MULT = 1.41;
   public static final int MAX_DRIVE_VELOCITY = 2750;
-  public static final int ARM_VELOCITY = 2500;
+  public static final int ARM_VELOCITY = 3500;
   public static final int WRIST_VELOCITY = 2000;
   // ---------------------------------------------------------------------------
 
@@ -55,18 +55,18 @@ public class BotConfig {
   public static final int PICKUP_X = 650;
   public static final int PICKUP_Y = -850;
   
-  public static final int BLOCK_GRAB_X = 330;
+  public static final int BLOCK_GRAB_X = 338;
   
   public static final int PLOW_X = 1200;
   
-  public static final int BASKET_X = 380;
-  public static final int BASKET_Y = 900;
+  public static final int BASKET_X = 360;
+  public static final int BASKET_Y = 920;
   
-  public static final int FIRST_BLOCK_Y = -980;
+  public static final int FIRST_BLOCK_Y = -990;
   public static final int SECOND_BLOCK_Y = -1240;
   
-  public static final int THIRD_BLOCK_X = 915;
-  public static final int THIRD_BLOCK_Y = -960;
+  public static final int THIRD_BLOCK_X = 835;
+  public static final int THIRD_BLOCK_Y = -900;
   // ---------------------------------------------------------------------------
 
 
@@ -85,12 +85,14 @@ public class BotConfig {
   *****************************************************************************/
   public static final int WRIST_SPECIMEN_HEIGHT = 1610;
   public static final int WRIST_SAMPLE_HEIGHT = 1785;
-  public static final int WRIST_SIDE_SAMPLE_HEIGHT = 1425;
+  public static final int WRIST_SIDE_SAMPLE_HEIGHT = 1950;
   
   public static final int WRIST_BAR_HEIGHT = 625;
   public static final int WRIST_PASSIVE = 550;
   public static final int WRIST_DUNK_HEIGHT = 800;
   public static final int WRIST_BASKET_SAFE_HEIGHT = 670;
+  
+  public static final int WRIST_DUNK_TIME = 700;
   
   // ---------------------------------------------------------------------------
   
@@ -100,12 +102,12 @@ public class BotConfig {
   *****************************************************************************/
 	public static final double CLAW_LEFT_OPEN_POS = .8;
 	public static final double CLAW_LEFT_FULL_OPEN_POS = 0.6;
-	public static final double CLAW_LEFT_CLOSE_POS = 1;
+	public static final double CLAW_LEFT_CLOSE_POS = .95;
 	public static final double CLAW_LEFT_HALF_CLOSE_POS = (CLAW_LEFT_OPEN_POS + CLAW_LEFT_CLOSE_POS) / 2;
 
 	public static final double CLAW_RIGHT_OPEN_POS = .2;
 	public static final double CLAW_RIGHT_FULL_OPEN_POS = 0.4;
-	public static final double CLAW_RIGHT_CLOSE_POS = 0;
+	public static final double CLAW_RIGHT_CLOSE_POS = .05;
 	public static final double CLAW_RIGHT_HALF_CLOSE_POS = (CLAW_RIGHT_OPEN_POS + CLAW_RIGHT_CLOSE_POS) / 2;
 	
 	public static final double DIFFERENTIAL_SERVO_DEGREES = 300;

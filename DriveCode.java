@@ -184,7 +184,10 @@ public class DriveCode extends LinearOpMode {
 
 			// Arm code
 			// High chamber hotkey
-			if (gamepad2.right_stick_button) {
+			if (hanging) {
+				arm.MoveWithPower(1);
+			}
+			else if (gamepad2.right_stick_button) {
 				arm.Move(BotConfig.BASKET_SAFE_HEIGHT);
 				arm.setVelocity((int)( ARM_VELOCITY * 2 ));
 			}
